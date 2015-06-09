@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:html5="http://java.sun.com/jsf/passthrough"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/MainContent.xhtml">
+	<ui:define name="Content">
+
+
+
+
+
+
+
+		<!--  gestion calendrier -->
+
+		<p:panel header="Gestion Calendrier" id="panelCalendrier"
+			style="border:0px">
+			<h:form>
+
+				<p:dataTable id="calendrier" value="#{calendrierBean.lcal}"
+					var="cal" selection="#{calendrierBean.selectedcal}"
+					rowKey="#{cal.id}" selectionMode="single" rows="5" paginator="true"
+					paginatorTemplate="{PreviousPageLink} {NextPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="3,5,10" paginatorPosition="top">
+					<p:ajax event="rowSelect" listener="#{calendrierBean.select()}" />
+					<f:facet name="header">
+						<p:commandButton icon="ui-icon-plus" onclick="PF('dlg1').show();" />
+						<p:commandButton icon="ui-icon-trash"
+							action="#{calendrierBean.delete()}" />
+						<p:commandButton icon="ui-icon-pencil"
+							onclick="PF('dlg2').show();">
+							<p:ajax update=":formx" listener="#{calendrierBean.edit()}" />
+						</p:commandButton>
+						<p:commandButton value="gerer Jour férier"
+							action="#{calendrierBean.gererJourferier()}" />
+						<br />
+					</f:facet>
+					<p:column headerText="Code">
+						<h:outputText value="#{cal.code}" />
+					</p:column>
+					<p:column headerText="date effet">
+						<h:outputText value="#{cal.dateEffet}" />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+
+
+
+			<!--  boite de dialog de add -->
+
+			<p:dialog id="dlg1" header="Nouvelle calenrier" widgetVar="dlg1"
+				modal="true" height="150">
+				<h:form id="formxx">
+		code:
+		<p:inputText value="#{calendrierBean.code}" required="true"
+						html5:placeholder="required" />
+					<br />
+		date effet:
+		<p:calendar value="#{calendrierBean.date}" required="true"
+						html5:placeholder="required" />
+					<br />
+					<p:commandButton value="add" action="#{calendrierBean.add()}" />
+				</h:form>
+				<!--  boite de dialog de edit/detail -->
+			</p:dialog>
+			<p:dialog id="dlg2" header="edit calendrier" widgetVar="dlg2"
+				modal="true" height="150">
+				<h:form id="formx">
+		code:
+		<p:inputText value="#{calendrierBean.code}" required="true"
+						html5:placeholder="required" />
+					<br />
+		date:
+		<p:calendar value="#{calendrierBean.date}" required="true"
+						html5:placeholder="required" />
+					<br />
+					<p:commandButton value="save" action="#{calendrierBean.save()}" />
+				</h:form>
+			</p:dialog>
+		</p:panel>
+
+		<!--  fin gestion calendrier -->
+
+
+
+
+		<!--  gestion jour ferier -->
+
+		<p:panel
+			header="Gestion jour ferier du calendrier : #{calendrierBean.selectedcal.code} "
+			id="paneljourferier" style="border:0px"
+			rendered="#{calendrierBean.cond}">
+			<h:form id="formJF">
+
+				<br />
+
+				<p:dataTable id="jourferier" value="#{gestionJourferierBean.ljf}"
+					var="jf" selection="#{gestionJourferierBean.selectedjf}"
+					rowKey="#{jf.id}" selectionMode="single" rows="5" paginator="true"
+					paginatorTemplate="{PreviousPageLink} {NextPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="3,5,10" paginatorPosition="top">
+					<p:ajax event="rowSelect"
+						listener="#{gestionJourferierBean.select()}" />
+					<f:facet name="header">
+						<p:commandButton icon="ui-icon-plus"
+							onclick="PF('dlg1jf').show();" />
+						<p:commandButton icon="ui-icon-trash"
+							action="#{gestionJourferierBean.delete()}" />
+					</f:facet>
+					<p:column headerText="date">
+						<h:outputText value="#{jf.code}" />
+					</p:column>
+					<p:column headerText="date">
+						<h:outputText value="#{jf.datedeb}" />
+					</p:column>
+					<p:column headerText="date">
+						<h:outputText value="#{jf.datefin}" />
+					</p:column>
+					<p:column headerText="date">
+						<h:outputText value="#{jf.type}" />
+					</p:column>
+
+				</p:dataTable>
+			</h:form>
+
+
+
+
+			<!--  boite de dialog de add -->
+
+			<p:dialog id="dlg1jf" header="Nouveau jour ferier" widgetVar="dlg1jf"
+				modal="true" height="200">
+				<h:form id="formxxjf">
+				code:
+				<p:inputText value="#{gestionJourferierBean.code}" required="true"
+						html5:placeholder="required" />
+					<br />
+				datedeb:
+				<p:calendar value="#{gestionJourferierBean.datedeb}" required="true"
+						html5:placeholder="required" />
+					<br />
+					datefin:
+				<p:calendar value="#{gestionJourferierBean.datefin}" required="true"
+						html5:placeholder="required" />
+					<br />
+				type:
+				<p:inputText value="#{gestionJourferierBean.type}" required="true"
+						html5:placeholder="required" />
+					<br />
+					<p:commandButton value="add"
+						action="#{gestionJourferierBean.add()}" />
+				</h:form>
+				<!-- 	 boite de dialog de edit/detail  -->
+			</p:dialog>
+			<p:dialog id="dlg2jf" header="edit jour ferier" widgetVar="dlg2jf"
+				modal="true" height="200">
+				<h:form id="formxy">
+
+				code:
+				<p:inputText value="#{gestionJourferierBean.code}" required="true"
+						html5:placeholder="required" />
+					<br />
+				datedeb:
+				<p:calendar value="#{gestionJourferierBean.datedeb}" required="true"
+						html5:placeholder="required" />
+					<br />
+					datefin:
+				<p:calendar value="#{gestionJourferierBean.datefin}" required="true"
+						html5:placeholder="required" />
+					<br />
+				type:
+				<p:inputText value="#{gestionJourferierBean.type}" required="true"
+						html5:placeholder="required" />
+					<br />
+					<p:commandButton value="save"
+						action="#{gestionJourferierBean.save()}" />
+				</h:form>
+			</p:dialog>
+		</p:panel>
+
+		<!--  fin gestion jour ferier -->
+
+
+
+
+
+
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"> 
+
+<ui:composition template="/template/MainContent.xhtml">
+<ui:define name="Content">
+<p:panel header="Ajout d'un Code Calendrier">
+		<h:form>
+
+			<table>
+				<tr>
+					<td><p:outputLabel value="code" /></td>
+					<td><p:inputText value="#{codeCalendrierBean.codeCalendrier.code}"
+							required="true" /></td>
+				</tr>
+				<tr>
+				<p:selectManyCheckbox value="#{codeCalendrierBean.listajout}"  
+            layout="pageDirection" converter="#{calendrierConvertor}">  
+            <f:selectItems value="#{codeCalendrierBean.calendriers}" var="jour" itemLabel="#{jour.nomJourFerier}" />
+            
+             </p:selectManyCheckbox>  
+        </tr>
+				<tr align="center">
+					<td colspan="2"><p:commandButton
+							action="#{codeCalendrierBean.ajouter()}" value="Envoyer"></p:commandButton>
+					</td>
+				</tr>
+			</table>
+		</h:form>
+	</p:panel>
+</ui:define>
+</ui:composition> 
+</html>

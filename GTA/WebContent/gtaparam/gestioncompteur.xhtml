@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/template/MainContent.xhtml">
+	<ui:define name="Content">
+		<h:form>
+			<p:panel header="Paramétrage d'un compteur">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Code" />
+					<p:inputText value="#{compteurBean.compteur.codec}" />
+					<p:outputLabel value="Libelle" />
+					<p:inputText value="#{compteurBean.libelle.lib}" />
+					<p:outputLabel value="Date d'effet" />
+					<p:calendar value="#{compteurBean.formuleCompteur.dateEffet}" />
+				</h:panelGrid>
+				<p:panel header="Opération à la fin de période">
+					<h:panelGrid columns="2">
+						<p:outputLabel value="Type Compteur" />
+						<p:selectOneMenu value="#{compteurBean.compteur.typeCmp}">
+							<f:selectItem itemValue="" itemLabel="Selectionner" />
+							<f:selectItem itemValue="Normale" itemLabel="Normale" />
+							<f:selectItem itemValue="Acquisition de congé"
+								itemLabel="Acquisition de congé" />
+						</p:selectOneMenu>
+						<p:outputLabel value="Période" />
+						<p:selectOneMenu value="#{compteurBean.compteur.typeop}">
+							<f:selectItem itemValue="" itemLabel="Selectionner" />
+							<f:selectItem itemValue="hebdomadaire" itemLabel="Hebdomadaire" />
+							<f:selectItem itemValue="journaliere" itemLabel="Journaliére" />
+							<f:selectItem itemValue="mensuelle" itemLabel="Mensuelle" />
+							<f:selectItem itemValue="annuelle" itemLabel="Annuelle" />
+							<f:selectItem itemValue="trimestrielle" itemLabel="Trimestrielle" />
+							<f:selectItem itemValue="semestrielle" itemLabel="Semestrielle" />
+						</p:selectOneMenu>
+						<p:outputLabel value="Typde de calcul" />
+						<p:selectOneMenu value="#{compteurBean.compteur.typeDeCalcul}">
+							<f:selectItem itemValue="" itemLabel="Selectionner" />
+							<f:selectItem itemValue="duree" itemLabel="Durée" />
+							<f:selectItem itemValue="val" itemLabel="valeur Numérique" />
+						</p:selectOneMenu>
+						<p:outputLabel value="Methode De calclul" />
+						<p:selectOneMenu value="#{compteurBean.compteur.methodeDeCalcul}">
+							<f:selectItem itemValue="" itemLabel="Selectionner" />
+							<f:selectItem itemValue="veille" itemLabel="valeur de la veille " />
+							<f:selectItem itemValue="jour" itemLabel="valeur du jour" />
+							<f:selectItem itemValue="defalquer"
+								itemLabel="défalquer  la valeur" />
+						</p:selectOneMenu>
+						<p:outputLabel value="Mois de Debut" />
+						<p:inputText value="#{compteurBean.compteur.numMoisDeDebut}"
+							size="5" />
+						<p:outputLabel value="Peroide debut" />
+						<p:calendar value="#{compteurBean.compteur.dateDebutPeroide}" />
+
+
+
+						<p:outputLabel value="Peroide fin" />
+						<p:calendar value="#{compteurBean.compteur.dateFinPeriode}" />
+
+
+						<p:outputLabel value="Opération" />
+
+
+						<p:selectOneMenu value="#{compteurBean.compteur.operation}">
+							<f:selectItem itemValue="" itemLabel="Selectionner" />
+							<f:selectItem itemValue="initialisation"
+								itemLabel="Initialisation" />
+							<f:selectItem itemValue="cumul" itemLabel="Cumul" />
+							<f:selectItem itemValue="ecretage" itemLabel="Ecrétage" />
+							<f:selectItem itemValue="ecretageinit"
+								itemLabel="Ecrétage puis initialisation" />
+						</p:selectOneMenu>
+
+
+					</h:panelGrid>
+
+
+					<h:panelGrid columns="6">
+						<p:outputLabel value="Valeur initiale" />
+						<p:inputText value="#{compteurBean.compteur.valinit}" size="5" />
+						<p:outputLabel value="Valeur minimale" />
+						<p:inputText value="#{compteurBean.compteur.valmin}" size="5" />
+						<p:outputLabel value="Valeur maximale" />
+						<p:inputText value="#{compteurBean.compteur.valmax}" size="5" />
+					</h:panelGrid>
+				</p:panel>
+
+				<p:panel header="Anomalie">
+
+					<h:panelGrid columns="6">
+						<p:outputLabel value="code Anomalie " />
+						<p:inputText value="#{compteurBean.anomalie.code}" size="5" />
+						<p:outputLabel value="Message Anomalie" />
+						<p:inputTextarea value="#{compteurBean.anomalie.message}"></p:inputTextarea>
+						<p:outputLabel value="Gravité" />
+						<p:inputText value="#{compteurBean.anomalie.gravite}" size="5" />
+					</h:panelGrid>
+				</p:panel>
+
+
+				<p:panel header="Expression de calcule">
+
+					<h:panelGrid columns="3">
+						<p:outputLabel value="Formule" />
+						<p:inputText value="#{compteurBean.paramClass.formule}"
+							size="20">
+							<f:ajax event="blur" listener="#{compteurBean.verifierSyntaxe()}"
+								render="input1" />
+						</p:inputText>
+						<p:outputLabel id="input1" value="#{compteurBean.syntaxe}" />
+
+
+						<p:outputLabel value="Condition" />
+						<p:inputText value="#{compteurBean.paramClass.condition}"
+							size="20">
+
+							<f:ajax event="blur" listener="#{compteurBean.verifierSyntaxeCondition()}"
+								render="input2" />
+						</p:inputText>
+						<p:outputLabel id="input2" value="#{compteurBean.syntaxe}" />
+					</h:panelGrid>
+
+				</p:panel>
+				<p:commandButton value="Submit" action="#{compteurBean.ajouter()}"
+					icon="ui-icon-check" style="margin-left: 40%" />
+
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

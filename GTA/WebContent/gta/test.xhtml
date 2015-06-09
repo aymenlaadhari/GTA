@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"> 
+
+<h:head></h:head> 
+<body> 
+<h:form>
+<p:outputLabel value="start"></p:outputLabel>
+<p:calendar value="#{plageHoraireView.start}"></p:calendar>
+<p:outputLabel value="end"></p:outputLabel>
+<p:calendar value="#{plageHoraireView.end}"></p:calendar>
+<p:outputLabel value="index"></p:outputLabel>
+<p:inputText value="#{testBean.index}"></p:inputText>
+<p:commandButton value="tester" action="#{testBean.tester()}"  >
+</p:commandButton>
+
+<p:dataTable value="#{testBean.calculGtas}" var="pl">
+						<p:column headerText="date">
+							<h:outputText value="#{pl.dateJour}">
+								<f:convertDateTime type="date" dateStyle="short" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="Jour">
+							<h:outputText value="#{pl.codeJour.codecj}">
+							</h:outputText>
+						</p:column>
+						<p:column headerText="J Type">
+							<p:commandLink value="#{pl.journeeType.codejt}"
+								action="#{planningThBean.afficherPlagesPourJourneeType(pl.journeeType)}"
+								 ajax="true"></p:commandLink>
+						</p:column>
+					</p:dataTable>
+</h:form>
+<p:commandButton value="planning" action="#{plageHoraireView.initialize()}" update=":tim"></p:commandButton>
+<h:form id="tim">
+		
+				
+				<pe:timeline id="timeline" value="#{plageHoraireView.model}"  
+             editable="true" eventMargin="10" eventMarginAxis="0"  
+             locale="#{plageHoraireView.locale}"  
+             start="#{plageHoraireView.start}"  
+             end="#{plageHoraireView.end}"  
+             showNavigation="true" showButtonNew="true"  
+             axisOnTop="true" stackEvents="true" themable="false"
+             
+             >
+ <p:ajax event="drop"  listener="#{plageHoraireView.onChange()}"/>  
+   
+</pe:timeline>
+
+
+</h:form>
+
+
+</body> 
+</html>

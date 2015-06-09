@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/MainContent.xhtml">
+<ui:define name="Content">
+	<p:panel header="Ajout d'une journnée type">
+		<h:form>
+
+			<table>
+				<tr>
+					<td><p:outputLabel value="Code" /></td>
+					<td><p:inputText value="#{journeeTypeBean.journeeType.codejt}"
+							required="true" /></td>
+				</tr>
+				<tr>
+					<td><p:outputLabel value="Libelle"></p:outputLabel></td>
+					<td><p:inputText value="#{journeeTypeBean.libelle.lib}"
+							required="true" /></td>
+				</tr>
+
+				<tr>
+					<td><p:outputLabel value="Date d'effet"></p:outputLabel></td>
+					<td><p:calendar value="#{journeeTypeBean.journeeType.dateff}"
+							required="true" /></td>
+				</tr>
+				
+				
+
+				<tr align="center">
+					<td colspan="2"><p:commandButton
+							action="#{journeeTypeBean.ajouterJourneeType()}" value="Envoyer"></p:commandButton>
+					</td>
+				</tr>
+
+
+			</table>
+			<h:commandButton value="next" action="#{journeeTypeBean.redirect()}" />
+		</h:form>
+	</p:panel>
+</ui:define>
+</ui:composition>
+</html>

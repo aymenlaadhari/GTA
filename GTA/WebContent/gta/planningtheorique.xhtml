@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:showcase="http://primefaces.org/ui/extensions/showcase"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<ui:composition template="/template/MainContent.xhtml">
+	<ui:define name="Content">
+
+		<h:form id="master">
+
+			<!-- WIDGET TABBED CONTENT -->
+
+			<div class="col-md-8">
+				<div class="widget">
+				
+					<div class="widget-header-in">
+
+						<ul class="nav nav-tabs pull-right">
+							<li><button class="btn btn-default  btn-primary "><i class="fa fa-file-pdf-o"></i> Export to pdf</button></li>
+							<li><button class="btn btn-default btn-primary "><i class="fa fa-print"></i> Print</button></li>
+						</ul>
+
+						<ul class="nav nav-tabs">
+							<li class="active"><a href="#tab1" data-toggle="tab"><i class="fa fa-user"></i><span>Planning Theorique</span></a></li>
+						</ul>
+					</div>
+					
+					<div class="widget-content">
+						<div class="tab-content no-padding">
+							<div class="tab-pane fade in active" id="tab1">
+								<!-- 				/////////////// panel 1 //////////// -->
+
+									
+									
+									
+									
+									
+			<h:form id="th">
+			<p:commandButton value="Demande Calcul"
+				onclick="PF('popupAdd').show();" update=":cal"></p:commandButton>
+
+
+			<p:tabView orientation="left" widgetVar="sou"
+				activeIndex="#{planningThBean.tabv}">
+
+				<p:tab title="Par jour">
+
+					<pe:timeline id="timeline" value="#{planningThBean.model}"
+						editable="true" eventMargin="10" eventMarginAxis="0"
+						locale="#{planningThBean.locale}" start="#{planningThBean.start}"
+						end="#{planningThBean.end}" showNavigation="true"
+						showButtonNew="true" axisOnTop="true" stackEvents="true"
+						themable="false">
+						<p:ajax event="drop" listener="#{planningThBean.onChange()}" />
+
+					</pe:timeline>
+				</p:tab>
+				<p:tab title="par période">
+
+					<h:form>
+						<p:schedule id="schedule" value="#{planningThBean.eventModel}"
+							rightHeaderTemplate="" locale="fr" widgetVar="myschedule"
+							draggable="false">
+							<p:ajax event="eventSelect"
+								listener="#{planningThBean.onEventSelect}" update=":master:th" />
+
+						</p:schedule>
+					</h:form>
+				</p:tab>
+			</p:tabView>
+
+
+
+
+		</h:form>
+		
+		
+		
+									
+									
+									
+									
+									
+									
+
+
+							</div>
+							
+						</div>
+					</div>
+				</div>
+				<!-- END WIDGET TABBED CONTENT -->
+			</div>
+			<!-- 			</p:tabView> -->
+
+
+
+		</h:form>
+
+
+      <p:dialog header="Calcul" widgetVar="popupAdd" modal="true"
+			draggable="false" closable="true">
+			
+			
+			<h:form id="cal">
+				<p:panelGrid columns="2" style="border:0px">
+					<h:outputLabel value="date debut calcul" />
+					<p:calendar value="#{planningThBean.dateDebut}"></p:calendar>
+					<h:outputLabel value="date fin de calcul" />
+					<p:calendar value="#{planningThBean.dateFin}"></p:calendar>
+					<p:outputLabel value="Type de Calcul"></p:outputLabel>
+					<p:selectManyCheckbox value="#{planningThBean.selectedTypes}"
+						layout="pageDirection" converter="#{typeCalculConvertor}">
+						<f:selectItems value="#{planningThBean.typeCalucles}" var="jour"
+							itemLabel="#{jour.type}" />
+					</p:selectManyCheckbox>
+
+
+				</p:panelGrid>
+				<p:commandButton value="lancer calcul"
+					action="#{planningThBean.calculerPlanningTheorique()}" update=":master:th"
+					oncomplete="PF('popupAdd').hide(;)">
+				</p:commandButton>
+			</h:form>
+		</p:dialog>
+
+
+
+
+
+		<!-- ////////////// employee       -->
+		<h:form id="form2">
+			<div class="col-md-4">
+				<div class="widget widget-table">
+					<div class="widget-header">
+						<h3>
+							<i class="fa fa-users"></i>Liste des collaborteurs
+						</h3>
+					</div>
+					<div class="widget-content">
+
+						<div class="input-group input-group-sm">
+							<h:form id="formSearch">
+								<h:outputLabel value="Matricule:" />
+								<p:inputText value="#{planningThBean.matricul}"
+									onkeypress="if (event.keyCode == 13) {onchange(); return false; }">
+									<p:ajax event="change"
+										listener="#{planningThBean.chargerCollaborateurs()}"
+										update=":form2:eventsDT" />
+								</p:inputText>
+
+							</h:form>
+						</div>
+						<br />
+
+
+
+
+
+						<p:dataTable id="eventsDT" 
+				value="#{planningThBean.identites}" var="emp" selectionMode="single"
+				selection="#{planningThBean.identite}" rowKey="#{emp.numedoss}"
+				>
+                
+                <f:facet name="header"> List of Employers </f:facet>
+				<p:ajax event="rowSelect" listener="#{planningThBean.rowselect}" update=":master:th" />
+
+							<p:column headerText="Matricule">
+								<h:outputText value="#{emp.matricul}" />
+							</p:column>
+							<p:column headerText="Nom et Prénom">
+								<h:outputText value="#{emp.nom} #{emp.prenom}" />
+							</p:column>
+						</p:dataTable>
+					</div>
+
+				</div>
+			</div>
+
+		</h:form>
+
+
+
+<script type="text/javascript">
+			
+PrimeFaces.locales ['fr'] = {
+        closeText: 'Fermer',
+        prevText: 'Précédent',
+        nextText: 'Suivant',
+        monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre' ],
+        monthNamesShort: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc' ],
+        dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+        dayNamesShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+        dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+        weekHeader: 'Semaine',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix:'',
+        timeOnlyTitle: 'Choisir l\'heure',
+        timeText: 'Heure',
+        hourText: 'Heures',
+        minuteText: 'Minutes',
+        secondText: 'Secondes',
+        currentText: 'Maintenant',
+        ampm: false,
+        month: 'Mois',
+        week: 'Semaine',
+        day: 'Jour',
+        allDayText: 'Toute la journée'
+        };
+</script>
+		<style type="text/css">
+.fc-event-time {
+	display: none;
+}
+</style>
+
+
+
+	</ui:define>
+</ui:composition>
+</html>

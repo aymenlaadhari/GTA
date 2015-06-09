@@ -1,0 +1,308 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/template/MainContent.xhtml">
+
+	<ui:define name=""></ui:define>
+	<ui:define name="Content">
+
+
+
+		<h:form id="formAjout">
+
+			<div class="col-md-8">
+				<div class="widget">
+					<div class="widget-header-in">
+
+						<h3>
+							<i class="fa fa-users"></i>Pointages
+						</h3>
+						<ul class="nav nav-tabs pull-right">
+
+							<li><button class="btn btn-default  btn-primary ">
+									<i class="fa fa-file-pdf-o"></i> Export to pdf
+								</button></li>
+							<li><button class="btn btn-default btn-primary ">
+									<i class="fa fa-print"></i> Print
+								</button></li>
+						</ul>
+					</div>
+					<div class="widget-content">
+
+						<div class="input-group input-group-sm">
+							<p:panel style="border:4px">
+								<h:panelGrid>
+									<p:graphicImage id="photoview" cache="false"
+										value="#{pointageBean.photo}" style="width:70px; height:90px;"
+										rendered="#{pointageBean.renderedimage}" />
+									<p:outputLabel
+										value="#{pointageBean.selectedIdentite.qualite} #{pointageBean.selectedIdentite.nom} #{pointageBean.selectedIdentite.prenom}" />
+								</h:panelGrid>
+							</p:panel>
+							<p:panel style="border:0px" id="panelPointage" header="Pointages">
+
+								<p:commandButton icon="ui-icon-plus"
+									disabled="#{pointageBean.disabledBtnPlus}"
+									action="#{pointageBean.ajoutPointage()}" ajax="true"
+									update="panelPointage" />
+								<p:commandButton icon="ui-icon-minus"
+									action="#{pointageBean.deletePointage()}" ajax="true"
+									update="panelPointage" />
+
+								<p:commandButton icon="ui-icon-pencil"
+									action="#{pointageBean.valider()}"
+									onclick="PF('dialogModifierPointage').show()"
+									update=":formDialogModifierPointage"></p:commandButton>
+
+								<p:dataTable id="tableDesPointages"
+									value="#{pointageBean.pointages}" var="pointageEmploye"
+									selection="#{pointageBean.pointage}"
+									rowKey="#{pointageEmploye.idp}" selectionMode="single">
+
+									<p:ajax event="rowSelect"
+										listener="#{pointageBean.TrouverPointage()}"
+										update=":formAjout" />>
+									<p:column headerText="Date">
+
+										<p:calendar id="date" value="#{pointageEmploye.date}"
+											pattern="dd-MM-yyyy" mask="true" />
+									</p:column>
+
+									<p:column headerText="Heure">
+										<p:calendar id="heure" value="#{pointageEmploye.heurep}"
+											pattern="HH:mm" timeOnly="true" />
+
+									</p:column>
+
+
+									<p:column headerText="Sens">
+										<p:selectOneMenu value="#{pointageEmploye.sens}"
+											converter="TypePointageConvertor">
+											<f:selectItem itemLabel="Selectionnez" itemValue="" />
+											<f:selectItems value="#{pointageBean.collectionSens}"
+												var="sens" itemLabel="#{sens.libelle}" itemValue="#{sens}">
+											</f:selectItems>
+										</p:selectOneMenu>
+
+									</p:column>
+									<p:column headerText="Terminal">
+										<h:inputText value="#{pointageEmploye.terminal}"
+											readonly="true" />
+									</p:column>
+								</p:dataTable>
+								<br />
+								<p:commandButton actionListener="#{pointageBean.savePointage()}"
+									value="Save"></p:commandButton>
+								<p:commandButton
+									actionListener="#{pointageBean.deletePointage()}"
+									value="Delete"></p:commandButton>
+								<p:commandButton actionListener="#{pointageBean.init()}"
+									value="Cancel" update=":formAjout"></p:commandButton>
+							</p:panel>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</h:form>
+		<h:form id="form2">
+			<div class="col-md-4">
+
+				<div class="widget widget-table">
+					<div class="widget-header">
+						<h3>
+							<i class="fa fa-users"></i>Liste des collaborateurs
+						</h3>
+					</div>
+					<div class="widget-content">
+
+						<div class="input-group input-group-sm">
+							<h:form id="formSearch">
+								<h:outputLabel value="Matricule:" />
+								<p:inputText value="#{pointageBean.matricul}"
+									onkeypress="if (event.keyCode == 13) {onchange(); return false; }">
+									<p:ajax event="change"
+										listener="#{pointageBean.chargerCollaborateurs()}"
+										update=":form2:collaborateurs" />
+								</p:inputText>
+								<p:commandButton icon="ui-icon-plus fa fa-plus"
+									onclick="PF('DialogAdvancedSearchIdentite').show()"
+									update=":formDialogAdvancedSearchIdentite">
+								</p:commandButton>
+							</h:form>
+
+						</div>
+						<br />
+
+						<p:dataTable id="collaborateurs" value="#{pointageBean.identites}"
+							var="coll" selection="#{pointageBean.selectedIdentite}"
+							rowKey="#{coll.numedoss}" selectionMode="single">
+
+							<p:ajax event="rowSelect"
+								listener="#{pointageBean.chargerPointages()}"
+								update=":formAjout" />
+
+							<!-- 	<p:column style="width:40px">
+							<p:graphicImage value="#{pointageBean.photoC}" cache="false"
+									id="dragImg" style="width:30px; height:40px;">
+									<f:param name="coll" value="#{coll.numedoss}" />
+									<p:draggable for="dragImg" revert="true" helper="clone" />
+								</p:graphicImage>
+							</p:column> -->
+							<p:column headerText="nom">
+								<h:outputText value="#{coll.nom}" />
+							</p:column>
+							<p:column headerText="prenom">
+								<h:outputText value="#{coll.prenom}" />
+							</p:column>
+							<p:column headerText="matricule">
+								<h:outputText value="#{coll.matricul}" />
+							</p:column>
+
+						</p:dataTable>
+					</div>
+
+				</div>
+			</div>
+
+
+
+			<h:form id="formChart">
+				<div class="col-md-4">
+
+					<div class="widget widget-table">
+						<div class="widget-header">
+							<h3>
+								<i class="fa fa-users"></i>Charts
+							</h3>
+						</div>
+						<div class="widget-content">
+
+							<div class="input-group input-group-sm">
+								<h:form>
+									<p:growl id="growl" showDetail="true" />
+
+									<p:pieChart value="#{chartBean.pieModel}" var="sens"
+										itemSelectListener="#{chartBean.itemSelect}" update="growl"
+										style="chartStyle" />
+								</h:form>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</h:form>
+		</h:form>
+
+
+		<!-- recherche client -->
+		<p:dialog header="Recherche Avancée"
+			widgetVar="DialogAdvancedSearchIdentite" resizable="false"
+			width="400">
+			<h:form id="formDialogAdvancedSearchIdentite">
+
+				<p:accordionPanel>
+					<p:tab title="Identite">
+
+						<h:panelGrid columns="2">
+							<h:outputLabel value="Nom:" />
+							<p:inputText value="#{donneesIndividuellesBean.nom}"
+								onkeypress="if (event.keyCode == 13) {onchange(); return false; }">
+								<p:ajax event="change"
+									listener="#{donneesIndividuellesBean.chargerCollaborateurs()}"
+									update=":form2:collaborateurs" />
+							</p:inputText>
+							<h:outputLabel value="Prenom:" />
+							<p:inputText value="#{donneesIndividuellesBean.prenom}"
+								onkeypress="if (event.keyCode == 13) {onchange(); return false; }">
+								<p:ajax event="change"
+									listener="#{donneesIndividuellesBean.chargerCollaborateurs()}"
+									update=":form2:collaborateurs" />
+							</p:inputText>
+							<h:outputLabel value="Sexe" />
+							<p:inputText value="#{donneesIndividuellesBean.sexe}"
+								onkeypress="if (event.keyCode == 13) {onchange(); return false; }">
+								<p:ajax event="change"
+									listener="#{donneesIndividuellesBean.chargerCollaborateurs()}"
+									update=":form2:collaborateurs" />
+							</p:inputText>
+							<h:outputLabel value="Situation Civile:" />
+							<p:inputText value="#{donneesIndividuellesBean.stCivile}"
+								onkeypress="if (event.keyCode == 13) {onchange(); return false; }">
+								<p:ajax event="change"
+									listener="#{donneesIndividuellesBean.chargerCollaborateurs()}"
+									update=":form2:collaborateurs" />
+							</p:inputText>
+
+						</h:panelGrid>
+					</p:tab>
+					<p:tab title="Affectation">
+						<h:panelGrid column="2">
+							<p:outputLabel value="Poste:" />
+							<p:inputText value="#{donneesIndividuellesBean.poste}"
+								onkeypress="if (event.keyCode == 13) {onchange(); return false; }">
+								<p:ajax event="change"
+									listener="#{donneesIndividuellesBean.chargerCollaborateurs()}"
+									update=":form2:collaborateurs" />
+							</p:inputText>
+							<p:outputLabel value="Unite Organisationnelle:" />
+							<p:inputText
+								value="#{donneesIndividuellesBean.uniteOrganisationnelle}"
+								onkeypress="if (event.keyCode == 13) {onchange(); return false; }">
+								<p:ajax event="change"
+									listener="#{donneesIndividuellesBean.chargerCollaborateurs()}"
+									update=":form2:collaborateurs" />
+							</p:inputText>
+						</h:panelGrid>
+					</p:tab>
+				</p:accordionPanel>
+				<p:commandButton value="Reset"
+					action="#{donneesIndividuellesBean.resetSearch()}" ajax="true"
+					update="formDialogAdvancedSearchIdentite" />
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Modifier Pointage"
+			widgetVar="dialogModifierPointage" resizable="false">
+			<h:form id="formDialogModifierPointage">
+
+				<h:panelGrid columns="2" cellpadding="4">
+					<p:outputLabel value="Date Forcee" />
+					<p:calendar value="#{pointageBean.pointage.dateForcee}"
+						disabled="#{pointageBean.automatique}" />
+
+					<p:outputLabel headerText="Date" />
+					<p:calendar id="date" value="#{pointageBean.pointage.date}"
+						pattern="dd-MM-yyyy" mask="true"
+						disabled="#{pointageBean.manuelle}" />
+
+					<p:outputLabel headerText="Heure" />
+					<p:calendar id="heure" value="#{pointageBean.pointage.heurep}"
+						pattern="HH:mm" timeOnly="true"
+						disabled="#{pointageBean.manuelle}" />
+
+					<p:outputLabel headerText="Sens" />
+					<p:selectOneMenu value="#{pointageBean.pointage.sens}"
+						converter="TypePointageConvertor"
+						disabled="#{pointageBean.manuelle}">
+						<f:selectItem itemLabel="Selectionnez" itemValue="" />
+						<f:selectItems value="#{pointageBean.collectionSens}" var="sens"
+							itemLabel="#{sens.libelle}" itemValue="#{sens}">
+						</f:selectItems>
+
+					
+					</p:selectOneMenu>
+				</h:panelGrid>
+				<br />
+				<p:commandButton value="Sauvegarder"
+					action="#{pointageBean.modifierPointage()}" ajax="true"
+					update=":formAjout"
+					oncomplete="PF('dialogModifierPointage').hide()" />
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>

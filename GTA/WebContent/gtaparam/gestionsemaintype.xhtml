@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+<ui:composition template="/template/MainContent.xhtml">
+<ui:define name="Content">
+
+
+
+	<p:panel header="Ajout d'une semaine type">
+		<h:form>
+
+			<table>
+				<tr>
+					<td><p:outputLabel value="Code" /></td>
+					<td><p:inputText value="#{semaineTypeBean.semaineType.codest}"
+							 /></td>
+				</tr>
+				<tr>
+					<td><p:outputLabel value="Libelle"></p:outputLabel></td>
+					<td><p:inputText value="#{semaineTypeBean.libelle.lib}"
+							/></td>
+				</tr>
+
+				<tr>
+					<td><p:outputLabel value="Date d'effet"></p:outputLabel></td>
+					<td><p:calendar value="#{semaineTypeBean.semaineType.dateff}"
+							/></td>
+				</tr>
+				
+				<p:outputLabel value="Journees types"></p:outputLabel>
+
+		 <tr>
+		 <p:dataList value="#{semaineTypeBean.codeJours}" var="code" type="ordered">
+              #{code.codecj} :
+              <p:selectOneMenu value="#{semaineTypeBean.journeeType}" 
+              converter="#{journeeTypeConvertor}"
+              onkeyup="#{semaineTypeBean.test()}" >
+								<f:selectItem itemLabel="Selectionner" itemValue="" />
+								<f:selectItems value="#{semaineTypeBean.journeeTypes}" var="j"
+								itemLabel="#{j.codejt}" itemValue="#{j}" />
+								<f:ajax listener="#{semaineTypeBean.test()}"></f:ajax>
+							</p:selectOneMenu>
+        </p:dataList>
+		 </tr>
+				
+
+				<tr align="center">
+					<td colspan="2"><p:commandButton
+							action="#{semaineTypeBean.ajouter()}" value="Ajouter"></p:commandButton>
+					</td>
+				</tr>
+
+
+			</table>
+			<h:commandButton value="next" action="#{semaineTypeBean.redirect()}" />
+			<h:commandButton action="#{semaineTypeBean.afficher()}" value="test" />
+		</h:form>
+	</p:panel>
+</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,190 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/template/MainContent.xhtml">
+
+	<ui:define name=""></ui:define>
+	<ui:define name="Content">
+
+		<h:form id="ParamPointage">
+
+			<div class="col-md-8">
+				<div class="widget">
+					<div class="widget-header-in">
+
+
+						<ul class="nav nav-tabs pull-right">
+
+							<li><button class="btn btn-default  btn-primary ">
+									<i class="fa fa-file-pdf-o"></i> Export to pdf
+								</button></li>
+							<li><button class="btn btn-default btn-primary ">
+									<i class="fa fa-print"></i> Print
+								</button></li>
+						</ul>
+
+						<ul class="nav nav-tabs">
+
+							<li class="active"><a href="#tab1" data-toggle="tab"><i
+									class=""></i><span>Sens Pointage</span></a></li>
+							<li><a href="#tab2" data-toggle="tab"><i class=""></i><span>Terminal</span></a></li>
+						</ul>
+					</div>
+					<div class="widget-content">
+						<div class="tab-content no-padding">
+							<div class="tab-pane fade in active" id="tab1">
+								<p:tab id="SensPointage" title="Sens Pointage">
+									<p:outputPanel id="dropArea">
+										<p:panel style="border:0px" header="Sens Pointage " id="ident">
+											<f:facet name="header"> Sens Pointage 
+					
+							                    	<p:commandButton icon="ui-icon-plus"
+													onclick="PF('dialogViewAjout').show()"
+													update=":formDialogViewAjoutSens"></p:commandButton>
+												<p:commandButton icon="ui-icon-trash"
+													action="#{pointageBean.SupprimerSens()}" ajax="true"
+													update=":ParamPointage"></p:commandButton>
+
+												<p:commandButton icon="ui-icon-pencil"
+													onclick="PF('dialogModifierSensPointage').show()"
+													update=":formDialogModifierSens"></p:commandButton>
+												<br />
+												<p:dataTable id="tableSens"
+													value="#{pointageBean.collectionSens}" var="sens"
+													selection="#{pointageBean.selectedSens}"
+													rowKey="#{sens.id}" selectionMode="single"
+													style="border:0px;">
+													<p:column headerText="libellé">
+														<h:outputText value="#{sens.libelle}" />
+													</p:column>
+
+												</p:dataTable>
+
+
+
+											</f:facet>
+
+
+										</p:panel>
+									</p:outputPanel>
+								</p:tab>
+							</div>
+
+							<div class="tab-pane fade" id="tab2">
+								<p:tab id="Terminaux" title="Terminaux">
+
+
+									<p:outputPanel id="dropAreaTerminals">
+										<p:panel style="border:0px" header="Terminaux "
+											id="identTerminaux">
+											<f:facet name="header">Terminaux
+					
+							                    	<p:commandButton icon="ui-icon-plus"
+													onclick="PF('dialogViewAjoutTerminal').show()"
+													update=":formDialogViewAjoutTerminal"></p:commandButton>
+												<p:commandButton icon="ui-icon-trash"
+													action="#{pointageBean.SupprimerTerminal()}" ajax="true"
+													update=":ParamPointage:dropAreaTerminals"></p:commandButton>
+												<p:commandButton icon="ui-icon-pencil"
+													onclick="PF('dialogModifierTerminal').show()"
+													update=":formDialogModifierTerminal"></p:commandButton>
+
+												<br />
+												<p:dataTable id="tableTerminaux"
+													value="#{pointageBean.terminaux}" var="terminal"
+													selection="#{pointageBean.selectedterminal}"
+													rowKey="#{terminal.id}" selectionMode="single"
+													style="border:0px;">
+													<p:column headerText="libellé">
+														<h:outputText value="#{terminal.libelle}" />
+													</p:column>
+												</p:dataTable>
+												<!--	<p:commandButton icon="ui-icon-zoomin"
+														onclick="PF('dialogViewIdentite').show()"
+														update=":formDialogViewIdentite"></p:commandButton>
+
+													
+
+													<p:commandButton icon="ui-icon-trash"
+														action="#{donneesIndividuellesBean.supprimerIdentite()}"
+														ajax="true" update="paramPointage"></p:commandButton>-->
+											</f:facet>
+
+
+										</p:panel>
+									</p:outputPanel>
+								</p:tab>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</h:form>
+
+		<p:dialog header="Ajouter Sens de Pointage"
+			widgetVar="dialogViewAjout" resizable="false" width="400">
+			<h:form id="formDialogViewAjoutSens">
+				<h:panelGrid columns="2">
+
+					<p:outputLabel value="libellé" />
+					<p:inputText value="#{pointageBean.sens.libelle}"></p:inputText>
+					<p:commandButton value="Sauvegarder" ajax="true"
+						update=":ParamPointage" action="#{pointageBean.AjouterSens()}"
+						oncomplete="PF('dialogViewAjout').hide()"></p:commandButton>
+				</h:panelGrid>
+			</h:form>
+
+		</p:dialog>
+
+		<p:dialog header="Ajouter Terminal"
+			widgetVar="dialogViewAjoutTerminal" resizable="false" width="400">
+			<h:form id="formDialogViewAjoutTerminal">
+				<h:panelGrid columns="2">
+
+					<p:outputLabel value="libellé" />
+					<p:inputText value="#{pointageBean.terminal.libelle}"></p:inputText>
+					<p:commandButton value="Sauvegarder" ajax="true"
+						update=":ParamPointage:dropAreaTerminals"
+						action="#{pointageBean.AjouterTerminal()}"
+						oncomplete="PF('dialogViewAjoutTerminal').hide()"></p:commandButton>
+				</h:panelGrid>
+			</h:form>
+
+		</p:dialog>
+
+		<p:dialog header="Modifier Sens de Pointage"
+			widgetVar="dialogModifierSensPointage" resizable="false" width="400">
+			<h:form id="formDialogModifierSens">
+				<h:panelGrid columns="2">
+
+					<p:outputLabel value="libellé" />
+					<p:inputText value="#{pointageBean.selectedSens.libelle}"></p:inputText>
+					<p:commandButton value="Sauvegarder" ajax="true"
+						update=":ParamPointage:dropArea"
+						action="#{pointageBean.ModifierTypePointage()}"
+						oncomplete="PF('formDialogModifierSens').hide()"></p:commandButton>
+				</h:panelGrid>
+			</h:form>
+
+		</p:dialog>
+
+		<p:dialog header="Modifier Termina" widgetVar="dialogModifierTerminal"
+			resizable="false" width="400">
+			<h:form id="formDialogModifierTerminal">
+				<h:panelGrid columns="2">
+
+					<p:outputLabel value="libellé" />
+					<p:inputText value="#{pointageBean.selectedterminal.libelle}"></p:inputText>
+					<p:commandButton value="Sauvegarder" ajax="true"
+						update=":ParamPointage:dropAreaTerminals"
+						action="#{pointageBean.ModifierTerminal()}"
+						oncomplete="PF('formDialogModifierTerminal').hide()"></p:commandButton>
+				</h:panelGrid>
+			</h:form>
+
+		</p:dialog>
+	</ui:define>
+</ui:composition>

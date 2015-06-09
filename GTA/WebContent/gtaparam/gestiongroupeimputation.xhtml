@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/MainContent.xhtml">
+<ui:define name="Content">
+	<p:panel header="Ajout d'un groupe d'imputations">
+
+		<h:form>
+			<table>
+				<tr>
+					<td><h:outputLabel value="Code" /></td>
+					<td><p:inputText
+							value="#{groupeImputationBean.groupeImputation.codegrp}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Libelle" /></td>
+					<td><p:inputText value="#{groupeImputationBean.libelle.lib}" /></td>
+				</tr>
+			</table>
+
+			<h:dataTable id="tblFields" value="#{groupeImputationBean.oneMenus}"
+				var="field">
+				<h:column>
+					<p:selectOneMenu value="#{groupeImputationBean.imputation}"
+						filter="true" effect="fade" filterMatchMode="startsWith" var="t"
+						panelStyle="width:180px" converter="#{imputationConvertor}">
+						<f:selectItem itemLabel="Selectionner" itemValue="" />
+						<f:selectItems value="#{groupeImputationBean.imputations}"
+							var="imp" itemLabel="#{imp.codei}" itemValue="#{imp}" />
+
+						<p:column>
+							<h:outputText value="#{t.codei}" />
+						</p:column>
+					</p:selectOneMenu>
+				</h:column>
+
+				<h:column>
+					<h:commandButton value="Remove">
+						<f:ajax
+							listener="#{groupeImputationBean.onButtonRemoveFieldClick(field)}"
+							immediate="true" render="@form" />
+					</h:commandButton>
+				</h:column>
+			</h:dataTable>
+
+			<h:commandButton value="Add">
+				<f:ajax listener="#{groupeImputationBean.onButtonAddFieldClick}"
+					execute="@form" render="tblFields" />
+			</h:commandButton>
+			<br />
+			<p:commandButton value="ajouter"
+				action="#{groupeImputationBean.ajouterGroupeImputation()}" />
+
+
+		</h:form>
+	</p:panel>
+</ui:define>
+</ui:composition>
+</html>

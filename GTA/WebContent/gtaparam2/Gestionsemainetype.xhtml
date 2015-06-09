@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:html5="http://java.sun.com/jsf/passthrough">
+
+<ui:composition template="/template/MainContent.xhtml">
+	<ui:define name="Content">
+
+
+		<!--  gestion semaine type -->
+
+
+		<p:panel header="Gestion semaie type" id="panelSemaineType"
+			style="border:0px">
+			<h:form>
+
+				<br />
+				<p:dataTable id="semaine" value="#{semaineTypeBean.lsemaine}"
+					var="semaine" selection="#{semaineTypeBean.selectedsemaine}"
+					rowKey="#{semaine.idst}" selectionMode="single" rows="5"
+					paginator="true"
+					paginatorTemplate="{PreviousPageLink} {NextPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="3,5,10" paginatorPosition="top">
+					<p:ajax event="rowSelect" listener="#{semaineTypeBean.select()}" />
+					<f:facet name="header">
+						<p:commandButton icon="ui-icon-plus" onclick="PF('dlg1a').show();" />
+						<p:commandButton icon="ui-icon-trash"
+							action="#{semaineTypeBean.supprimer()}" />
+						<!-- 						<p:commandButton icon="ui-icon-pencil" -->
+						<!-- 							onclick="PF('dlg2a').show();"> -->
+						<!-- 							<p:ajax update=":formxa" listener="#{semaineTypeBean.edit()}" /> -->
+						<!-- 						</p:commandButton> -->
+					</f:facet>
+					<p:column headerText="Code">
+						<h:outputText value="#{semaine.codest}" />
+					</p:column>
+					<p:column headerText="date effet">
+						<h:outputText value="#{semaine.dateff}" />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+
+
+			<!--  boite de dialog de add -->
+
+			<p:dialog id="dlg1a" header="Nouvelle semaine type" widgetVar="dlg1a"
+				modal="true" height="380">
+				<h:form id="formxxa">
+		code:
+		<p:inputText value="#{semaineTypeBean.semaineType.codest}"
+						required="true" html5:placeholder="required" />
+					<br />
+		date effet:
+		<p:calendar value="#{semaineTypeBean.semaineType.dateff}"
+						required="true" html5:placeholder="required" />
+					<br />
+
+					<p:outputLabel value="Journees types"></p:outputLabel>
+					<p:dataList value="#{semaineTypeBean.codeJours}" var="code"
+						type="ordered">
+              #{code.codecj} :
+              <p:selectOneMenu value="#{semaineTypeBean.journeeType}"
+							converter="#{journeeTypeConvertor}"
+							onkeyup="#{semaineTypeBean.test()}">
+							<f:selectItem itemLabel="Selectionner" itemValue="" />
+							<f:selectItems value="#{semaineTypeBean.journeeTypes}" var="j"
+								itemLabel="#{j.codejt}" itemValue="#{j}" />
+							<f:ajax listener="#{semaineTypeBean.test()}"></f:ajax>
+						</p:selectOneMenu>
+					</p:dataList>
+					<p:commandButton value="add" action="#{semaineTypeBean.ajouter()}" />
+				</h:form>
+			</p:dialog>
+
+			<!--  boite de dialog de edit/detail -->
+
+			<p:dialog id="dlg2a" header="modifier semaine type" widgetVar="dlg2a"
+				modal="true" height="380">
+				<h:form id="formxa">
+		code:
+		<p:inputText value="#{semaineTypeBean.semaineType.codest}"
+						required="true" html5:placeholder="required" />
+					<br />
+		date effet:
+		<p:calendar value="#{semaineTypeBean.semaineType.dateff}"
+						required="true" html5:placeholder="required" />
+					<br />
+
+					<p:outputLabel value="Journees types"></p:outputLabel>
+					<p:dataList value="#{semaineTypeBean.codeJours}" var="code"
+						type="ordered">
+              #{code.codecj} :
+              <p:selectOneMenu value="#{semaineTypeBean.journeeType}"
+							converter="#{journeeTypeConvertor}"
+							onkeyup="#{semaineTypeBean.test()}">
+							<f:selectItem itemLabel="Selectionner" itemValue="" />
+							<f:selectItems value="#{semaineTypeBean.journeeTypes}" var="j"
+								itemLabel="#{j.codejt}" itemValue="#{j}" />
+							<f:ajax listener="#{semaineTypeBean.test()}"></f:ajax>
+						</p:selectOneMenu>
+					</p:dataList>
+					<p:commandButton value="save" action="#{semaineTypeBean.save()}" />
+				</h:form>
+			</p:dialog>
+
+		</p:panel>
+		<!--  fin gestion semaine type -->
+
+
+
+
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/MainContent.xhtml">
+<ui:define name="Content">
+	<p:panel header="Définition d'un cycle de travail">
+		<h:form>
+
+			<table>
+				<tr>
+					<td><p:outputLabel value="Code" /></td>
+					<td><p:inputText
+							value="#{cycleTravailParSemaine.cycleTravail.codect}" required="true" /></td>
+				</tr>
+				<tr>
+					<td><p:outputLabel value="Libelle"></p:outputLabel></td>
+					<td><p:inputText
+							value="#{cycleTravailParSemaine.libelle.lib}" required="true" /></td>
+				</tr>
+				<tr>
+					<td><p:outputLabel value="Date d'effet"></p:outputLabel></td>
+					<td><p:calendar
+							value="#{cycleTravailParSemaine.cycleTravail.dateff}" required="true" /></td>
+				</tr>
+				<tr>
+					<td><p:outputLabel value="Date fin Cycle"></p:outputLabel></td>
+					<td><p:calendar
+							value="#{cycleTravailParSemaine.cycleTravail.dateFin}" required="true" /></td>
+				</tr>
+
+			</table>
+			<table>
+				
+			<p:outputLabel value="Semaine Types"></p:outputLabel>
+
+		 <p:selectManyCheckbox value="#{cycleTravailParSemaine.listajout}"  
+            layout="pageDirection" converter="#{semaineTypeConvertor}">  
+            <f:selectItems value="#{cycleTravailParSemaine.semaineTypes}" var="jour" itemLabel="#{jour.codest}" />
+            
+        </p:selectManyCheckbox>  
+
+
+				<tr>
+					<td><p:commandButton value="ajouter"
+							action="#{cycleTravailParSemaine.ajouter()}" /></td>
+				</tr>
+			</table>
+			<h:commandButton value="next" action="#{cycleTravailParSemaine.redirect()}" />
+		</h:form>
+	</p:panel>
+</ui:define>
+</ui:composition>
+</html>

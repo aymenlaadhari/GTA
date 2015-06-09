@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+
+<h:head>
+<link rel='stylesheet' id='general-css'
+		href='#{request.contextPath}/resources/css/bootstrap.css' type='text/css'
+		media='all' />
+			<link rel='stylesheet' id='general-css'
+		href='#{request.contextPath}/resources/css/font-awesome.css' type='text/css'
+		media='all' />
+		<link rel='stylesheet' id='general-css'
+		href='#{request.contextPath}/resources/css/main.css' type='text/css'
+		media='all' />
+	<h:outputScript name="js/bootstrap.js"/>
+	<h:outputScript name="js/modernizr.js"/>
+	<h:outputScript name="js/bootstrap-tour.custom.js"/>
+	<h:outputScript name="js/king-common.min.js"/>
+		
+
+</h:head> 
+<h:body class="dashboard">
+<f:facet name="last">
+<h:outputStylesheet name="css/ThemeYessClever.css"></h:outputStylesheet>
+</f:facet>
+	<!-- WRAPPER -->
+	<div class="wrapper">
+	
+		<!-- /top -->
+	    <ui:include src="/template/head.xhtml" />		
+		<!-- /End-top -->
+		
+		<!-- BOTTOM: LEFT NAV AND RIGHT MAIN CONTENT -->
+		<div class="bottom">
+			<div class="container">
+				<div class="row">
+		<ui:include src="/template/LeftSideBar.xhtml" />
+		
+		
+					<!-- content-wrapper -->
+										
+					<div class="col-md-10 content-wrapper">
+						<div class="row">
+							<div class="col-md-4 ">
+								<ul class="breadcrumb">
+									<li><i class="fa fa-home"></i><a href="#">Home</a></li>
+									<li class="active">Dashboard</li>
+								</ul>
+							
+							</div>
+							
+						</div>
+						
+						<!-- main -->
+						
+						<ui:include src="/template/Content.xhtml" />
+						
+						</div><!-- /content-wrapper -->
+				</div><!-- /row -->
+			</div><!-- /container -->
+		</div>
+					
+		
+						
+		<!-- END BOTTOM: LEFT NAV AND RIGHT MAIN CONTENT -->
+		<div class="push-sticky-footer"></div>
+	</div><!-- /wrapper -->
+
+	<!-- FOOTER -->
+	
+	<ui:include src="/template/Footer.xhtml" />
+	
+	<!-- END FOOTER -->
+
+	<!-- Javascript -->
+	<script src="assets/js/bootstrap.js"></script>
+	<script src="assets/js/modernizr.js"></script>
+	<script src="assets/js/bootstrap-tour.custom.js"></script>
+	<script src="assets/js/king-common.min.js"></script>
+
+
+
+	
+</h:body>
+</html>

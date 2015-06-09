@@ -1,0 +1,769 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/MainContent.xhtml">
+
+	<ui:define name="Content">
+
+		<h:form id="form1">
+
+			<!-- WIDGET TABBED CONTENT -->
+
+			<div class="col-md-8">
+				<div class="widget">
+					<div class="widget-header-in">
+
+						<ul class="nav nav-tabs pull-right">
+							<li><button class="btn btn-default  btn-primary ">
+									<i class="fa fa-file-pdf-o"></i> Export to pdf
+								</button></li>
+							<li><button class="btn btn-default btn-primary ">
+									<i class="fa fa-print"></i> Print
+								</button></li>
+						</ul>
+
+						<ul class="nav nav-tabs">
+
+							<li class="active"><a href="#tab1" data-toggle="tab"><i
+									class="fa fa-user"></i><span>Plage horaire</span></a></li>
+							<li><a href="#tab2" data-toggle="tab"><i
+									class="fa fa-folder"></i><span>Code jour</span></a></li>
+							<li><a href="#tab3" data-toggle="tab"><i
+									class="fa fa-credit-card"></i><span>Journée type</span></a></li>
+							<li><a href="#tab4" data-toggle="tab"><i
+									class="fa fa-file-text-o"></i><span>Semaine type</span></a></li>
+							<li><a href="#tab5" data-toggle="tab"><i
+									class="fa fa-briefcase"></i><span>Cycle</span></a></li>
+							<li><a href="#tab6" data-toggle="tab"><i
+									class="fa fa-briefcase"></i><span>Calendrier</span></a></li>
+						</ul>
+
+					</div>
+					<div class="widget-content">
+						<div class="tab-content no-padding">
+							<div class="tab-pane fade in active" id="tab1">
+								<p:panel id="plagehorairePanel" header="Plage horaire">
+									<p:outputLabel value="#{journeeTypeBean.init()}"></p:outputLabel>
+									<p:dataTable id="plagetable" scrollable="true"
+										scrollHeight="300" value="#{plageHoraireBean.listeHoraires}"
+										var="ph" selection="#{plageHoraireBean.selectedPh}"
+										rowKey="#{ph.idph}" selectionMode="single">
+										<f:facet name="header">
+
+
+											<p:commandButton icon="ui-icon-zoomin"
+												onclick="PF('DialogViewPH').show()"
+												update=":formDialogViewPH"></p:commandButton>
+
+											<p:commandButton icon="ui-icon-pencil"
+												onclick="PF('DialogEditPH').show()"
+												update=":formDialogEditPH"></p:commandButton>
+
+											<p:commandButton icon="ui-icon-plus"
+												onclick="PF('DialogNewPH').show()" update=":formDialogNewPH"></p:commandButton>
+
+											<p:commandButton icon="ui-icon-trash" ajax="true"
+												action="#{plageHoraireBean.supprimerPlageHoraire()}"
+												update="plagetable"></p:commandButton>
+
+
+										</f:facet>
+
+										<p:column headerText="Code">
+											<h:outputText value="#{ph.codeph}" />
+										</p:column>
+										<p:column headerText="Libellé">
+											<h:outputText value="#{ph.libelles.get(0).lib}" />
+										</p:column>
+
+										<p:column headerText="Activite Présence">
+											<h:outputText value="#{ph.activitePresence.codeap}" />
+										</p:column>
+										<p:column headerText="Activite Absence">
+											<h:outputText value="#{ph.activiteAbsence.codeaabs}" />
+										</p:column>
+
+										<p:column headerText="Type">
+											<h:outputText value="#{ph.typePlage}" />
+										</p:column>
+
+
+									</p:dataTable>
+
+
+								</p:panel>
+							</div>
+							<div class="tab-pane fade" id="tab2">
+
+								<p:panel id="codejour">
+
+
+									<f:facet name="header">Codes jours 
+											
+										<p:commandButton icon="ui-icon-pencil"
+											onclick="PF('DialogEditCJ').show()"
+											update=":formDialogEditCJ"></p:commandButton>
+
+										<p:commandButton icon="ui-icon-plus"
+											onclick="PF('DialogAddCJ').show()" update=":formDialogAddCJ"></p:commandButton>
+
+
+									</f:facet>
+									<h:panelGrid columns="4">
+
+										<p:outputLabel value="Code jour 1 *" />
+										<p:inputText value="#{codeJourBean.codeJour1.codecj}"
+											readonly="true" />
+
+										<p:outputLabel value="Libelle *"></p:outputLabel>
+										<p:inputText
+											value="#{codeJourBean.codeJour1.libelles.get(0).lib}"
+											readonly="true" />
+
+
+										<p:outputLabel value="Code jour 2 *" />
+										<p:inputText value="#{codeJourBean.codeJour2.codecj}"
+											readonly="true" />
+
+										<p:outputLabel value="Libelle *"></p:outputLabel>
+										<p:inputText
+											value="#{codeJourBean.codeJour2.libelles.get(0).lib}"
+											readonly="true" />
+
+
+										<p:outputLabel value="Code jour 3 *" />
+										<p:inputText value="#{codeJourBean.codeJour3.codecj}"
+											readonly="true" />
+
+										<p:outputLabel value="Libelle *"></p:outputLabel>
+										<p:inputText
+											value="#{codeJourBean.codeJour3.libelles.get(0).lib}"
+											readonly="true" />
+
+
+										<p:outputLabel value="Code jour 4 *" />
+										<p:inputText value="#{codeJourBean.codeJour4.codecj}"
+											readonly="true" />
+
+										<p:outputLabel value="Libelle *"></p:outputLabel>
+										<p:inputText
+											value="#{codeJourBean.codeJour4.libelles.get(0).lib}"
+											readonly="true" />
+
+
+										<p:outputLabel value="Code jour 5 *" />
+										<p:inputText value="#{codeJourBean.codeJour5.codecj}"
+											readonly="true" />
+
+										<p:outputLabel value="Libelle *"></p:outputLabel>
+										<p:inputText
+											value="#{codeJourBean.codeJour5.libelles.get(0).lib}"
+											readonly="true" />
+
+
+										<p:outputLabel value="Code jour 6 *" />
+										<p:inputText value="#{codeJourBean.codeJour6.codecj}"
+											readonly="true" />
+
+										<p:outputLabel value="Libelle *"></p:outputLabel>
+										<p:inputText
+											value="#{codeJourBean.codeJour6.libelles.get(0).lib}"
+											readonly="true" />
+
+
+										<p:outputLabel value="Code jour 7 *" />
+										<p:inputText value="#{codeJourBean.codeJour7.codecj}"
+											readonly="true" />
+
+										<p:outputLabel value="Libelle *"></p:outputLabel>
+										<p:inputText
+											value="#{codeJourBean.codeJour7.libelles.get(0).lib}"
+											readonly="true" />
+
+									</h:panelGrid>
+
+								</p:panel>
+
+
+							</div>
+							<div class="tab-pane fade" id="tab3">
+
+								<p:panel id="journeetypepanel" header="Journée Type">
+
+									<p:dataTable id="journeetable" scrollable="true"
+										scrollHeight="230" value="#{journeeTypeBean.journeeTypes}"
+										var="jt" selection="#{journeeTypeBean.selectedJt}"
+										rowKey="#{jt.idjt}" selectionMode="single">
+										<f:facet name="header">
+
+
+											<p:commandButton icon="ui-icon-zoomin"></p:commandButton>
+
+											<p:commandButton icon="ui-icon-pencil"
+												onclick="PF('DialogEditJT').show()"
+												update=":formDialogEditJT"></p:commandButton>
+
+											<p:commandButton icon="ui-icon-plus"
+												onclick="PF('DialogAddJT').show()" update=":formDialogAddJT"></p:commandButton>
+
+											<p:commandButton icon="ui-icon-trash" ajax="true"
+												action="#{journeeTypeBean.supprimerJourneeType}"
+												update="journeetable"></p:commandButton>
+										</f:facet>
+										<p:ajax event="rowSelect"
+											listener="#{journeeTypeBean.afficherDefinition()}"
+											update=":form1:defjourneetable"></p:ajax>
+										<p:column headerText="Code">
+											<h:outputText value="#{jt.codejt}" />
+										</p:column>
+
+										<p:column headerText="Libellé">
+											<h:outputText value="#{jt.libelles.get(0).lib}" />
+										</p:column>
+
+										<p:column headerText="DateEffet">
+											<h:outputText value="#{jt.dateff}">
+												<f:convertDateTime type="date" dateStyle="short" />
+											</h:outputText>
+										</p:column>
+
+									</p:dataTable>
+
+									<p:panel header="Définition Journée Type">
+
+
+										<p:dataTable id="defjourneetable" scrollable="true"
+											scrollHeight="300"
+											value="#{journeeTypeBean.selectedPhajtpList}" var="pj"
+											selection="#{journeeTypeBean.selectedPhajtp}"
+											rowKey="#{pj.hAssociateJourneeTPK}" selectionMode="single">
+											<f:facet name="header">
+
+												
+											</f:facet>
+
+											<p:column headerText="Plage horaire">
+												<h:outputText value="#{pj.plageHoraire.codeph}" />
+											</p:column>
+
+											<p:column headerText="Heure début">
+												<h:outputText value="#{pj.hAssociateJourneeTPK.heureDeb}" />
+											</p:column>
+
+											<p:column headerText="Heure fin">
+												<h:outputText value="#{pj.heureFin}" />
+											</p:column>
+										</p:dataTable>
+									</p:panel>
+								</p:panel>
+
+							</div>
+							<div class="tab-pane fade" id="tab4"></div>
+							<div class="tab-pane fade" id="tab5">
+
+								<p:panel header="Cycle par journée">
+									<p:dataTable id="cycletable" scrollable="true"
+										scrollHeight="230" value="#{cycleBean.cycleTravails}" var="ct"
+										selection="#{cycleBean.selectedCT}" rowKey="#{ct.idct}"
+										selectionMode="single">
+										<f:facet name="header">
+
+											<p:commandButton icon="ui-icon-plus"
+												onclick="PF('DialogAddCycle').show()"
+												update=":formDialogAddCycle">
+											</p:commandButton>
+										</f:facet>
+
+										<p:column headerText="Code">
+											<h:outputText value="#{ct.codect}" />
+										</p:column>
+										
+										<p:column headerText="Libelle">
+											<h:outputText value="#{ct.libelles.get(0).lib}" />
+										</p:column>
+										
+										<p:column headerText="Date effet">
+											<h:outputText value="#{ct.dateff}" >
+											<f:convertDateTime type="date" dateStyle="short"/>
+											</h:outputText>
+										</p:column>
+										
+										<p:column headerText="Date fin">
+											<h:outputText value="#{ct.dateFin}" >
+											<f:convertDateTime type="date" dateStyle="short"/>
+											</h:outputText>
+										</p:column>
+										
+									</p:dataTable>
+
+
+								</p:panel>
+							</div>
+							<div class="tab-pane fade" id="tab6">
+								<!-- 							omar -->
+							</div>
+
+
+						</div>
+					</div>
+				</div>
+				<!-- END WIDGET TABBED CONTENT -->
+			</div>
+		</h:form>
+
+		<p:dialog header="Nouvelle plage horaire" widgetVar="DialogNewPH">
+			<h:form id="formDialogNewPH">
+
+
+				<table>
+					<tr>
+						<td><p:outputLabel value="Code" /></td>
+						<td><p:inputText
+								value="#{plageHoraireBean.plageHoraire.codeph}" required="true" /></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel value="Libelle"></p:outputLabel></td>
+						<td><p:inputText value="#{plageHoraireBean.libelle.lib}"
+								required="true" /></td>
+					</tr>
+
+					<tr>
+						<td><p:outputLabel value="Type plage" /></td>
+						<td><p:selectOneMenu id="console"
+								value="#{plageHoraireBean.plageHoraire.typePlage}">
+								<f:selectItem itemLabel="Selectionnez" itemValue="" />
+								<f:selectItem itemLabel="Obligatoire" itemValue="obligatoire" />
+								<f:selectItem itemLabel="Flexible" itemValue="flexible" />
+								<f:selectItem itemLabel="Interdite" itemValue="interdite" />
+								<f:selectItem itemLabel="Pause" itemValue="pause" />
+								<f:selectItem itemLabel="Déjeuner" itemValue="dejeuner" />
+							</p:selectOneMenu></td>
+					</tr>
+
+					<tr>
+						<td><p:outputLabel value="Activité Presence"></p:outputLabel></td>
+						<td><p:selectOneMenu
+								value="#{plageHoraireBean.activitePresence}" filter="true"
+								effect="fade" filterMatchMode="startsWith" var="t"
+								panelStyle="width:180px"
+								converter="#{activitePresenceConvertor}">
+								<f:selectItem itemLabel="Selectionner" itemValue="" />
+								<f:selectItems value="#{plageHoraireBean.activitePresences}"
+									var="act" itemLabel="#{act.codeap}" itemValue="#{act}" />
+
+								<p:column>
+									<h:outputText value="#{t.codeap}" />
+								</p:column>
+							</p:selectOneMenu></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel value="Activité Absence"></p:outputLabel></td>
+						<td><p:selectOneMenu
+								value="#{plageHoraireBean.activiteAbsence}" filter="true"
+								effect="fade" filterMatchMode="startsWith" var="t"
+								panelStyle="width:180px" converter="#{activiteAbsenceConvertor}">
+								<f:selectItem itemLabel="Selectionner" itemValue="" />
+								<f:selectItems value="#{plageHoraireBean.activiteAbsences}"
+									var="activite" itemLabel="#{activite.codeaabs}"
+									itemValue="#{activite}" />
+
+								<p:column>
+									<h:outputText value="#{t.codeaabs}" />
+								</p:column>
+							</p:selectOneMenu></td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center"><p:commandButton
+								value="Ajouter"
+								action="#{plageHoraireBean.ajouterPlageHoraire()}" ajax="true"
+								update=":form1:plagetable" oncomplete="PF('DialogNewPH').hide()" /></td>
+					</tr>
+				</table>
+			</h:form>
+		</p:dialog>
+
+
+		<p:dialog header="Modifier plage horaire" widgetVar="DialogEditPH">
+			<h:form id="formDialogEditPH">
+
+
+				<table>
+					<tr>
+						<td><p:outputLabel value="Code" /></td>
+						<td><p:inputText
+								value="#{plageHoraireBean.selectedPh.codeph}" required="true" /></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel value="Libelle"></p:outputLabel></td>
+						<td><p:inputText
+								value="#{plageHoraireBean.selectedPh.libelles.get(0).lib}"
+								required="true" /></td>
+					</tr>
+
+					<tr>
+						<td><p:outputLabel value="Type plage" /></td>
+						<td><p:selectOneMenu id="console"
+								value="#{plageHoraireBean.selectedPh.typePlage}">
+								<f:selectItem itemLabel="Selectionnez" itemValue="" />
+								<f:selectItem itemLabel="Obligatoire" itemValue="obligatoire" />
+								<f:selectItem itemLabel="Flexible" itemValue="flexible" />
+								<f:selectItem itemLabel="Interdite" itemValue="interdite" />
+								<f:selectItem itemLabel="Pause" itemValue="pause" />
+								<f:selectItem itemLabel="Déjeuner" itemValue="dejeuner" />
+							</p:selectOneMenu></td>
+					</tr>
+
+					<tr>
+						<td><p:outputLabel value="Activité Presence"></p:outputLabel></td>
+						<td><p:selectOneMenu
+								value="#{plageHoraireBean.selectedPh.activitePresence}"
+								filter="true" effect="fade" filterMatchMode="startsWith" var="t"
+								panelStyle="width:180px"
+								converter="#{activitePresenceConvertor}">
+								<f:selectItem itemLabel="Selectionner" itemValue="" />
+								<f:selectItems value="#{plageHoraireBean.activitePresences}"
+									var="act" itemLabel="#{act.codeap}" itemValue="#{act}" />
+
+								<p:column>
+									<h:outputText value="#{t.codeap}" />
+								</p:column>
+							</p:selectOneMenu></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel value="Activité Absence"></p:outputLabel></td>
+						<td><p:selectOneMenu
+								value="#{plageHoraireBean.selectedPh.activiteAbsence}"
+								filter="true" effect="fade" filterMatchMode="startsWith" var="t"
+								panelStyle="width:180px" converter="#{activiteAbsenceConvertor}">
+								<f:selectItem itemLabel="Selectionner" itemValue="" />
+								<f:selectItems value="#{plageHoraireBean.activiteAbsences}"
+									var="activite" itemLabel="#{activite.codeaabs}"
+									itemValue="#{activite}" />
+
+								<p:column>
+									<h:outputText value="#{t.codeaabs}" />
+								</p:column>
+							</p:selectOneMenu></td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center"><p:commandButton
+								value="Modifier"
+								action="#{plageHoraireBean.modifierPlageHoraire()}" ajax="true"
+								update=":form1:plagetable"
+								oncomplete="PF('DialogEditPH').hide()" /></td>
+					</tr>
+				</table>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Détails plage horaire" widgetVar="DialogViewPH">
+			<h:form id="formDialogViewPH">
+
+
+				<table>
+					<tr>
+						<td><p:outputLabel value="Code" /></td>
+						<td><p:inputText
+								value="#{plageHoraireBean.selectedPh.codeph}" readonly="true" /></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel value="Libelle"></p:outputLabel></td>
+						<td><p:inputText
+								value="#{plageHoraireBean.selectedPh.libelles.get(0).lib}"
+								readonly="true" /></td>
+					</tr>
+
+					<tr>
+						<td><p:outputLabel value="Type plage" /></td>
+						<td><p:inputText
+								value="#{plageHoraireBean.selectedPh.typePlage}" readonly="true">
+							</p:inputText></td>
+
+					</tr>
+
+					<tr>
+						<td><p:outputLabel value="Activité Presence"></p:outputLabel></td>
+						<td><p:inputText
+								value="#{plageHoraireBean.selectedPh.activitePresence}"
+								readonly="true" /></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel value="Activité Absence"></p:outputLabel></td>
+						<td><p:inputText
+								value="#{plageHoraireBean.selectedPh.activiteAbsence}"
+								readonly="true"></p:inputText></td>
+					</tr>
+
+				</table>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Ajouter Codes jours " widgetVar="DialogAddCJ">
+			<h:form id="formDialogAddCJ">
+
+				<h:panelGrid columns="4">
+
+					<p:outputLabel value="Code jour 1 *" />
+					<p:inputText value="#{codeJourBean.codeJour1.codecj}"
+						required="true" />
+					<p:outputLabel value="Libelle *"></p:outputLabel>
+					<p:inputText value="#{codeJourBean.libelle1.lib}" required="true" />
+
+
+					<p:outputLabel value="Code jour 2 *" />
+					<p:inputText value="#{codeJourBean.codeJour2.codecj}"
+						required="true" />
+					<p:outputLabel value="Libelle *"></p:outputLabel>
+					<p:inputText value="#{codeJourBean.libelle2.lib}" required="true" />
+
+
+					<p:outputLabel value="Code jour 3 *" />
+					<p:inputText value="#{codeJourBean.codeJour3.codecj}"
+						required="true" />
+					<p:outputLabel value="Libelle *"></p:outputLabel>
+					<p:inputText value="#{codeJourBean.libelle3.lib}" required="true" />
+
+
+					<p:outputLabel value="Code jour 4 *" />
+					<p:inputText value="#{codeJourBean.codeJour4.codecj}"
+						required="true" />
+					<p:outputLabel value="Libelle *"></p:outputLabel>
+					<p:inputText value="#{codeJourBean.libelle4.lib}" required="true" />
+
+
+					<p:outputLabel value="Code jour 5 *" />
+					<p:inputText value="#{codeJourBean.codeJour5.codecj}"
+						required="true" />
+					<p:outputLabel value="Libelle *"></p:outputLabel>
+					<p:inputText value="#{codeJourBean.libelle5.lib}" required="true" />
+
+
+					<p:outputLabel value="Code jour 6 *" />
+					<p:inputText value="#{codeJourBean.codeJour6.codecj}"
+						required="true" />
+					<p:outputLabel value="Libelle *"></p:outputLabel>
+					<p:inputText value="#{codeJourBean.libelle6.lib}" required="true" />
+
+
+					<p:outputLabel value="Code jour 7 *" />
+					<p:inputText value="#{codeJourBean.codeJour7.codecj}"
+						required="true" />
+					<p:outputLabel value="Libelle *"></p:outputLabel>
+					<p:inputText value="#{codeJourBean.libelle7.lib}" required="true" />
+
+				</h:panelGrid>
+				<p:commandButton action="#{codeJourBean.ajouterCodeJour()}"
+					value="ajouter" oncomplete="PF('DialogAddCJ').hide()" ajax="true"
+					update=":form1:codejour"></p:commandButton>
+
+
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Modifier Codes jours " widgetVar="DialogEditCJ">
+			<h:form id="formDialogEditCJ">
+				<h:panelGrid columns="4">
+
+					<p:outputLabel value="Code jour 1 *" />
+					<p:inputText value="#{codeJourBean.codeJour1.codecj}"
+						required="true" />
+					<p:outputLabel value="Libelle *"></p:outputLabel>
+					<p:inputText value="#{codeJourBean.codeJour1.libelles.get(0).lib}"
+						required="true" />
+
+					<p:outputLabel value="Code jour 2 *" />
+					<p:inputText value="#{codeJourBean.codeJour2.codecj}"
+						required="true" />
+					<p:outputLabel value="Libelle *"></p:outputLabel>
+					<p:inputText value="#{codeJourBean.codeJour2.libelles.get(0).lib}"
+						required="true" />
+
+
+					<p:outputLabel value="Code jour 3 *" />
+					<p:inputText value="#{codeJourBean.codeJour3.codecj}"
+						required="true" />
+					<p:outputLabel value="Libelle *"></p:outputLabel>
+					<p:inputText value="#{codeJourBean.codeJour3.libelles.get(0).lib}"
+						required="true" />
+
+
+					<p:outputLabel value="Code jour 4 *" />
+					<p:inputText value="#{codeJourBean.codeJour4.codecj}"
+						required="true" />
+					<p:outputLabel value="Libelle *"></p:outputLabel>
+					<p:inputText value="#{codeJourBean.codeJour4.libelles.get(0).lib}"
+						required="true" />
+
+
+					<p:outputLabel value="Code jour 5 *" />
+					<p:inputText value="#{codeJourBean.codeJour5.codecj}"
+						required="true" />
+					<p:outputLabel value="Libelle *"></p:outputLabel>
+					<p:inputText value="#{codeJourBean.codeJour5.libelles.get(0).lib}"
+						required="true" />
+
+
+					<p:outputLabel value="Code jour 6 *" />
+					<p:inputText value="#{codeJourBean.codeJour6.codecj}"
+						required="true" />
+					<p:outputLabel value="Libelle *"></p:outputLabel>
+					<p:inputText value="#{codeJourBean.codeJour6.libelles.get(0).lib}"
+						required="true" />
+
+
+					<p:outputLabel value="Code jour 7 *" />
+					<p:inputText value="#{codeJourBean.codeJour7.codecj}"
+						required="true" />
+					<p:outputLabel value="Libelle *"></p:outputLabel>
+					<p:inputText value="#{codeJourBean.codeJour7.libelles.get(0).lib}"
+						required="true">
+
+					</p:inputText>
+
+				</h:panelGrid>
+				<p:commandButton action="#{codeJourBean.modifierCodeJour()}"
+					value="modifier" ajax="true" update=":form1:codejour"
+					oncomplete="PF('DialogEditCJ').hide()"></p:commandButton>
+			</h:form>
+		</p:dialog>
+
+
+
+		<p:dialog header="Ajouter journée type " widgetVar="DialogAddJT">
+			<h:form id="formDialogAddJT">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+					<p:inputText value="#{journeeTypeBean.journeeType.codejt}" />
+
+					<p:outputLabel value="Libelle"></p:outputLabel>
+					<p:inputText value="#{journeeTypeBean.libelle.lib}" required="true" />
+					<p:outputLabel value="Date d'effet"></p:outputLabel>
+					<p:calendar value="#{journeeTypeBean.journeeType.dateff}"
+						required="true" />
+
+				</h:panelGrid>
+				<br />
+				<p:commandButton icon="ui-icon-plus" ajax="true" update="defjtp"
+					action="#{journeeTypeBean.addDefJtp()}"></p:commandButton>
+				<p:commandButton icon="ui-icon-minus" ajax="true" update="defjtp"
+					action="#{journeeTypeBean.removeDefJtp()}"></p:commandButton>
+
+				<p:dataTable id="defjtp" value="#{journeeTypeBean.phajtpList}"
+					var="AJP" style="width:500px;">
+					<p:column headerText="Plage horaire">
+						<p:selectOneMenu value="#{AJP.plageHoraire}" filter="true"
+							effect="fade" filterMatchMode="startsWith" var="t"
+							panelStyle="width:180px" converter="#{plageHoraireConverter}">
+							<f:selectItem itemLabel="Selectionner" itemValue="" />
+							<f:selectItems value="#{bean.plageHoraires1}" var="activite"
+								itemLabel="#{activite.codeph}" itemValue="#{activite}" />
+
+							<p:column>
+								<h:outputText value="#{t.codeph}" />
+							</p:column>
+						</p:selectOneMenu>
+					</p:column>
+					<p:column headerText="Heure début">
+						<p:inputText size="10"
+							value="#{AJP.hAssociateJourneeTPK.heureDeb}" />
+					</p:column>
+					<p:column headerText="Heure fin">
+						<p:inputText size="10" value="#{AJP.heureFin}" />
+					</p:column>
+
+				</p:dataTable>
+				<br />
+				<p:commandButton action="#{journeeTypeBean.ajouterJourneeType()}"
+					ajax="true" update=":form1:journeetable" value="Ajouter"
+					oncomplete="PF('DialogAddJT').hide()"></p:commandButton>
+
+			</h:form>
+		</p:dialog>
+
+
+
+		<p:dialog header="Modifier journée type " widgetVar="DialogEditJT">
+			<h:form id="formDialogEditJT">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+					<p:inputText value="#{journeeTypeBean.selectedJt.codejt}" />
+
+					<p:outputLabel value="Libelle"></p:outputLabel>
+					<p:inputText
+						value="#{journeeTypeBean.selectedJt.libelles.get(0).lib}"
+						required="true" />
+					<p:outputLabel value="Date d'effet"></p:outputLabel>
+					<p:calendar value="#{journeeTypeBean.selectedJt.dateff}"
+						required="true" />
+
+				</h:panelGrid>
+				<p:commandButton action="#{journeeTypeBean.modiferJourneeType()}"
+					ajax="true" update=":form1:journeetable" value="Modifier"
+					oncomplete="PF('DialogEditJT').hide()"></p:commandButton>
+
+			</h:form>
+		</p:dialog>
+
+
+		<p:dialog header="Ajouter Cycle Travail" widgetVar="DialogAddCycle">
+			<h:form id="formDialogAddCycle">
+
+				<h:panelGrid columns="2" cellpadding="10">
+
+					<p:outputLabel value="Code" />
+					<p:inputText value="#{cycleBean.cycleTravail.codect}"
+						required="true" />
+
+					<p:outputLabel value="Libelle"></p:outputLabel>
+					<p:inputText value="#{cycleBean.libelle.lib}" required="true" />
+
+					<p:outputLabel value="Date d'effet"></p:outputLabel>
+					<p:calendar value="#{cycleBean.cycleTravail.dateff}"
+						required="true" />
+
+				</h:panelGrid>
+
+
+				<br />
+				<p:commandButton icon="ui-icon-plus" ajax="true" update="defctr"
+					action="#{cycleBean.addDefJtp()}"></p:commandButton>
+				<p:commandButton icon="ui-icon-minus" ajax="true" update="defctr"
+					action="#{cycleBean.removeDefCtp()}"></p:commandButton>
+
+				<p:dataTable id="defctr" value="#{cycleBean.ctajtList}" var="AJC"
+					style="width:500px;">
+					<p:column headerText="Journée type">
+						<p:selectOneMenu value="#{AJC.journeeType}" filter="true"
+							effect="fade" filterMatchMode="startsWith" var="tp"
+							panelStyle="width:180px" converter="#{journeeTypeConvertor}">
+							<f:selectItem itemLabel="Selectionner" itemValue="" />
+							<f:selectItems value="#{cycleBean.journeeTypes}" var="jtactivite"
+								itemLabel="#{jtactivite.codejt}" itemValue="#{jtactivite}" />
+
+							<p:column>
+								<h:outputText value="#{tp.codejt}" />
+							</p:column>
+						</p:selectOneMenu>
+					</p:column>
+					<p:column headerText="Ordre Journee">
+						<p:inputText size="10"
+							value="#{AJC.associateJourneeTypeEmbeddebale.ordreJournee}" />
+					</p:column>
+
+				</p:dataTable>
+				<br />
+
+				<p:commandButton value="ajouter" action="#{cycleBean.ajouter()}"
+					oncomplete="PF('DialogAddCycle').hide()" />
+
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/MainContent.xhtml">
+	<ui:define name="Content">
+
+		<h:form id="form1">
+
+
+
+
+
+
+			
+
+			<!-- WIDGET TABBED CONTENT -->
+
+			<div class="col-md-8">
+				<div class="widget">
+				
+					<div class="widget-header-in">
+
+						<ul class="nav nav-tabs pull-right">
+							<li><button class="btn btn-default  btn-primary "><i class="fa fa-file-pdf-o"></i> Export to pdf</button></li>
+							<li><button class="btn btn-default btn-primary "><i class="fa fa-print"></i> Print</button></li>
+						</ul>
+
+						<ul class="nav nav-tabs">
+							<li class="active"><a href="#tab1" data-toggle="tab"><i class="fa fa-user"></i><span>Panel 1</span></a></li>
+							<li><a href="#tab2" data-toggle="tab"><i class="fa fa-folder"></i><span>Panel 2</span></a></li>
+						</ul>
+					</div>
+					
+					<div class="widget-content">
+						<div class="tab-content no-padding">
+							<div class="tab-pane fade in active" id="tab1">
+								<!-- 				/////////////// panel 1 //////////// -->
+								<p:panel id="pan1">
+
+									
+
+								</p:panel>
+
+							</div>
+							<div class="tab-pane fade in active" id="tab2">
+
+								<!-- /////////////////////////: panel 2 ///////////////////////////// -->
+								<p:panel id="pan2">
+
+
+									
+
+								</p:panel>
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- END WIDGET TABBED CONTENT -->
+			</div>
+			<!-- 			</p:tabView> -->
+
+		</h:form>
+
+
+
+
+
+
+
+
+		<!-- ////////////// employee       -->
+		<h:form id="form2">
+			<div class="col-md-4">
+
+				<div class="widget widget-table">
+					<div class="widget-header">
+						<h3>
+							<i class="fa fa-users"></i>Liste des collaborteurs
+						</h3>
+					</div>
+					<div class="widget-content">
+
+						<div class="input-group input-group-sm">
+							<h:form id="formSearch">
+								<h:outputLabel value="Matricule:" />
+								<p:inputText value="#{activiteCalculerBean.matricul}"
+									onkeypress="if (event.keyCode == 13) {onchange(); return false; }">
+									<p:ajax event="change"
+										listener="#{activiteCalculerBean.chargerCollaborateurs()}"
+										update=":form2:eventsDT" />
+								</p:inputText>
+
+							</h:form>
+						</div>
+						<br />
+
+
+
+
+						<p:dataTable id="eventsDT" var="identite" style="width:200px"
+							value="#{activiteCalculerBean.identites}" selectionMode="single"
+							selection="#{activiteCalculerBean.selectedIdentite}"
+							rowKey="#{identite.numedoss}">
+
+							<f:facet name="header"> List of Employers </f:facet>
+							<p:ajax event="rowSelect"
+								listener="#{activiteCalculerBean.onRowSelect}" update=":form1" />
+
+
+
+							<p:column headerText="Matricule">
+								<h:outputText value="#{identite.matricul}" />
+							</p:column>
+							<p:column headerText="Nom et Prénom">
+								<h:outputText value="#{identite.nom} #{identite.prenom}" />
+							</p:column>
+						</p:dataTable>
+					</div>
+
+				</div>
+			</div>
+
+		</h:form>
+
+
+
+
+
+
+	</ui:define>
+</ui:composition>
+</html>

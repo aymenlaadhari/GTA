@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/MainContent.xhtml">
+<ui:define name="Content">
+	<p:panel header="Ajout d'un calendrier">
+
+		<h:form>
+
+			<table>
+				<tr>
+					<td><p:outputLabel value="Nom" /></td>
+					<td><p:inputText
+							value="#{calendrierBean.calendrier.nomJourFerier}"
+							required="true" /></td>
+				</tr>
+				<tr>
+					<td><p:outputLabel value="Type Jour Ferier"></p:outputLabel></td>
+					<td><p:selectOneMenu
+							value="#{calendrierBean.calendrier.typeJour}">
+							<f:selectItem itemLabel="Payee" itemValue="P" />
+							<f:selectItem itemLabel="Non Payee" itemValue="NP" />
+						</p:selectOneMenu></td>
+				</tr>
+				<tr>
+					<td><p:outputLabel value="date d'effet"></p:outputLabel></td>
+					<td><p:calendar value="#{calendrierBean.calendrier.dateEffet}"></p:calendar>
+					</td>
+				</tr>
+				<tr>
+					<td><p:outputLabel value="date du jour ferier"></p:outputLabel></td>
+					<td><p:calendar
+							value="#{calendrierBean.calendrier.dateJourFerier}"></p:calendar>
+					</td>
+				</tr>
+				<tr align="center">
+					<td colspan="2">
+					<p:commandButton
+							action="#{calendrierBean.ajouter()}" value="Envoyer"></p:commandButton>
+					</td>
+				</tr>
+			</table>
+			<h:commandButton value="next" action="#{calendrierBean.redirect()}" />
+		</h:form>
+	</p:panel>
+
+
+</ui:define>
+</ui:composition>
+</html>

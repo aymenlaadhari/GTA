@@ -1,0 +1,252 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/MainContent.xhtml">
+	<ui:define name="Content">
+	
+	
+	<h:form id="formajout">
+             
+    <p:growl id="msgs" showDetail="true" />
+ 
+   
+    <p:tabView>
+        <p:tab title="Activité et Absence">
+            <h:panelGrid columns="2" cellpadding="10">
+                <p:panel header="Ajout d'une Activité en absence">
+			
+
+				<table>
+					<tr>
+						<td><p:outputLabel value="Code" /></td>
+						<td><p:inputText
+								value="#{activiteAbsenceBean.activiteAbsence.codeaabs}"
+								/></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel value="Libelle"/></td>
+						<td><p:inputText value="#{activiteAbsenceBean.libelle.lib}"
+								 /></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel value="Poids"/></td>
+						<td><p:inputText value="#{activiteAbsenceBean.activiteAbsence.poids}"
+								 /></td>
+					</tr>
+					<tr align="center">
+						<td colspan="2"><p:commandButton
+								action="#{activiteAbsenceBean.ajouterActiviteAbsence()}"
+								value="Envoyer" update=":formajout"></p:commandButton></td>
+					</tr>
+				</table>
+			
+		</p:panel>
+		<br></br><br></br>
+		<p:panel header="Ajout d'une Activité en Presence">
+			
+
+				<table>
+					<tr>
+						<td><p:outputLabel value="Code" /></td>
+						<td><p:inputText
+								value="#{activitePresenceBean.activitePresence.codeap}"
+								 /></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel value="Libelle"></p:outputLabel></td>
+						<td><p:inputText value="#{activitePresenceBean.libelle.lib}"
+								/></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel value="Poids"/></td>
+						<td><p:inputText value="#{activitePresenceBean.activitePresence.poids}"
+						  /></td>
+					</tr>
+					<tr align="center">
+						<td colspan="2"><p:commandButton
+								action="#{activitePresenceBean.ajouterActivitePresence()}"
+								value="Envoyer" update=":formajout"></p:commandButton></td>
+					</tr>
+
+				</table>
+				
+			
+		</p:panel>
+            </h:panelGrid>
+        </p:tab>
+        <p:tab title="Groupe d'Activité">
+            <h:panelGrid columns="2" cellpadding="10">
+              
+              <h:form>
+			<table>
+				<tr>
+					<td><h:outputLabel value="Code" /></td>
+					<td><p:inputText
+							value="#{groupeActiviteBean.groupeActivite.codegrpa}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Libelle" /></td>
+					<td><p:inputText value="#{groupeActiviteBean.libelle.lib}" /></td>
+				</tr>
+			</table>
+
+			<h:dataTable id="tblFields" value="#{groupeActiviteBean.selectOneMenusAbsence}"
+				var="field">
+				<h:column>
+					<p:selectOneMenu value="#{groupeActiviteBean.activiteAbsence}"
+						filter="true" effect="fade" filterMatchMode="startsWith" var="t"
+						panelStyle="width:180px" converter="#{activiteAbsenceConvertor}">
+						<f:selectItem itemLabel="Selectionner" itemValue="" />
+						<f:selectItems value="#{groupeActiviteBean.activiteAbsences}"
+							var="act" itemLabel="#{act.codeaabs}" itemValue="#{act}" />
+
+						<p:column>
+							<h:outputText value="#{t.codeaabs}" />
+						</p:column>
+					</p:selectOneMenu>
+				</h:column>
+				
+				<h:column>
+					<p:selectOneMenu value="#{groupeActiviteBean.activitePresence}"
+						filter="true" effect="fade" filterMatchMode="startsWith" var="t"
+						panelStyle="width:180px" converter="#{activitePresenceConvertor}">
+						<f:selectItem itemLabel="Selectionner" itemValue="" />
+						<f:selectItems value="#{groupeActiviteBean.activitePresences}"
+							var="act" itemLabel="#{act.codeap}" itemValue="#{act}" />
+
+						<p:column>
+							<h:outputText value="#{t.codeap}" />
+						</p:column>
+					</p:selectOneMenu>
+				</h:column>
+
+				<h:column>
+					<h:commandButton value="Remove">
+						<f:ajax
+							listener="#{groupeActiviteBean.onButtonRemoveFieldClick(field)}"
+							immediate="true" render="@form" />
+					</h:commandButton>
+				</h:column>
+			</h:dataTable>
+
+			<h:commandButton value="Add">
+				<f:ajax listener="#{groupeActiviteBean.onButtonAddFieldClick}"
+					execute="@form" render="tblFields" />
+			</h:commandButton>
+			<br />
+			<p:commandButton value="ajouter"
+				action="#{groupeActiviteBean.ajouterGroupeActivite()}" />
+
+
+		</h:form>
+              
+              
+              </h:panelGrid>
+        </p:tab>
+        <p:tab title="Imputation">
+            <h:panelGrid columns="2" cellpadding="10">
+               
+               <p:panel header="Ajout d'imputations">
+		<h:form>
+
+			<h:panelGrid columns="2">
+				<p:outputLabel value="Code" />
+				<p:inputText value="#{imputationBean.imputation.codei}"
+					required="true" />
+				<p:outputLabel value="Libelle"></p:outputLabel>
+				<p:inputText value="#{imputationBean.libelle.lib}" required="true" />
+				<p:outputLabel value="Compte" />
+				<p:inputText value="#{imputationBean.imputation.imputaCompte}"
+					required="true" />
+					<p:outputLabel value="Sous compte" />
+				<p:inputText value="#{imputationBean.imputation.imputaSousCompte}"
+					required="true" />
+					<p:outputLabel value="Centre de coût" />
+				<p:inputText value="#{imputationBean.imputation.imputaCentreCout}"
+					required="true" />
+					<p:outputLabel value="Code facturation" />
+				<p:inputText value="#{imputationBean.imputation.imputaCodeFact}"
+					required="true" />
+				<p:commandButton action="#{imputationBean.ajoutImputation()}"
+					value="Envoyer"></p:commandButton>
+			</h:panelGrid>
+
+		</h:form>
+	</p:panel>
+               
+               
+               </h:panelGrid>
+        </p:tab>
+         <p:tab title="Groupe d'Imputation">
+            <h:panelGrid columns="2" cellpadding="10">
+              
+              <table>
+				<tr>
+					<td><h:outputLabel value="Code" /></td>
+					<td><p:inputText
+							value="#{groupeImputationBean.groupeImputation.codegrp}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Libelle" /></td>
+					<td><p:inputText value="#{groupeImputationBean.libelle.lib}" /></td>
+				</tr>
+			</table>
+
+			<h:dataTable id="tblFields" value="#{groupeImputationBean.oneMenus}"
+				var="field">
+				<h:column>
+					<p:selectOneMenu value="#{groupeImputationBean.imputation}"
+						filter="true" effect="fade" filterMatchMode="startsWith" var="t"
+						panelStyle="width:180px" converter="#{imputationConvertor}">
+						<f:selectItem itemLabel="Selectionner" itemValue="" />
+						<f:selectItems value="#{groupeImputationBean.imputations}"
+							var="imp" itemLabel="#{imp.codei}" itemValue="#{imp}" />
+
+						<p:column>
+							<h:outputText value="#{t.codei}" />
+						</p:column>
+					</p:selectOneMenu>
+				</h:column>
+
+				<h:column>
+					<h:commandButton value="Remove">
+						<f:ajax
+							listener="#{groupeImputationBean.onButtonRemoveFieldClick(field)}"
+							immediate="true" render="@form" />
+					</h:commandButton>
+				</h:column>
+			</h:dataTable>
+
+			<h:commandButton value="Add">
+				<f:ajax listener="#{groupeImputationBean.onButtonAddFieldClick}"
+					execute="@form" render="tblFields" />
+			</h:commandButton>
+			<br />
+			<p:commandButton value="ajouter"
+				action="#{groupeImputationBean.ajouterGroupeImputation()}" />
+              
+              
+              
+              </h:panelGrid>
+        </p:tab>
+         <p:tab title="Terminaux autorisé">
+            <h:panelGrid columns="2" cellpadding="10">
+            
+            </h:panelGrid>
+        </p:tab>
+    </p:tabView>
+ 
+   
+</h:form>
+	
+	
+	
+	
+		
+	</ui:define>
+</ui:composition>
+</html>

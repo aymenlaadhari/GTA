@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/MainContent.xhtml">
+	<ui:define name="Content">
+
+		<p:tabView style="height: 900px;width: 830px">
+			<p:tab title="Comptes">
+				<h:form>
+					<h:panelGrid columns="2" id="formcompte">
+						<p:outputLabel value="Code" />
+						<p:inputText value="#{imputationBean.code}" />
+						<p:outputLabel value="Libelle" />
+						<p:inputText value="#{imputationBean.libelle.lib}" />
+
+					</h:panelGrid>
+					<p:selectOneRadio value="#{imputationBean.choix}">
+						<f:selectItem itemLabel="Compte" itemValue="compte" />
+						<f:selectItem itemLabel="Sous compte" itemValue="souscompte" />
+						<f:selectItem itemLabel="Code facturation"
+							itemValue="codefacturation" />
+						<f:selectItem itemLabel="Centre de coût" itemValue="centrecout" />
+					</p:selectOneRadio>
+					<br />
+					<p:commandButton value="valider"
+						action="#{imputationBean.ajoutCompte()}" />
+				</h:form>
+			</p:tab>
+			<p:tab title="Imputations">
+				<h:form>
+					<h:panelGrid columns="2" id="formimputation">
+
+						<p:outputLabel value="Code" />
+						<p:inputText value="#{imputationBean.imputation.codei}" />
+						<p:outputLabel value="Libelle" />
+						<p:inputText value="#{imputationBean.libelle.lib}" />
+						<p:outputLabel value="Compte" />
+						<p:selectOneMenu value="#{imputationBean.imputaCompte}"
+							filter="true" effect="fade" filterMatchMode="startsWith" var="t"
+							panelStyle="width:180px" >
+							<f:selectItem itemLabel="Selectionner" itemValue="" />
+							<f:selectItems value="#{imputationBean.imputaComptes}"
+								var="impcpt" itemLabel="#{impcpt.code}" itemValue="impcpt" />
+
+							<p:column>
+								<h:outputText value="#{t.code}" />
+							</p:column>
+						</p:selectOneMenu>
+						<p:outputLabel value="Sous compte" />
+						<p:selectOneMenu value="#{imputationBean.imputaSousCompte}"
+							filter="true" effect="fade" filterMatchMode="startsWith" var="t"
+							panelStyle="width:180px" >
+							<f:selectItem itemLabel="Selectionner" itemValue="" />
+							<f:selectItems value="#{imputationBean.imputaSousComptes}"
+								var="iscpt" itemLabel="#{iscpt.code}" itemValue="iscpt" />
+
+							<p:column>
+								<h:outputText value="#{t.code}" />
+							</p:column>
+						</p:selectOneMenu>
+						<p:outputLabel value="Code facturation" />
+						<p:selectOneMenu value="#{imputationBean.imputaCodeFact}"
+							filter="true" effect="fade" filterMatchMode="startsWith" var="t"
+							panelStyle="width:180px"
+							>
+							<f:selectItem itemLabel="Selectionner" itemValue="" />
+							<f:selectItems value="#{imputationBean.imputaCodeFacts}"
+								var="icf" itemLabel="#{icf.code}" itemValue="icf" />
+
+							<p:column>
+								<h:outputText value="#{t.code}" />
+							</p:column>
+						</p:selectOneMenu>
+						<p:outputLabel value="Cente de coût" />
+						<p:selectOneMenu value="#{imputationBean.imputaCentreCout}"
+							filter="true" effect="fade" filterMatchMode="startsWith" var="t"
+							panelStyle="width:180px" >
+							<f:selectItem itemLabel="Selectionner" itemValue="" />
+							<f:selectItems value="#{imputationBean.imputaCentreCouts}"
+								var="icc" itemLabel="#{icc.code}" itemValue="icc" />
+
+							<p:column>
+								<h:outputText value="#{t.code}" />
+							</p:column>
+						</p:selectOneMenu>
+
+					</h:panelGrid>
+				</h:form>
+				<p:commandButton value="valider"
+					action="#{imputationBean.ajoutImputation()}" />
+			</p:tab>
+
+			<p:tab title="Groupe d'imputations">
+
+			</p:tab>
+		</p:tabView>
+
+	</ui:define>
+</ui:composition>
+</html>

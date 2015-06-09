@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"> 
+
+<ui:composition template="/template/MainContent.xhtml">
+<ui:define name="Content">
+	
+	
+	<p:panel header="Groupe d'activité">
+	
+	<p:panel  >
+	<p:commandButton value="Add" type="button" onclick="PF('dlg2').show();" />
+	 &nbsp;&nbsp;
+	<p:commandButton value="Remove" type="button" onclick="PF('dlg3').show();" />
+	</p:panel>
+	<br/>
+	<br/>
+	
+	<h:column>
+					
+			<p:panel>	
+					<p:selectOneMenu converter="GroupeActiviteConvertor"
+				value="#{groupeActiviteBean.groupeActivite}">
+
+				<f:selectItem  itemLabel="Select one value" itemValue="" />
+				<f:selectItems value="#{groupeActiviteBean.groupeActivites}" var="grpact"
+					itemLabel="#{grpact.codegrpa}" itemValue="#{grpact}">
+				</f:selectItems>
+			</p:selectOneMenu>
+			&nbsp;&nbsp;
+			<!-- charger les picklistes equivalent au groupeactivite selectionner  "grpact"  -->
+			<p:commandButton value="Load" action="#{GroupeActiviteBean.charger()}">
+			</p:commandButton>
+		</p:panel>			
+	</h:column>
+	
+	<h3>&nbsp;&nbsp;Activite Absence    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   Groupe Activite</h3>
+	<p:pickList value="#{filtreBean.activiteAbsencePickList}"
+							var="activiteAbsence" itemLabel="#{activiteAbsence}"
+							itemValue="#{activiteAbsence}" />
+							
+		<h3>&nbsp;&nbsp;Activite Présence   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   Groupe Activite</h3>
+	<p:pickList value="#{filtreBean.activitePresencePickList}"
+							var="activitePresence" itemLabel="#{activitePresence}"
+							itemValue="#{activitePresence}" />
+							
+						<br />
+						<br/>
+							<p:commandButton value="submit" action="#{filtreBean.ajouter()}"
+				icon="ui-icon-check" style="margin-left: 40%"  />
+	</p:panel>
+  <p:dialog header="Groupe d'activité" widgetVar="dlg2" modal="true" height="250"  width="600">
+			<p:panel header="Ajout d'un groupe d'activité">
+
+		<h:form>
+			<table>
+				<tr>
+					<td><h:outputLabel value="Code" /></td>
+					<td><p:inputText
+							value="#{groupeActiviteBean.groupeActivite.codegrpa}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Libelle" /></td>
+					<td><p:inputText value="#{groupeActiviteBean.libelle.lib}" /></td>
+				</tr>
+			</table>
+
+			<h:dataTable id="tblFields" value="#{groupeActiviteBean.selectOneMenusAbsence}"
+				var="field">
+				<h:column>
+					<p:selectOneMenu value="#{groupeActiviteBean.activiteAbsence}"
+						filter="true" effect="fade" filterMatchMode="startsWith" var="t"
+						panelStyle="width:180px" converter="#{activiteAbsenceConvertor}">
+						<f:selectItem itemLabel="Selectionner" itemValue="" />
+						<f:selectItems value="#{groupeActiviteBean.activiteAbsences}"
+							var="act" itemLabel="#{act.codeaabs}" itemValue="#{act}" />
+
+						<p:column>
+							<h:outputText value="#{t.codeaabs}" />
+						</p:column>
+					</p:selectOneMenu>
+				</h:column>
+				
+				<h:column>
+					<p:selectOneMenu value="#{groupeActiviteBean.activitePresence}"
+						filter="true" effect="fade" filterMatchMode="startsWith" var="t"
+						panelStyle="width:180px" converter="#{activitePresenceConvertor}">
+						<f:selectItem itemLabel="Selectionner" itemValue="" />
+						<f:selectItems value="#{groupeActiviteBean.activitePresences}"
+							var="act" itemLabel="#{act.codeap}" itemValue="#{act}" />
+
+						<p:column>
+							<h:outputText value="#{t.codeap}" />
+						</p:column>
+					</p:selectOneMenu>
+				</h:column>
+
+				<h:column>
+					<h:commandButton value="Remove">
+						<!--  <f:ajax
+							listener="#{groupeActiviteBean.onButtonRemoveFieldClick(field)}"
+							immediate="true" render="@form" /> -->
+					</h:commandButton>
+				</h:column>
+			</h:dataTable>
+
+			<h:commandButton value="Add">
+				<!--  <f:ajax listener="#{groupeActiviteBean.onButtonAddFieldClick}"
+					execute="@form" render="tblFields" /> -->
+			</h:commandButton>
+			<br />
+			<p:commandButton value="ajouter"
+				action="#{groupeActiviteBean.ajouterGroupeActivite()}" />
+
+
+		</h:form>
+	</p:panel>
+			
+			
+		</p:dialog>
+	
+	
+	
+	<p:dialog header="Groupe d'activité" widgetVar="dlg3" modal="true" height="250"  width="600">
+			<p:panel header="Supression d'un groupe d'activité">
+
+		<h:form>
+			<table>
+				<tr>
+					<td><h:outputLabel value="Code" /></td>
+					<td><p:inputText
+							value="#{groupeActiviteBean.groupeActivite.codegrpa}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Libelle" /></td>
+					<td><p:inputText value="#{groupeActiviteBean.libelle.lib}" /></td>
+				</tr>
+			</table>
+
+			<h:dataTable id="tblFields" value="#{groupeActiviteBean.selectOneMenusAbsence}"
+				var="field">
+				<h:column>
+					<p:selectOneMenu value="#{groupeActiviteBean.activiteAbsence}"
+						filter="true" effect="fade" filterMatchMode="startsWith" var="t"
+						panelStyle="width:180px" converter="#{activiteAbsenceConvertor}">
+						<f:selectItem itemLabel="Selectionner" itemValue="" />
+						<f:selectItems value="#{groupeActiviteBean.activiteAbsences}"
+							var="act" itemLabel="#{act.codeaabs}" itemValue="#{act}" />
+
+						<p:column>
+							<h:outputText value="#{t.codeaabs}" />
+						</p:column>
+					</p:selectOneMenu>
+				</h:column>
+				
+				<h:column>
+					<p:selectOneMenu value="#{groupeActiviteBean.activitePresence}"
+						filter="true" effect="fade" filterMatchMode="startsWith" var="t"
+						panelStyle="width:180px" converter="#{activitePresenceConvertor}">
+						<f:selectItem itemLabel="Selectionner" itemValue="" />
+						<f:selectItems value="#{groupeActiviteBean.activitePresences}"
+							var="act" itemLabel="#{act.codeap}" itemValue="#{act}" />
+
+						<p:column>
+							<h:outputText value="#{t.codeap}" />
+						</p:column>
+					</p:selectOneMenu>
+				</h:column>
+
+				<h:column>
+					<h:commandButton value="Remove">
+						<f:ajax
+							listener="#{groupeActiviteBean.onButtonRemoveFieldClick(field)}"
+							immediate="true" render="@form" />
+					</h:commandButton>
+				</h:column>
+			</h:dataTable>
+
+			<h:commandButton value="Add">
+				<f:ajax listener="#{groupeActiviteBean.onButtonAddFieldClick}"
+					execute="@form" render="tblFields" />
+			</h:commandButton>
+			<br />
+			<p:commandButton value="ajouter"
+				action="#{groupeActiviteBean.ajouterGroupeActivite()}" />
+
+
+		</h:form>
+	</p:panel>
+			
+			
+		</p:dialog>
+	
+	
+</ui:define>
+</ui:composition>
+</html>

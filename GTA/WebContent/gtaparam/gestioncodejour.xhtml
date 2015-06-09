@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/MainContent.xhtml">
+<ui:define name="Content">
+	<p:panel header="Ajout d'un code jour">
+		<h:form>
+
+			<table>
+				<tr>
+					<td><p:outputLabel value="Code jour 1" />
+					<p:inputText value="#{codeJourBean.codeJour1.codecj}" required="true" />
+					</td>
+					<td><p:outputLabel value="Libelle"></p:outputLabel>
+					<p:inputText value="#{codeJourBean.libelle1.lib}" required="true" />
+					</td>
+				</tr>
+				<tr>
+					<td><p:outputLabel value="Code jour 2" />
+					<p:inputText value="#{codeJourBean.codeJour2.codecj}" required="true" />
+					</td>
+					<td><p:outputLabel value="Libelle"></p:outputLabel>
+					<p:inputText value="#{codeJourBean.libelle2.lib}" required="true" />
+					</td>
+				</tr>
+				<tr>
+					<td><p:outputLabel value="Code jour 3" />
+					<p:inputText value="#{codeJourBean.codeJour3.codecj}" required="true" />
+					</td>
+					<td><p:outputLabel value="Libelle"></p:outputLabel>
+					<p:inputText value="#{codeJourBean.libelle3.lib}" required="true" />
+					</td>
+				</tr>
+				<tr>
+					<td><p:outputLabel value="Code jour 4" />
+					<p:inputText value="#{codeJourBean.codeJour4.codecj}" required="true" />
+					</td>
+					<td><p:outputLabel value="Libelle"></p:outputLabel>
+					<p:inputText value="#{codeJourBean.libelle4.lib}" required="true" />
+					</td>
+				</tr>
+				<tr>
+					<td><p:outputLabel value="Code jour 5" />
+					<p:inputText value="#{codeJourBean.codeJour5.codecj}" required="true" />
+					</td>
+					<td><p:outputLabel value="Libelle"></p:outputLabel>
+					<p:inputText value="#{codeJourBean.libelle5.lib}" required="true" />
+					</td>
+				</tr>
+				<tr>
+					<td><p:outputLabel value="Code jour 6" />
+					<p:inputText value="#{codeJourBean.codeJour6.codecj}" required="true" />
+					</td>
+					<td><p:outputLabel value="Libelle"></p:outputLabel>
+					<p:inputText value="#{codeJourBean.libelle6.lib}" required="true" />
+					</td>
+				</tr>
+				<tr>
+					<td><p:outputLabel value="Code jour 7" />
+					<p:inputText value="#{codeJourBean.codeJour7.codecj}" required="true" />
+					</td>
+					<td><p:outputLabel value="Libelle"></p:outputLabel>
+					<p:inputText value="#{codeJourBean.libelle7.lib}" required="true" />
+					</td>
+				</tr>
+
+				<tr align="right">
+					<td colspan="2"><p:commandButton action="#{codeJourBean.ajouterCodeJour()}" value="ajouter"></p:commandButton>
+					</td>
+				</tr>
+				<h:commandButton value="next" action="#{codeJourBean.redirect()}" />
+			</table>
+		</h:form>
+	</p:panel>
+</ui:define>
+</ui:composition>
+</html>

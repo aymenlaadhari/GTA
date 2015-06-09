@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/template/MainContent.xhtml">
+	<ui:define name="Content">
+		<p:panel header="Compteur">
+
+			<h:panelGrid columns="10"
+				columnClasses="forty-percent top-alignment, sixty-percent top-alignment">
+
+				<h:form id="emp">
+						
+					<h:outputLabel value="N° Dossier:" />
+					<p:inputText value="#{compteurValeurBean.numdossier}">
+						<f:ajax event="blur" listener="#{compteurValeurBean.rowselect()}" />
+					</p:inputText>
+					<h:outputLabel value="N° Compteur:" />
+					<p:selectOneMenu value="#{compteurValeurBean.cmp}"
+						converter="#{compteurConvertor}">
+						<f:selectItem itemLabel="Choisir un compteur" />
+						<f:selectItems value="#{compteurValeurBean.compteurs}"
+							var="compteur" itemLabel="#{compteur.codec}" />
+							
+					</p:selectOneMenu>
+
+					<p:commandButton value="Calculer"
+						action="#{compteurValeurBean.test()}" update=":calendrier" />
+				
+				
+				
+				</h:form>
+			</h:panelGrid>
+			
+			<h:form id="calendrier">
+				<p:growl id="messages" showDetail="true" />
+				<h:panelGrid columnClasses="value">
+					
+					<p:schedule id="schedule" value="#{compteurValeurBean.eventModel}"
+						widgetVar="myschedule" rightHeaderTemplate="" draggable="false"
+						resizable="false" locale="fr">
+					</p:schedule>
+				</h:panelGrid>
+				<p:dialog widgetVar="eventDialog" header="Ajout tache"
+					showEffect="clip" hideEffect="clip">
+					<h:panelGrid id="eventDetails" columns="2">
+
+						<h:outputLabel for="title" value="Title:" />
+						<p:inputText id="title" value="#{compteurValeurBean.valeurCompteur.id}"
+							required="true" />
+
+						<h:outputLabel for="from" value="From:" />
+						<p:inputMask id="from"
+							value="#{compteurValeurBean.valeurCompteur.dateCalc}" mask="99/99/9999">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:inputMask>
+
+
+						<p:commandButton type="reset" value="Reset" />
+						<p:commandButton id="addButton" value="save"
+							actionListener="#{compteurValeurBean.addEvent}"
+							oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+			<script type="text/javascript">
+			
+
+
+
+
+
+			
+PrimeFaces.locales ['fr'] = {
+        closeText: 'Fermer',
+        prevText: 'Précédent',
+        nextText: 'Suivant',
+        monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre' ],
+        monthNamesShort: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc' ],
+        dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+        dayNamesShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+        dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+        weekHeader: 'Semaine',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix:'',
+        timeOnlyTitle: 'Choisir l\'heure',
+        timeText: 'Heure',
+        hourText: 'Heures',
+        minuteText: 'Minutes',
+        secondText: 'Secondes',
+        currentText: 'Maintenant',
+        ampm: false,
+        month: 'Mois',
+        week: 'Semaine',
+        day: 'Jour',
+        allDayText: 'Toute la journée'
+        };
+</script>
+			<style type="text/css">
+	
+			
+.value {
+	width: 1000px;
+}
+
+.fc-event-time {
+	display: none;
+}
+</style>
+
+		</p:panel>
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,519 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/MainContent.xhtml">
+
+	<ui:define name="Content">
+
+		<h:form id="form1">
+
+			<!-- WIDGET TABBED CONTENT -->
+
+			<div class="col-md-8">
+				<div class="widget">
+					<div class="widget-header-in">
+
+						<ul class="nav nav-tabs pull-right">
+							<li><button class="btn btn-default  btn-primary ">
+									<i class="fa fa-file-pdf-o"></i> Export to pdf
+								</button></li>
+							<li><button class="btn btn-default btn-primary ">
+									<i class="fa fa-print"></i> Print
+								</button></li>
+						</ul>
+
+						<ul class="nav nav-tabs">
+
+							<li class="active"><a href="#tab1" data-toggle="tab"><i
+									class="fa fa-user"></i><span>Filtre Activité</span></a></li>
+							<li><a href="#tab2" data-toggle="tab"><i
+									class="fa fa-folder"></i><span>Filtre Imputation</span></a></li>
+							<li><a href="#tab3" data-toggle="tab"><i
+									class="fa fa-credit-card"></i><span>Compteur</span></a></li>
+							<li><a href="#tab4" data-toggle="tab"><i
+									class="fa fa-file-text-o"></i><span>Groupe Compteur</span></a></li>
+							<li><a href="#tab5" data-toggle="tab"><i
+									class="fa fa-briefcase"></i><span>Element de paie</span></a></li>
+
+						</ul>
+
+					</div>
+					<div class="widget-content">
+						<div class="tab-content no-padding">
+							<div class="tab-pane fade in active" id="tab1">
+
+								<p:panel id="parametragefiltre" header="Paramétrage d'un filtre">
+									<p:outputLabel value="#{filtreBean.init()}"></p:outputLabel>
+									<p:dataTable id="parametragefiltreTable" scrollable="true"
+										scrollHeight="300" value="#{filtreBean.listeFiltres}" var="fa"
+										selection="#{filtreBean.filtre}" rowKey="#{fa.idf}"
+										selectionMode="single">
+										<f:facet name="header">
+											<p:commandButton icon="ui-icon-zoomin"
+												onclick="PF('DialogViewFA').show()"
+												update=":formDialogViewFA"></p:commandButton>
+											<p:commandButton icon="ui-icon-pencil"
+												onclick="PF('DialogEditFA').show()"
+												update=":formDialogEditFA"></p:commandButton>
+											<p:commandButton icon="ui-icon-plus"
+												onclick="PF('DialogNewFA1').show()"
+												update=":formDialogNewFA1"></p:commandButton>
+											<p:commandButton icon="ui-icon-trash" ajax="true"
+												action="#{filtreBean.supprimerFiltre()}"
+												update="parametragefiltreTable"></p:commandButton>
+										</f:facet>
+										<p:column headerText="Code">
+											<h:outputText value="#{fa.codef}" />
+										</p:column>
+										<p:column headerText="Libellé">
+											<h:outputText value="#{filtreBean.libelle.lib}" />
+										</p:column>
+										<p:column headerText="Heure Début">
+											<h:outputText value="#{fa.heuredeb}" />
+										</p:column>
+										<p:column headerText="Heure Fin">
+											<h:outputText value="#{fa.heurefin}" />
+										</p:column>
+									</p:dataTable>
+								</p:panel>
+							</div>
+							
+							
+							<div class="tab-pane fade" id="tab2">
+								<p:panel header="Paramétrage d'un filtre">
+
+									<h:panelGrid columns="2">
+										<p:outputLabel value="Code" />
+										<p:inputText value="#{filtreBean.filtre.codef}" />
+										<p:outputLabel value="Libelle" />
+										<p:inputText value="#{filtreBean.libelle.lib}" />
+									</h:panelGrid>
+									<p:panel header="Filtration sur les Horaires">
+
+										<h:panelGrid columns="2">
+											<p:outputLabel value="heure Deb" />
+											<p:inputText value="#{filtreBean.tmp}" />
+											<p:outputLabel value="heure Fin" />
+											<p:inputText value="#{filtreBean.tmpF}" />
+
+										</h:panelGrid>
+
+									</p:panel>
+
+									<p:panel header="Filtration sur les jours">
+
+
+										<p:selectManyCheckbox id="grid"
+											value="#{filtreBean.selectedCodeJour}" layout="grid"
+											columns="1" converter="#{codeJourConvertor}">
+											<f:selectItems value="#{filtreBean.codeJours}" var="codej"
+												itemLabel="#{codej.codecj}" itemValue="#{codej}" />
+										</p:selectManyCheckbox>
+
+
+									</p:panel>
+									<p:panel header="Filtration sur les Natures de journées">
+										<p:selectManyCheckbox id="gridnj"
+											value="#{filtreBean.selectedNatureJournees}" layout="grid"
+											columns="1" converter="#{natureJourneeConvertor}">
+											<f:selectItems value="#{filtreBean.natureJournees}" var="nj"
+												itemLabel="#{nj.codenj}" itemValue="#{nj}" />
+										</p:selectManyCheckbox>
+
+
+									</p:panel>
+
+
+									<p:panel header="Filtration sur les groupes d'imputations">
+										<h:panelGrid columns="2">
+
+											<p:selectOneMenu value="#{filtreBean.groupeImputation}"
+												filter="true" effect="fade" filterMatchMode="startsWith"
+												var="a" panelStyle="width:180px"
+												converter="#{groupeImputationConvertor}">
+												<f:selectItem itemLabel="Selectionner" itemValue="" />
+												<f:selectItems value="#{filtreBean.groupeImputations}"
+													var="gimp" itemLabel="#{gimp.idgrp}" itemValue="#{gimp}" />
+												<p:column>
+													<h:outputText value="#{a.codegrp}" />
+												</p:column>
+											</p:selectOneMenu>
+
+											<p:commandButton value="Calculer"
+												action="#{filtreBean.selectImputation()}" update="f115" />
+										</h:panelGrid>
+										<p:panel id="f115">
+											<h2>Imputation</h2>
+											<p:pickList value="#{filtreBean.imputationPickList}"
+												var="imputation" itemLabel="#{imputation}"
+												itemValue="#{imputation}" />
+										</p:panel>
+											<p:commandButton value="submit" action="#{filtreBean.ajouter()}"
+				                           icon="ui-icon-check" style="margin-left: 40%"  />
+										
+									</p:panel>
+								</p:panel>
+
+							</div>
+							<div class="tab-pane fade" id="tab3">
+								<p:panel header="Paramétrage d'un compteur">
+									<h:panelGrid columns="2">
+										<p:outputLabel value="Code" />
+										<p:inputText value="#{compteurBean.compteur.codec}" />
+										<p:outputLabel value="Libelle" />
+										<p:inputText value="#{compteurBean.libelle.lib}" />
+										<p:outputLabel value="Date d'effet" />
+										<p:calendar value="#{compteurBean.formuleCompteur.dateEffet}" />
+									</h:panelGrid>
+									<p:panel header="Opération à la fin de période">
+										<h:panelGrid columns="2">
+											<p:outputLabel value="Type Compteur" />
+											<p:selectOneMenu value="#{compteurBean.compteur.typeCmp}">
+												<f:selectItem itemValue="" itemLabel="Selectionner" />
+												<f:selectItem itemValue="Normale" itemLabel="Normale" />
+												<f:selectItem itemValue="Acquisition de congé"
+													itemLabel="Acquisition de congé" />
+											</p:selectOneMenu>
+											<p:outputLabel value="Période" />
+											<p:selectOneMenu value="#{compteurBean.compteur.typeop}">
+												<f:selectItem itemValue="" itemLabel="Selectionner" />
+												<f:selectItem itemValue="hebdomadaire"
+													itemLabel="Hebdomadaire" />
+												<f:selectItem itemValue="journaliere"
+													itemLabel="Journaliére" />
+												<f:selectItem itemValue="mensuelle" itemLabel="Mensuelle" />
+												<f:selectItem itemValue="annuelle" itemLabel="Annuelle" />
+												<f:selectItem itemValue="trimestrielle"
+													itemLabel="Trimestrielle" />
+												<f:selectItem itemValue="semestrielle"
+													itemLabel="Semestrielle" />
+											</p:selectOneMenu>
+											<p:outputLabel value="Typde de calcul" />
+											<p:selectOneMenu
+												value="#{compteurBean.compteur.typeDeCalcul}">
+												<f:selectItem itemValue="" itemLabel="Selectionner" />
+												<f:selectItem itemValue="duree" itemLabel="Durée" />
+												<f:selectItem itemValue="val" itemLabel="valeur Numérique" />
+											</p:selectOneMenu>
+											<p:outputLabel value="Methode De calclul" />
+											<p:selectOneMenu
+												value="#{compteurBean.compteur.methodeDeCalcul}">
+												<f:selectItem itemValue="" itemLabel="Selectionner" />
+												<f:selectItem itemValue="veille"
+													itemLabel="valeur de la veille " />
+												<f:selectItem itemValue="jour" itemLabel="valeur du jour" />
+												<f:selectItem itemValue="defalquer"
+													itemLabel="défalquer  la valeur" />
+											</p:selectOneMenu>
+											<p:outputLabel value="Mois de Debut" />
+											<p:inputText value="#{compteurBean.compteur.numMoisDeDebut}"
+												size="5" />
+											<p:outputLabel value="Peroide debut" />
+											<p:calendar value="#{compteurBean.compteur.dateDebutPeroide}" />
+
+
+
+											<p:outputLabel value="Peroide fin" />
+											<p:calendar value="#{compteurBean.compteur.dateFinPeriode}" />
+
+
+											<p:outputLabel value="Opération" />
+
+
+											<p:selectOneMenu value="#{compteurBean.compteur.operation}">
+												<f:selectItem itemValue="" itemLabel="Selectionner" />
+												<f:selectItem itemValue="initialisation"
+													itemLabel="Initialisation" />
+												<f:selectItem itemValue="cumul" itemLabel="Cumul" />
+												<f:selectItem itemValue="ecretage" itemLabel="Ecrétage" />
+												<f:selectItem itemValue="ecretageinit"
+													itemLabel="Ecrétage puis initialisation" />
+											</p:selectOneMenu>
+
+
+										</h:panelGrid>
+
+
+										<h:panelGrid columns="6">
+											<p:outputLabel value="Valeur initiale" />
+											<p:inputText value="#{compteurBean.compteur.valinit}"
+												size="5" />
+											<p:outputLabel value="Valeur minimale" />
+											<p:inputText value="#{compteurBean.compteur.valmin}" size="5" />
+											<p:outputLabel value="Valeur maximale" />
+											<p:inputText value="#{compteurBean.compteur.valmax}" size="5" />
+										</h:panelGrid>
+									</p:panel>
+
+									<p:panel header="Anomalie">
+
+										<h:panelGrid columns="6">
+											<p:outputLabel value="code Anomalie " />
+											<p:inputText value="#{compteurBean.anomalie.code}" size="5" />
+											<p:outputLabel value="Message Anomalie" />
+											<p:inputTextarea value="#{compteurBean.anomalie.message}"></p:inputTextarea>
+											<p:outputLabel value="Gravité" />
+											<p:inputText value="#{compteurBean.anomalie.gravite}"
+												size="5" />
+										</h:panelGrid>
+									</p:panel>
+
+
+									<p:panel header="Expression de calcule">
+
+										<h:panelGrid columns="3">
+											<p:outputLabel value="Formule" />
+											<p:inputText value="#{compteurBean.paramClass.formule}"
+												size="20">
+												<f:ajax event="blur"
+													listener="#{compteurBean.verifierSyntaxe()}"
+													render="input1" />
+											</p:inputText>
+											<p:outputLabel id="input1" value="#{compteurBean.syntaxe}" />
+
+
+											<p:outputLabel value="Condition" />
+											<p:inputText value="#{compteurBean.paramClass.condition}"
+												size="20">
+
+												<f:ajax event="blur"
+													listener="#{compteurBean.verifierSyntaxeCondition()}"
+													render="input2" />
+											</p:inputText>
+											<p:outputLabel id="input2" value="#{compteurBean.syntaxe}" />
+										</h:panelGrid>
+
+									</p:panel>
+									<p:commandButton value="Submit"
+										action="#{compteurBean.ajouter()}" icon="ui-icon-check"
+										style="margin-left: 40%" />
+
+								</p:panel>
+
+							</div>
+							<div class="tab-pane fade" id="tab4">
+								<p:panel header="Paramétrage de groupe compteurs">
+									<h:panelGrid columns="2">
+										<table>
+											<p:outputLabel value="Code" />
+											<p:inputText
+												value="#{groupeCompteurBean.groupeCompteur.codegrpc}" />
+
+											<p:outputLabel value="Libelle" />
+											<p:inputText value="#{groupeCompteurBean.libelle.lib}" />
+
+											<p:outputLabel value="Liste compteurs:" />
+
+											<p:outputLabel value="Date d'effet" />
+											<p:calendar value="#{groupeCompteurBean.dateEffet}" />
+											<p:selectManyCheckbox
+												value="#{groupeCompteurBean.selectedCompteurs}"
+												layout="grid" columns="1" converter="#{compteurConvertor}">
+												<f:selectItems value="#{groupeCompteurBean.compteurs}"
+													var="cpt" itemLabel="#{cpt.codec}" />
+											</p:selectManyCheckbox>
+										</table>
+
+
+										<p:commandButton value="submit"
+											action="#{groupeCompteurBean.ajouter()}" icon="ui-icon-check"
+											style="margin-left: 40%" />
+									</h:panelGrid>
+
+
+								</p:panel>
+							</div>
+							<div class="tab-pane fade" id="tab5"></div>
+
+
+						</div>
+					</div>
+				</div>
+				<!-- END WIDGET TABBED CONTENT -->
+			</div>
+		</h:form>
+
+
+
+
+
+
+		
+<p:dialog header="Nouveau filtre" widgetVar="DialogNewFA1">
+			<h:form id="formDialogNewFA1">
+
+				<table>
+					<tr>
+						<td><p:outputLabel value="Code" /></td>
+						<td><p:inputText value="#{filtreBean.filtre.codef}"
+								required="true" /></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel value="Libelle"></p:outputLabel></td>
+						<td><p:inputText value="#{filtreBean.libelle.lib}"
+								required="true" /></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel value="Heure Debut" /></td>
+						<td><p:inputText value="#{filtreBean.tmp}" /></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel value="Heure Fin" /></td>
+						<td><p:inputText value="#{filtreBean.tmpF}" /></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel value="Filtration sur les Jours" /></td>
+					</tr>
+					<tr>
+						<td><p:selectManyCheckbox id="grid"
+								value="#{filtreBean.selectedCodeJour}" layout="grid" columns="1"
+								converter="#{codeJourConvertor}">
+								<f:selectItems value="#{filtreBean.codeJours}" var="codej"
+									itemLabel="#{codej.codecj}" itemValue="#{codej}" />
+							</p:selectManyCheckbox></td>
+					</tr>
+<!-- 					
+					<tr>
+						<td><p:outputLabel value="Filtration sur la Nature des Journées " /></td>
+					</tr>
+					<tr><td >
+<p:selectManyCheckbox id="gridnj"
+											value="#{filtreBean.selectedNatureJournees}" layout="grid"
+											columns="1" converter="#{natureJourneeConvertor}">
+											<f:selectItems value="#{filtreBean.natureJournees}" var="nj"
+												itemLabel="#{nj.codenj}" itemValue="#{nj}" />
+										</p:selectManyCheckbox>
+</td>
+</tr>
+<tr>
+						<td><p:outputLabel value="Filtration sur les groupes d'Activités" /></td>
+					</tr>
+<tr><td >
+	<p:selectOneMenu value="#{filtreBean.groupeActivite}"
+												filter="true" effect="fade" filterMatchMode="startsWith"
+												var="t" panelStyle="width:180px"
+												converter="#{groupeActiviteConvertor}">
+												<f:selectItem itemLabel="Selectionner" itemValue="" />
+												<f:selectItems value="#{filtreBean.groupeActivites}"
+													var="gimp" itemLabel="#{gimp.codegrpa}" itemValue="#{gimp}" />
+												<p:column>
+													<h:outputText value="#{t.codegrpa}" />
+												</p:column>
+											</p:selectOneMenu>
+</td>
+</tr>
+<tr>
+						<td><p:outputLabel value="Activités Absence" /></td>
+					</tr>
+<tr><td >
+	<p:pickList value="#{filtreBean.activiteAbsencePickList}"
+												var="activiteAbsence" itemLabel="#{activiteAbsence}"
+												itemValue="#{activiteAbsence}" />
+</td>
+</tr>
+
+<tr>
+						<td><p:outputLabel value="Activités Présence" /></td>
+					</tr>
+<tr><td >
+<p:pickList value="#{filtreBean.activitePresencePickList}"
+												var="activitePresence" itemLabel="#{activitePresence}"
+												itemValue="#{activitePresence}" />	
+</td>
+</tr> -->	
+					<tr>
+						<td colspan="2" align="center"><p:commandButton
+								value="Ajouter" action="#{filtreBean.ajouter()}" ajax="true"
+								update=":form1:parametragefiltreTable" oncomplete="PF('DialogNewFA1').hide()" /></td>
+					</tr>
+				</table>
+			</h:form>
+		</p:dialog>
+
+
+
+		<p:dialog header="Modifier filtre" widgetVar="DialogEditFA">
+			<h:form id="formDialogEditFA">
+
+
+				<table>
+					<tr>
+						<td><p:outputLabel value="Code" /></td>
+						<td><p:inputText value="#{filtreBean.filtre.codef}"
+								required="true" /></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel value="Libelle"></p:outputLabel></td>
+						<td><p:inputText value="#{filtreBean.libelle.lib}"
+								required="true" /></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel value="Heure Début" /></td>
+						<td><p:inputText value="#{filtreBean.filtre.heuredeb}" required="true" /></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel value="Heure Fin"></p:outputLabel></td>
+						<td><p:inputText value="#{filtreBean.filtre.heurefin}" required="true" /></td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center"><p:commandButton
+								value="Modifier" action="#{filtreBean.modifierFiltre()}"
+								ajax="true" oncomplete="PF('DialogEditFA').hide()" /></td>
+					</tr>
+				</table>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Détails Filtre" widgetVar="DialogViewFA">
+			<h:form id="formDialogViewFA">
+				<table>
+					<tr>
+						<td><p:outputLabel value="Code" /></td>
+						<td><p:inputText value="#{filtreBean.filtre.codef}"
+								readonly="true" /></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel value="Libelle"></p:outputLabel></td>
+						<td><p:inputText
+								value="#{filtreBean.filtre.libelles.get(0).lib}" readonly="true" /></td>
+					</tr>
+
+
+					<tr>
+						<td><p:outputLabel value="heure Deb" /></td>
+						<td><p:inputText value="#{filtreBean.filtre.heuredeb}" /></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel value="heure Fin" /></td>
+						<td><p:inputText value="#{filtreBean.filtre.heurefin}" /></td>
+					</tr>
+					<tr>
+						<td><p:selectManyCheckbox id="grid"
+								value="#{filtreBean.selectedCodeJour}" layout="grid" columns="1"
+								converter="#{codeJourConvertor}">
+								<f:selectItems value="#{filtreBean.codeJours}" var="codej"
+									itemLabel="#{codej.codecj}" itemValue="#{codej}" />
+							</p:selectManyCheckbox></td>
+					</tr>
+                    <tr>
+						<td colspan="2" align="center"><p:commandButton
+								value="Quitter"
+								ajax="true" oncomplete="PF('DialogViewFA').hide()" /></td>
+					</tr>
+
+				</table>
+			</h:form>
+		</p:dialog>
+
+
+
+
+
+	</ui:define>
+</ui:composition>
+
+</html>

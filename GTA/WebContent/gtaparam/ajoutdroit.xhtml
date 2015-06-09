@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/MainContent.xhtml">
+	<ui:define name="Content">
+		<p:tabView>
+        <p:tab title="Ajout Droit">
+        <h:form>
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Code: " />
+					<p:inputText value="#{droitBean.droit.code}" />
+					<p:outputLabel value="Libelle: " />
+					<p:inputText value="#{droitBean.libelle}" />
+					<p:outputLabel value="Date d'effet:" />
+					<p:calendar value="#{droitBean.droit.dateeffet}" />
+					<p:outputLabel value="Délai de carence:" />
+					<p:inputText value="#{droitBean.droit.delaicarence}" />
+					
+					<p:outputLabel value="Unité:" />
+					<h:selectOneMenu id="unite">
+						<f:selectItems value="#{droitBean.unites}" var="cpt" itemLabel="#{cpt.libelle}" itemValue="#{cpt.libelle}"/>
+					</h:selectOneMenu>
+					
+					<p:outputLabel value="Anciennete:" />
+			        <p:selectManyCheckbox
+						value="#{droitBean.selectedAnciennetes}" columns="1" >
+						<f:selectItems value="#{droitBean.anciennetes}" var="cpt"
+							itemLabel="#{cpt.andebut}" />
+					</p:selectManyCheckbox>
+					<p:outputLabel value="Tranche:" />
+					<p:selectManyCheckbox
+						value="#{droitBean.droit.gtaParamTranche}" columns="1" >
+						<f:selectItems value="#{droitBean.tranches}" var="cpt"
+							itemLabel="#{cpt.code}" />
+					</p:selectManyCheckbox>
+				</h:panelGrid>
+
+				<p:commandButton value="ajouter" action="#{droitBean.ajouter()}"
+					icon="ui-icon-check" style="margin-left: 40%" />
+		</h:form>
+		</p:tab>
+        <p:tab title="Ajout groupe Droit">
+        		<h:form>
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Code: " />
+					<p:inputText value="#{groupeDroitBean.groupeDroit.code}" />
+					<p:outputLabel value="Libelle: " />
+					
+					<p:inputText value="#{groupeDroitBean.libelle.lib}" />
+					<p:outputLabel value="Liste droits:" />
+
+					<p:selectManyCheckbox
+						value="#{groupeDroitBean.selectedDroits}" layout="grid"
+						columns="1" converter="#{compteurConvertor}">
+						<f:selectItems value="#{groupeDroitBean.droits}" var="cpt"
+							itemLabel="#{cpt.code}" />
+					</p:selectManyCheckbox>
+					<p:commandButton value="submit" action="#{groupeDroitBean.ajouter()}" icon="ui-icon-check"
+						style="margin-left: 40%" />
+				</h:panelGrid>
+
+		</h:form>
+        </p:tab>
+        </p:tabView>
+	</ui:define>
+</ui:composition>
+</html>

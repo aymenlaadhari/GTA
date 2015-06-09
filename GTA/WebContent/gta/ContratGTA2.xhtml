@@ -1,0 +1,1125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/MainContent.xhtml">
+
+	<ui:define name="Content">
+		<h:form id="employe">
+
+			<p:panel style="border:0px">
+				<h:panelGrid>
+					<p:graphicImage id="photoview" cache="false"
+						value="#{contratGTABean.photo}"
+						rendered="#{contratGTABean.renderedimage}"
+						style="width:70px; height:90px;" />
+					<p:outputLabel
+						value="#{contratGTABean.identite.qualite} #{contratGTABean.identite.nom} #{contratGTABean.identite.prenom}" />
+				</h:panelGrid>
+			</p:panel>
+			<!-- WIDGET TABBED CONTENT -->
+
+
+			<div class="col-md-8">
+				<div class="widget">
+					<div class="widget-header-in">
+
+
+						<ul class="nav nav-tabs pull-right">
+
+							<li><button class="btn btn-default  btn-primary ">
+									<i class="fa fa-file-pdf-o"></i> Export to pdf
+								</button></li>
+							<li><button class="btn btn-default btn-primary ">
+									<i class="fa fa-print"></i> Print
+								</button></li>
+						</ul>
+
+						<ul class="nav nav-tabs">
+
+							<li class="active"><a href="#tab1" data-toggle="tab"><i
+									class="fa fa-user"></i><span>Contrat GTA</span></a></li>
+
+
+
+						</ul>
+					</div>
+					<div class="widget-content">
+						<div class="tab-content no-padding">
+							<div class="tab-pane fade in active" id="tab1">
+								<p:tab id="contratgta" title="Contrat GTA ">
+
+									<p:panel style="border:0px" header="Cycle de Travail">
+
+										<p:dataTable id="cycle"
+											value="#{contratGTABean.cycleTravails}" var="cycle"
+											selection="#{contratGTABean.cycleTravail}"
+											rowKey="#{cycle.idct}" selectionMode="single"
+											style="border:0px;">
+
+											<f:facet name="header">
+
+												<p:commandButton icon="ui-icon-seek-prev" ajax="true"
+													action="#{contratGTABean.premiersHistoriqueCycleTravail()}"
+													update="cycle"></p:commandButton>
+												<p:commandButton icon="ui-icon-carat-1-w" ajax="true"
+													action="#{contratGTABean.precedentHistoriqueCycleTravail()}"
+													update="cycle"
+													disabled="#{contratGTABean.precedentCycledetravail}"></p:commandButton>
+												<p:commandButton icon="ui-icon-carat-1-e" ajax="true"
+													action="#{contratGTABean.suivantHistoriqueCycledetravail()}"
+													update="cycle"
+													disabled="#{contratGTABean.suivantCycledetravail}"></p:commandButton>
+												<p:commandButton icon="ui-icon-seek-next" ajax="true"
+													action="#{contratGTABean.derniersHistoriqueCycleTravail()}"
+													update="cycle"></p:commandButton>
+												<p:commandButton icon="ui-icon-zoomin"
+													onclick="PF('dialogViewcycle').show()"
+													update=":formDialogViewcycle"></p:commandButton>
+												<p:commandButton icon="ui-icon-pencil"
+													onclick="PF('dialogEditcycle').show()"
+													update=":formDialogEditcycle"></p:commandButton>
+												<p:commandButton icon="ui-icon-plus"
+													onclick="PF('dialogAddcycle').show()"
+													update=":formDialogAddcycle"></p:commandButton>
+												<p:commandButton icon="ui-icon-trash"
+													action="#{contratGTABean.supprimerCycledetravail()}"
+													ajax="true" update="cycle"></p:commandButton>
+
+												<p:selectOneMenu
+													value="#{contratGTABean.nombreSelectionCycle}">
+													<f:selectItem itemLabel="3" itemValue="3" />
+													<f:selectItem itemLabel="5" itemValue="5" />
+													<f:selectItem itemLabel="10" itemValue="10" />
+													<p:ajax
+														listener="#{contratGTABean.afficherHistoriqueCycledetravails()}"
+														update="cycle" />
+												</p:selectOneMenu>
+											</f:facet>
+
+											<p:column headerText="Code Cycle de Travail">
+												<h:outputText value="#{cycle.codect}" />
+											</p:column>
+
+											<p:column headerText="Code Calendrier">
+												<h:outputText value="#{contratGTABean.codeCalendrier.code}">
+													<f:convertDateTime type="date" dateStyle="medium" />
+												</h:outputText>
+											</p:column>
+
+											<p:column headerText="Element Cycle">
+												<h:outputText value="#{cycle.codect}">
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Date d'effet">
+												<h:outputText value="#{cycle.dateff}">
+													<f:convertDateTime type="date" dateStyle="medium" />
+												</h:outputText>
+											</p:column>
+
+										</p:dataTable>
+									</p:panel>
+
+									<!-- #################################################### -->
+									<p:panel style="border:0px" header="Soumission GTA">
+
+										<p:dataTable id="gta" value="#{contratGTABean.soumissionGtas}"
+											var="soumissonGta" selection="#{contratGTABean.soumissonGta}"
+											rowKey="#{soumissonGta.id}" selectionMode="single"
+											style="border:0px;">
+
+											<f:facet name="header">
+
+												<p:commandButton icon="ui-icon-seek-prev" ajax="true"
+													action="#{contratGTABean.premiersHistoriqueSoumissionGTA()}"
+													update="gta"></p:commandButton>
+												<p:commandButton icon="ui-icon-carat-1-w" ajax="true"
+													action="#{contratGTABean.precedentHistoriqueSoumissionGTA()}"
+													update="gta"
+													disabled="#{contratGTABean.precedentSoumissionGta}"></p:commandButton>
+												<p:commandButton icon="ui-icon-carat-1-e" ajax="true"
+													action="#{contratGTABean.suivantHistoriqueSoumissionGTA()}"
+													update="gta"
+													disabled="#{contratGTABean.suivantSoumissionGta}"></p:commandButton>
+												<p:commandButton icon="ui-icon-seek-next" ajax="true"
+													action="#{contratGTABean.derniersHistoriqueSoumissionGTA()}"
+													update="gta"></p:commandButton>
+												<p:commandButton icon="ui-icon-zoomin"
+													onclick="PF('dialogViewcgta').show()"
+													update=":formDialogViewgta"></p:commandButton>
+												<p:commandButton icon="ui-icon-pencil"
+													onclick="PF('dialogEditgta').show()"
+													update=":formDialogEditgta"></p:commandButton>
+												<p:commandButton icon="ui-icon-plus"
+													onclick="PF('dialogAddgta').show()"
+													update=":formDialogAddgta"></p:commandButton>
+												<p:commandButton icon="ui-icon-trash"
+													action="#{contratGTABean.supprimerSoumissionGTA()}"
+													ajax="true" update="gta"></p:commandButton>
+
+												<p:selectOneMenu
+													value="#{contratGTABean.nombreSelectionGta}">
+													<f:selectItem itemLabel="3" itemValue="3" />
+													<f:selectItem itemLabel="5" itemValue="5" />
+													<f:selectItem itemLabel="10" itemValue="10" />
+													<p:ajax
+														listener="#{contratGTABean.afficherHistoriqueSoumissionGTA()}"
+														update="gta" />
+												</p:selectOneMenu>
+											</f:facet>
+
+
+
+											<p:column headerText="soumis GTA ?">
+												<h:outputText value="#{soumissonGta.gta}"></h:outputText>
+											</p:column>
+
+
+											<p:column headerText="Type de Gestion ">
+												<h:outputText value="#{soumissonGta.natureHeure}">
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Date d'effet Soumission GTA">
+												<h:outputText value="#{soumissonGta.dateeffe}"></h:outputText>
+
+											</p:column>
+											<p:column headerText="Date Fin Soumission GTA">
+												<h:outputText value="#{soumissonGta.datefin}"></h:outputText>
+											</p:column>
+											<p:column headerText="Soumis a la Pointeuse ?">
+												<h:outputText value="#{soumissonGta.pointage}" />
+
+											</p:column>
+
+											 <p:column headerText="Terminaux Mobiles">
+											
+													    <p:dataTable var="terminal" value="#{soumissonGta.terminalMobiles}">
+													        <p:column>
+													            <h:outputText value="#{terminal.code}"/>
+													        </p:column>
+													    </p:dataTable>
+											</p:column>
+												
+										
+
+
+											
+											<p:column headerText="Date d'effet Soumission Pointage">
+												<h:outputText value="#{soumissonGta.dateEffet2}"></h:outputText>
+
+											</p:column>
+											<p:column headerText="Date Fin Soumission Pointage">
+												<h:outputText value="#{soumissonGta.dateFin2}"></h:outputText>
+											</p:column>
+
+										</p:dataTable>
+									</p:panel>
+
+
+
+									<!-- ###################################################### -->
+									<p:panel style="border:0px" header="Classe Employe">
+
+										<p:dataTable id="classe" value="#{contratGTABean.classeEmps}"
+											var="classe" selection="#{contratGTABean.classeEmp}"
+											rowKey="#{classe.id}" selectionMode="single"
+											style="border:0px;">
+
+											<f:facet name="header">
+
+												<p:commandButton icon="ui-icon-seek-prev" ajax="true"
+													action="#{contratGTABean.premiersHistoriqueClasseEmp()}"
+													update="classe"></p:commandButton>
+												<p:commandButton icon="ui-icon-carat-1-w" ajax="true"
+													action="#{contratGTABean.precedentHistoriqueClasseEmp()}"
+													update="classe"
+													disabled="#{contratGTABean.precedentClasseempolye}"></p:commandButton>
+												<p:commandButton icon="ui-icon-carat-1-e" ajax="true"
+													action="#{contratGTABean.suivantHistoriqueClasseEmp()}"
+													update="classe"
+													disabled="#{contratGTABean.suivantClasseempolye}"></p:commandButton>
+												<p:commandButton icon="ui-icon-seek-next" ajax="true"
+													action="#{contratGTABean.derniersHistoriqueClassEmp()}"
+													update="classe"></p:commandButton>
+												<p:commandButton icon="ui-icon-zoomin"
+													onclick="PF('dialogViewclasse').show()"
+													update=":formDialogViewclasse"></p:commandButton>
+												<p:commandButton icon="ui-icon-pencil"
+													onclick="PF('dialogEditclasse').show()"
+													update=":formDialogEditclasse"></p:commandButton>
+												<p:commandButton icon="ui-icon-plus"
+													onclick="PF('dialogAddclasse').show()"
+													update=":formDialogAddclasse"></p:commandButton>
+												<p:commandButton icon="ui-icon-trash"
+													action="#{contratGTABean.supprimerClasseEmp()}" ajax="true"
+													update="classe"></p:commandButton>
+
+												<p:selectOneMenu
+													value="#{contratGTABean.nombreSelectionClasse}">
+													<f:selectItem itemLabel="3" itemValue="3" />
+													<f:selectItem itemLabel="5" itemValue="5" />
+													<f:selectItem itemLabel="10" itemValue="10" />
+													<p:ajax
+														listener="#{contratGTABean.afficherHistoriqueClasseEmp()}"
+														update="classe" />
+												</p:selectOneMenu>
+											</f:facet>
+
+											<p:column headerText="Code Classe Employe">
+												<h:outputText value="#{classe.codeClasse}" />
+
+											</p:column>
+
+											<p:column headerText="Date d'effet">
+												<h:outputText value="#{classe.dateeffet}">
+													<f:convertDateTime type="date" dateStyle="medium" />
+												</h:outputText>
+											</p:column>
+
+
+											<p:column headerText="Date Fin">
+												<h:outputText value="#{classe.dateFin}">
+													<f:convertDateTime type="date" dateStyle="medium" />
+												</h:outputText>
+											</p:column>
+
+
+
+										</p:dataTable>
+									</p:panel>
+									<!-- ################################################################## -->
+									
+									<p:panel style="border:0px" header="Groupes Compteurs">
+
+
+										<p:dataTable id="compteur"
+											value="#{contratGTABean.groupeCompteurs}" var="compteur"
+											selection="#{contratGTABean.groupeCompteur}"
+											rowKey="#{compteur.idgrpc}" selectionMode="single"
+											style="border:0px;">
+
+											<f:facet name="header">
+
+												<p:commandButton icon="ui-icon-seek-prev" ajax="true"
+													action="#{contratGTABean.premiersHistoriqueCompteurs()}"
+													update="compteur"></p:commandButton>
+												<p:commandButton icon="ui-icon-carat-1-w" ajax="true"
+													action="#{contratGTABean.precedentHistoriqueCompteurs()}"
+													update="compteur"
+													disabled="#{contratGTABean.precedentGroupeCompteur}"></p:commandButton>
+												<p:commandButton icon="ui-icon-carat-1-e" ajax="true"
+													action="#{contratGTABean.suivantHistoriqueCompteurs()}"
+													update="compteur"
+													disabled="#{contratGTABean.suivantGroupeCompteur}"></p:commandButton>
+												<p:commandButton icon="ui-icon-seek-next" ajax="true"
+													action="#{contratGTABean.derniersHistoriqueCompteurs()}"
+													update="compteur"></p:commandButton>
+												<p:commandButton icon="ui-icon-zoomin"
+													onclick="PF('dialogViewcompteur').show()"
+													update=":formDialogViewcompteur"></p:commandButton>
+												<p:commandButton icon="ui-icon-pencil"
+													onclick="PF('dialogEditcompteur').show()"
+													update=":formDialogEditcompteur"></p:commandButton>
+												<p:commandButton icon="ui-icon-plus"
+													onclick="PF('dialogAddcompteur').show()"
+													update=":formDialogAddcompteur"></p:commandButton>
+												<p:commandButton icon="ui-icon-trash"
+													action="#{contratGTABean.supprimerGroupeCompteurs()}"
+													ajax="true" update="compteur"></p:commandButton>
+
+												<p:selectOneMenu
+													value="#{contratGTABean.nombreSelectionCompteur}">
+													<f:selectItem itemLabel="3" itemValue="3" />
+													<f:selectItem itemLabel="5" itemValue="5" />
+													<f:selectItem itemLabel="10" itemValue="10" />
+													<p:ajax
+														listener="#{contratGTABean.afficherHistoriqueCompteurs()}"
+														update="compteur" />
+												</p:selectOneMenu>
+											</f:facet>
+
+											<p:column headerText="Code Compteur">
+												<h:outputText value="#{compteur.codegrpc}" />
+
+											</p:column>
+
+											<p:column headerText="Date Effet">
+												<h:outputText value="#{compteur.dateeffe}">
+													<f:convertDateTime type="date" dateStyle="medium" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Date fin">
+												<h:outputText value="#{compteur.datefin}" readonly="true">
+													<f:convertDateTime type="date" dateStyle="medium" />
+												</h:outputText>
+											</p:column>
+										</p:dataTable>
+									</p:panel>
+
+
+									<!-- """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" -->
+									<p:panel style="border:0px" header="Groupes Activités">
+
+
+										<p:dataTable id="activite"
+											value="#{contratGTABean.groupeActivites}" var="activite"
+											selection="#{contratGTABean.groupeActivite}"
+											rowKey="#{activite.idgrpa}" selectionMode="single"
+											style="border:0px;">
+
+											<f:facet name="header">
+
+												<p:commandButton icon="ui-icon-seek-prev" ajax="true"
+													action="#{contratGTABean.premiersHistoriqueGroupeActivites()}"
+													update="activite"></p:commandButton>
+												<p:commandButton icon="ui-icon-carat-1-w" ajax="true"
+													action="#{contratGTABean.precedentHistoriqueGroupeActivites()}"
+													update="activite"
+													disabled="#{contratGTABean.precedentGroupeActivite}"></p:commandButton>
+												<p:commandButton icon="ui-icon-carat-1-e" ajax="true"
+													action="#{contratGTABean.suivantHistoriqueGroupeActivites()}"
+													update="activite"
+													disabled="#{contratGTABean.suivantGroupeActivite}"></p:commandButton>
+												<p:commandButton icon="ui-icon-seek-next" ajax="true"
+													action="#{contratGTABean.derniersHistoriqueGroupeActivites()}"
+													update="activite"></p:commandButton>
+												<p:commandButton icon="ui-icon-zoomin"
+													onclick="PF('dialogViewactivite').show()"
+													update=":formDialogViewactivite"></p:commandButton>
+												<p:commandButton icon="ui-icon-pencil"
+													onclick="PF('dialogEditactitvite').show()"
+													update=":formDialogEditactivite"></p:commandButton>
+												<p:commandButton icon="ui-icon-plus"
+													onclick="PF('dialogAddactivite').show()"
+													update=":formDialogAddactivite"></p:commandButton>
+												<p:commandButton icon="ui-icon-trash"
+													action="#{contratGTABean.supprimerGroupeActivites()}"
+													ajax="true" update="activite"></p:commandButton>
+
+												<p:selectOneMenu
+													value="#{contratGTABean.nombreSelectionActivite}">
+													<f:selectItem itemLabel="3" itemValue="3" />
+													<f:selectItem itemLabel="5" itemValue="5" />
+													<f:selectItem itemLabel="10" itemValue="10" />
+													<p:ajax
+														listener="#{contratGTABean.afficherHistoriqueGroupeActivites()}"
+														update="activite" />
+												</p:selectOneMenu>
+											</f:facet>
+
+											<p:column headerText="Code activité ">
+												<h:outputText value="#{activite.codegrpa}" />
+
+											</p:column>
+
+											<p:column headerText="Date Effet">
+												<h:outputText value="#{activite.dateeffe}">
+													<f:convertDateTime type="date" dateStyle="medium" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Date fin">
+												<h:outputText value="#{activite.datefin}" readonly="true">
+													<f:convertDateTime type="date" dateStyle="medium" />
+												</h:outputText>
+											</p:column>
+										</p:dataTable>
+									</p:panel>
+
+									<!-- """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" -->
+									<p:panel style="border:0px" header="Groupes Imputations">
+
+
+										<p:dataTable id="imputation"
+											value="#{contratGTABean.groupeImputations}" var="imputation"
+											selection="#{contratGTABean.groupeImputation}"
+											rowKey="#{imputation.idgrp}" selectionMode="single"
+											style="border:0px;">
+
+											<f:facet name="header">
+
+												<p:commandButton icon="ui-icon-seek-prev" ajax="true"
+													action="#{contratGTABean.premiersHistoriqueGroupesImputations()}"
+													update="imputation"></p:commandButton>
+												<p:commandButton icon="ui-icon-carat-1-w" ajax="true"
+													action="#{contratGTABean.precedentHistoriqueGroupesImputations()}"
+													update="imputation"
+													disabled="#{contratGTABean.precedentGroupeImputation}"></p:commandButton>
+												<p:commandButton icon="ui-icon-carat-1-e" ajax="true"
+													action="#{contratGTABean.suivantHistoriqueGroupesImputations()}"
+													update="imputation"
+													disabled="#{contratGTABean.suivantGroupeImputation}"></p:commandButton>
+												<p:commandButton icon="ui-icon-seek-next" ajax="true"
+													action="#{contratGTABean.derniersHistoriqueGroupesImputations()}"
+													update="imputation"></p:commandButton>
+												<p:commandButton icon="ui-icon-zoomin"
+													onclick="PF('dialogViewimputation').show()"
+													update=":formDialogViewimputation"></p:commandButton>
+												<p:commandButton icon="ui-icon-pencil"
+													onclick="PF('dialogEditimputation').show()"
+													update=":formDialogEditimputation"></p:commandButton>
+												<p:commandButton icon="ui-icon-plus"
+													onclick="PF('dialogAddimputation').show()"
+													update=":formDialogAddimputation"></p:commandButton>
+												<p:commandButton icon="ui-icon-trash"
+													action="#{contratGTABean.supprimerGroupesImputations()}"
+													ajax="true" update="imputation"></p:commandButton>
+
+												<p:selectOneMenu
+													value="#{contratGTABean.nombreSelectionImputation}">
+													<f:selectItem itemLabel="3" itemValue="3" />
+													<f:selectItem itemLabel="5" itemValue="5" />
+													<f:selectItem itemLabel="10" itemValue="10" />
+													<p:ajax
+														listener="#{contratGTABean.afficherHistoriqueGroupesImputations()}"
+														update="imputation" />
+												</p:selectOneMenu>
+											</f:facet>
+
+											<p:column headerText="Code Imputation">
+												<h:outputText value="#{imputation.codegrp}" />
+
+											</p:column>
+
+											<p:column headerText="Date Effet">
+												<h:outputText value="#{imputation.dateeffe}">
+													<f:convertDateTime type="date" dateStyle="medium" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Date fin">
+												<h:outputText value="#{imputation.datefin}">
+													<f:convertDateTime type="date" dateStyle="medium" />
+												</h:outputText>
+											</p:column>
+										</p:dataTable>
+									</p:panel>
+
+									<!-- """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" -->
+
+
+								</p:tab>
+							</div>
+
+							<!-- ##################################### Fin Table##################################################"  -->
+
+						</div>
+					</div>
+				</div>
+				<!-- END WIDGET TABBED CONTENT -->
+			</div>
+		</h:form>
+		<h:form id="form2">
+			<div class="col-md-3">
+
+				<div class="widget widget-table">
+					<div class="widget-header">
+						<h3>
+							<i class="fa fa-users"></i>Liste des collaborteurs
+						</h3>
+					</div>
+					<div class="widget-content">
+
+						<div class="input-group input-group-sm">
+							<h:form id="formSearch">
+								<h:outputLabel value="Matricule:" />
+								<p:inputText value="#{contratGTABean.matricul}"
+									onkeypress="if (event.keyCode == 13) {onchange(); return false; }">
+									<p:ajax event="change"
+										listener="#{contratGTABean.chargerCollaborateurs()}"
+										update=":form2:collaborateurs" />
+								</p:inputText>
+
+								<p:commandButton icon="ui-icon-plus"
+									onclick="PF('DialogAdvancedSearchIdentite').show()"
+									update=":formDialogAdvancedSearchIdentite">
+								</p:commandButton>
+							</h:form>
+						</div>
+						<p:dataTable id="collaborateurs"
+							value="#{contratGTABean.collaborateurs}" var="coll"
+							selection="#{contratGTABean.identite}" rowKey="#{coll.numedoss}"
+							selectionMode="single">
+							<f:facet name="header">
+
+
+							</f:facet>
+							<p:ajax event="rowSelect"
+								listener="#{contratGTABean.rechercher()}" update=":employe" />
+
+							<p:column headerText="nom">
+								<h:outputText value="#{coll.nom}" />
+							</p:column>
+							<p:column headerText="prenom">
+								<h:outputText value="#{coll.prenom}" />
+							</p:column>
+							<p:column headerText="matricule">
+								<h:outputText value="#{coll.matricul}" />
+							</p:column>
+
+						</p:dataTable>
+					</div>
+
+				</div>
+			</div>
+
+
+		</h:form>
+
+		<!-- ********************************************* dialog identite  *********************************************************** -->
+
+		<!-- ********************************************* dialog cycle de travail  *********************************************************** -->
+
+
+		<p:dialog header="Détails Cycle de travail"
+			widgetVar="dialogViewcycle" resizable="false" width="350">
+			<h:form id="formDialogViewcycle">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Code Cycle de Travail" />
+					<p:inputText value="#{contratGTABean.cycleTravail.codect}"
+						readonly="true" />
+					<p:outputLabel value="Code Calendrier" />
+					<p:inputText value="#{contratGTABean.codeCalendrier.code}"
+						readonly="true" />
+					<p:outputLabel value="Element Cycle" />
+					<p:inputText value="#{contratGTABean.cycleTravail.idct}"
+						readonly="true" />
+					<p:outputLabel value="Date d'effet" />
+					<p:inputText value="#{contratGTABean.cycleTravail.dateff}"
+						readonly="true" />
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+
+
+		<p:dialog header="Modifier Cycle de travail"
+			widgetVar="dialogEditcycle" resizable="true" width="350">
+			<h:form id="formDialogEditcycle">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Code Cycle de travail"></p:outputLabel>
+					<p:selectOneMenu value="#{occurenceBean.cycleTravail}"
+						converter="#{cycleTravailConvertor}">
+						<f:selectItem itemLabel="Selectionner" itemValue="" />
+						<f:selectItems value="#{occurenceBean.cycleTravails}" var="cycle"
+							itemLabel="#{cycle.codect}" itemValue="#{cycle}" />
+					</p:selectOneMenu>
+
+
+					<p:outputLabel value="Code Calendrier"></p:outputLabel>
+					<p:selectOneMenu value="#{occurenceBean.codeCalendrier}"
+						converter="#{codeCalendrierConvertor}">
+						<f:selectItem itemLabel="Selectionner" itemValue="" />
+						<f:selectItems value="#{occurenceBean.codeCalendriers}"
+							var="cycle" itemLabel="#{cycle.code}" itemValue="#{cycle}" />
+					</p:selectOneMenu>
+
+
+					<p:outputLabel value="Element du Cycle"></p:outputLabel>
+					<p:selectOneMenu value="#{contratGTABean.nombreSelectionCycle}">
+						<f:selectItem itemLabel="Sem1" itemValue="3" />
+						<f:selectItem itemLabel="Sem2" itemValue="5" />
+						<f:selectItem itemLabel="Sem3" itemValue="10" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Date d'effet"></p:outputLabel>
+					<p:calendar value="#{occurenceBean.cycleTravail.dateff}" />
+
+				</h:panelGrid>
+				<p:commandButton value="Sauvegarder" ajax="true"
+					update=":employe:cycle"
+					action="#{contratGTABean.modifierCycledetravail()}"
+					oncomplete="PF('dialogEditcycle').hide()"></p:commandButton>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Ajouter un Cycle de travail"
+			widgetVar="dialogAddcycle" resizable="false" width="350">
+			<h:form id="formDialogAddcycle">
+				<h:panelGrid columns="2">
+
+					<p:outputLabel value="Code Cycle de travail"></p:outputLabel>
+					<p:selectOneMenu value="#{contratGTABean.cycleTravail}"
+						converter="#{cycleTravailConvertor}">
+						<f:selectItem itemLabel="Selectionner" itemValue="" />
+						<f:selectItems value="#{contratGTABean.cycleTravails}" var="cycle"
+							itemLabel="#{cycle.codect}" itemValue="#{cycle}" />
+					</p:selectOneMenu>
+
+
+					<p:outputLabel value="Code Calendrier"></p:outputLabel>
+
+					<!-- 	<p:selectOneMenu value="#{contratGTABean.codeCalendrier}"
+						converter="#{codeCalendrierConvertor}">
+						<f:selectItem itemLabel="Selectionner" itemValue="" />
+						<f:selectItems value="#{contratGTABean.codeCalendriers}"
+							var="codecalendrier" itemLabel="#{codecalendrier.code}"
+							itemValue="#{codecalendrier.idCalendrier}" />
+					</p:selectOneMenu> -->
+
+
+					<p:outputLabel value="Element du Cycle"></p:outputLabel>
+					<p:selectOneMenu value="#{contratGTABean.nombreSelectionCycle}">
+						<f:selectItem itemLabel="Sem1" itemValue="3" />
+						<f:selectItem itemLabel="Sem2" itemValue="5" />
+						<f:selectItem itemLabel="Sem3" itemValue="10" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Date d'effet"></p:outputLabel>
+					<p:calendar value="#{contratGTABean.cycleTravail.dateff}" />
+
+
+				</h:panelGrid>
+				<p:commandButton value="Sauvegarder" ajax="true"
+					update=":employe:cycle"
+					action="#{contratGTABean.ajoutcycledetravail()}"
+					oncomplete="PF('dialogAddcycle').hide()"></p:commandButton>
+			</h:form>
+		</p:dialog>
+
+		<!-- ********************************************* dialog soumission GTA  *********************************************************** -->
+
+
+		<p:dialog header="Détails Soumission GTA" widgetVar="dialogViewgta"
+			resizable="false" width="350">
+			<h:form id="formDialogViewgta">
+				<h:panelGrid columns="2">
+
+					<p:outputLabel value="soumis GTA ?" />
+					<p:inputText value="#{contratGTABean.soumissonGta.gta}" readonly="true" />
+
+					<p:outputLabel value="Type de Gestion" />
+					<p:inputText value="#{contratGTABean.soumissonGta.natureHeure}"
+						readonly="true" />
+
+					<p:outputLabel value="Date D'effet Soumission Gta" />
+					<p:inputText value="#{contratGTABean.soumissonGta.dateeffe}" readonly="true" />
+					<p:outputLabel value="Date Fin Soumission Gta" />
+					<p:inputText value="#{contratGTABean.soumissonGta.datefin}" readonly="true" />
+
+					<p:outputLabel value="soumis Pointage ?" />
+					<p:inputText value="#{contratGTABean.soumissonGta.pointage}"
+						readonly="true" />
+
+					<p:outputLabel value="Date D'effet Soumission Pointage" />
+					<p:inputText value="#{contratGTABean.soumissonGta.dateEffet2}"
+						readonly="true" />
+
+					<p:outputLabel value="Date Fin Soumission Pointage" />
+					<p:inputText value="#{contratGTABean.soumissonGta.dateFin2}"
+						readonly="true" />
+
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+
+
+		<p:dialog header="Modifier Soumission GTA" widgetVar="dialogEditgta"
+			resizable="false" width="350">
+			<h:form id="formDialogEditgta">
+				<h:panelGrid columns="2">
+
+					<p:outputLabel value="Soumis GTA ?"></p:outputLabel>
+					<p:selectOneMenu value="#{contratGTABean.soumissonGta.gta}">
+						<f:selectItem itemLabel="oui" itemValue="oui" />
+						<f:selectItem itemLabel="non" itemValue="non" />
+					</p:selectOneMenu>
+					<p:outputLabel value="Type De Gestion"></p:outputLabel>
+					<h:selectOneRadio
+						value="#{contratGTABean.soumissonGta.natureHeure}">
+						<f:selectItem id="item1" itemLabel="Heure" itemValue="h" />
+						<f:selectItem id="item2" itemLabel="Durée" itemValue="d" />
+					</h:selectOneRadio>
+
+					<p:outputLabel value="Date d'effet"></p:outputLabel>
+					<p:calendar value="#{contratGTABean.soumissonGta.dateeffe}" />
+					<p:outputLabel value="Date Fin "></p:outputLabel>
+					<p:calendar value="#{contratGTABean.soumissonGta.datefin}" />
+					<p:outputLabel value="Soumis au pointeuse ?"></p:outputLabel>
+					<p:selectOneMenu value="#{contratGTABean.soumissonGta.pointage}">
+						<f:selectItem itemLabel="oui" itemValue="oui" />
+						<f:selectItem itemLabel="non" itemValue="non" />
+					</p:selectOneMenu>
+
+					<h:form>
+						<p:outputLabel value="Terminaux Mobiles"></p:outputLabel>
+						<h:dataTable id="tblFields" value="#{bean.fields}" var="field">
+
+
+							<h:column>
+								<p:inputText size="10" value="#{bean.heure}" />
+							</h:column>
+
+							<h:column>
+								<p:commandButton icon="ui-icon-trash">
+									<f:ajax listener="#{bean.onButtonRemoveFieldClick(field)}"
+										immediate="true" render="@form" />
+								</p:commandButton>
+							</h:column>
+						</h:dataTable>
+						<p:commandButton icon="ui-icon-plus">
+							<f:ajax listener="#{bean.onButtonAddFieldClick}" execute="@form"
+								render="tblFields" />
+						</p:commandButton>
+					</h:form>
+
+					<p:outputLabel value="Date d'effet "></p:outputLabel>
+					<p:calendar value="#{contratGTABean.soumissonGta.dateEffet2}" />
+
+					<p:outputLabel value="Date Fin "></p:outputLabel>
+					<p:calendar value="#{contratGTABean.soumissonGta.dateFin2}" />
+
+				</h:panelGrid>
+				<p:commandButton value="Sauvegarder" ajax="true"
+					update=":employe:gta"
+					action="#{contratGTABean.modifierSoumissionGTA()}"
+					oncomplete="PF('dialogEditgta').hide()"></p:commandButton>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Ajouter Soumission GTA" widgetVar="dialogAddgta"
+			resizable="false" width="350">
+			<h:form id="formDialogAddgta">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Soumis GTA ?"></p:outputLabel>
+					<p:selectOneMenu value="#{contratGTABean.newsoumissionGta.gta}">
+						<f:selectItem itemLabel="oui" itemValue="true" />
+						<f:selectItem itemLabel="non" itemValue="false" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Type De Gestion"></p:outputLabel>
+					<h:selectOneRadio
+						value="#{contratGTABean.newsoumissionGta.natureHeure}">
+						<f:selectItem id="item1" itemLabel="Heure" itemValue="h" />
+						<f:selectItem id="item2" itemLabel="Durée" itemValue="d" />
+					</h:selectOneRadio>
+					<p:outputLabel value="Date d'effet"></p:outputLabel>
+					<p:calendar value="#{contratGTABean.newsoumissionGta.dateeffe}" />
+					<p:outputLabel value="Date Fin "></p:outputLabel>
+					<p:calendar value="#{contratGTABean.newsoumissionGta.datefin}" />
+
+
+					<p:outputLabel value="Soumis au pointeuse ?"></p:outputLabel>
+					<p:selectOneMenu
+						value="#{contratGTABean.newsoumissionGta.pointage}">
+						<f:selectItem itemLabel="oui" itemValue="true" />
+						<f:selectItem itemLabel="non" itemValue="false" />
+					</p:selectOneMenu>
+
+				<h:form>
+		    <p:selectManyCheckbox value="#{contratGTABean.checkedValues}" layout="pageDirection">
+		        <f:selectItems value="#{contratGTABean.availableValues}"  />
+		    </p:selectManyCheckbox>
+		    <h:commandButton value="submit" action="#{contratGTABean.submit()}" />
+		</h:form>
+					
+
+					<p:outputLabel value="Date d'effet "></p:outputLabel>
+					<p:calendar value="#{contratGTABean.newsoumissionGta.dateEffet2}" />
+
+					<p:outputLabel value="Date Fin "></p:outputLabel>
+					<p:calendar value="#{contratGTABean.newsoumissionGta.dateFin2}" />
+
+				</h:panelGrid>
+				<p:commandButton value="Sauvegarder" ajax="true"
+					update=":employe:gta"
+					action="#{contratGTABean.ajouterSoumissionGTA()}"
+					oncomplete="PF('dialogAddgta').hide()"></p:commandButton>
+			</h:form>
+		</p:dialog>
+
+		<!-- ********************************************* dialog Classe Emplye *********************************************************** -->
+
+
+		<p:dialog header="Détails Classe Employe" widgetVar="dialogViewclasse"
+			resizable="false" width="350">
+			<h:form id="formDialogViewclasse">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Code Classe Employe" />
+					<p:inputText value="#{contratGTABean.classeEmp.codeClasse}"
+						readonly="true" />
+					<p:outputLabel value="Date d'effet" />
+					<p:inputText value="#{contratGTABean.classeEmp.dateeffet}"
+						readonly="true" />
+					<p:outputLabel value="Element Cycle" />
+					<p:inputText value="#{contratGTABean.classeEmp.dateFin}"
+						readonly="true" />
+					
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+
+
+		<p:dialog header="Modifier Classe Employe"
+			widgetVar="dialogEditclasse" resizable="false" width="350">
+			<h:form id="formDialogEditclasse">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Code Clase Emp" />
+					<p:inputText value="#{contratGTABean.classeEmp.codeClasse}" />
+
+					<p:outputLabel value="Date d'affectation" />
+					<p:calendar value="#{contratGTABean.classeEmp.dateeffet}" />
+
+					<p:outputLabel value="Date de fin" />
+					<p:calendar value="#{contratGTABean.classeEmp.dateFin}" />
+
+				</h:panelGrid>
+				<p:commandButton value="Sauvegarder" ajax="true"
+					update=":employe:classe"
+					action="#{contratGTABean.modifierClasseEmp()}"
+					oncomplete="PF('dialogEditclasse').hide()"></p:commandButton>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Ajouter  Classe Employe"
+			widgetVar="dialogAddclasse" resizable="false" width="350">
+			<h:form id="formDialogAddclasse">
+				<h:panelGrid columns="2">
+				<p:outputLabel value="Code Classe Employe" />
+					<p:inputText value="#{contratGTABean.newclasseEmp.codeClasse}" />
+
+					<p:outputLabel value="Date d'affet" />
+					<p:calendar value="#{contratGTABean.newclasseEmp.dateeffet}" />
+
+					<p:outputLabel value="Date de fin" />
+					<p:calendar value="#{contratGTABean.newclasseEmp.dateFin}" />
+				</h:panelGrid>
+				<p:commandButton value="Sauvegarder" ajax="true"
+					update=":employe:classe" action="#{contratGTABean.ajouterClasseEmp()}"
+					oncomplete="PF('dialogAddclasse').hide()"></p:commandButton>
+			</h:form>
+		</p:dialog>
+
+		<!-- ********************************************* dialog Groupe Compteur  *********************************************************** -->
+
+
+		<p:dialog header="Détails Groupes Compteurs"
+			widgetVar="dialogViewcompteur" resizable="false" width="350">
+			<h:form id="formDialogViewcompteur">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Code Groupe Compteurs" />
+					<p:inputText value="#{contratGTABean.groupeCompteur.codegrpc}"
+						readonly="true" />
+
+					<p:outputLabel value="Date d'affectation" />
+					<p:inputText value="#{contratGTABean.groupeCompteur.dateeffe}"
+						readonly="true" />
+					<p:outputLabel value="Date de fin" />
+					<p:inputText value="#{contratGTABean.groupeCompteur.datefin}"
+						readonly="true" />
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+
+
+		<p:dialog header="Modifier Groupe Compteur"
+			widgetVar="dialogEditcompteur" resizable="false" width="350">
+			<h:form id="formDialogEditcompteur">
+				<h:panelGrid>
+					<p:outputLabel value="Code Groupe Compteur" />
+					<p:inputText value="#{contratGTABean.groupeCompteur.codegrpc}" />
+
+					<p:outputLabel value="Date d'affectation" />
+					<p:calendar value="#{contratGTABean.groupeCompteur.dateeffe}" />
+
+					<p:outputLabel value="Date de fin" />
+					<p:calendar value="#{contratGTABean.groupeCompteur.datefin}" />
+
+
+				</h:panelGrid>
+				<p:commandButton value="Sauvegarder" ajax="true"
+					update=":employe:compteur"
+					action="#{contratGTABean.modifierGroupeCompteurs()}"
+					oncomplete="PF('dialogEditcompteur').hide()"></p:commandButton>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Ajouter Groupe Compteur"
+			widgetVar="dialogAddcompteur" resizable="false" width="350">
+			<h:form id="formDialogAddcompteur">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Code Groupe Compteur" />
+					<p:inputText value="#{contratGTABean.newgroupeCompteur.codegrpc}" />
+
+					<p:outputLabel value="Date d'affectation" />
+					<p:calendar value="#{contratGTABean.newgroupeCompteur.dateeffe}" />
+
+					<p:outputLabel value="Date de fin" />
+					<p:calendar value="#{contratGTABean.newgroupeCompteur.datefin}" />
+				</h:panelGrid>
+				<p:commandButton value="Sauvegarder" ajax="true"
+					update=":employe:compteur"
+					action="#{contratGTABean.ajouterGroupeCompteurs()}"
+					oncomplete="PF('dialogAddcompteur').hide()"></p:commandButton>
+			</h:form>
+		</p:dialog>
+
+		<!-- ********************************************* dialog Autres activite  *********************************************************** -->
+
+
+		<p:dialog header="Détails groupes Activités"
+			widgetVar="dialogViewactivite" resizable="false" width="350">
+			<h:form id="formDialogViewactivite">
+				<h:panelGrid>
+					<p:outputLabel value="Code Groupe Activite" />
+
+					<p:inputText value="#{contratGTABean.groupeActivite.codegrpa}"
+						readonly="true" />
+
+					<p:outputLabel value="Date d'affectation" />
+					<p:inputText value="#{contratGTABean.groupeActivite.dateeffe}"
+						readonly="true" />
+					<p:outputLabel value="Date de fin" />
+					<p:inputText value="#{contratGTABean.groupeActivite.datefin}"
+						readonly="true" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+
+		<p:dialog header="Modifier groupes Activités"
+			widgetVar="dialogEditactitvite" resizable="false" width="350">
+			<h:form id="formDialogEditactivite">
+				<h:panelGrid>
+					<p:outputLabel value="Code Groupe Activite" />
+					<p:inputText value="#{contratGTABean.groupeActivite.codegrpa}" />
+
+					<p:outputLabel value="Date d'affectation" />
+					<p:calendar value="#{contratGTABean.groupeActivite.dateeffe}" />
+
+					<p:outputLabel value="Date de fin" />
+					<p:calendar value="#{contratGTABean.groupeActivite.datefin}" />
+
+				</h:panelGrid>
+				<p:commandButton value="Sauvegarder" ajax="true"
+					update=":employe:activite"
+					action="#{contratGTABean.modifierGroupeActivites()}"
+					oncomplete="PF('dialogEditactivite').hide()"></p:commandButton>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Ajouter groupes activité "
+			widgetVar="dialogAddactivite" resizable="false" width="350">
+			<h:form id="formDialogAddactivite">
+				<h:panelGrid>
+					<p:outputLabel value="Code Groupe Activite" />
+					<p:inputText value="#{contratGTABean.newgroupeActivite.codegrpa}" />
+
+					<p:outputLabel value="Date d'affectation" />
+					<p:calendar value="#{contratGTABean.newgroupeActivite.dateeffe}" />
+
+					<p:outputLabel value="Date de fin" />
+					<p:calendar value="#{contratGTABean.newgroupeActivite.datefin}" />
+
+				</h:panelGrid>
+				<p:commandButton value="Sauvegarder" ajax="true"
+					update=":employe:activite"
+					action="#{contratGTABean.ajouterGroupeActivites()}"
+					oncomplete="PF('dialogAddactivite').hide()"></p:commandButton>
+			</h:form>
+		</p:dialog>
+
+
+		<!-- ********************************************* dialog groupe imputation  *********************************************************** -->
+
+
+		<p:dialog header="Détails Imputation" widgetVar="dialogViewimputation"
+			resizable="false" width="350">
+			<h:form id="formDialogViewimputation">
+				<h:panelGrid columns="2">
+
+					<p:outputLabel value="Code Groupe Imputation" />
+					<p:inputText value="#{contratGTABean.groupeImputation.codegrp}"
+						readonly="true" />
+
+					<p:outputLabel value="Date d'affectation" />
+					<p:inputText value="#{contratGTABean.groupeImputation.dateeffe}"
+						readonly="true" />
+					<p:outputLabel value="Date de fin" />
+					<p:inputText value="#{contratGTABean.groupeImputation.datefin}"
+						readonly="true" />
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+
+
+		<p:dialog header="Modifier Imputation"
+			widgetVar="dialogEditimputation" resizable="false" width="350">
+			<h:form id="formDialogEditimputation">
+				<h:panelGrid>
+					<p:outputLabel value="Code Groupe Imputation" />
+					<p:inputText value="#{contratGTABean.groupeImputation.codegrp}" />
+
+					<p:outputLabel value="Date d'affectation" />
+					<p:calendar value="#{contratGTABean.groupeImputation.dateeffe}" />
+
+					<p:outputLabel value="Date de fin" />
+					<p:calendar value="#{contratGTABean.groupeImputation.datefin}" />
+
+
+				</h:panelGrid>
+				<p:commandButton value="Sauvegarder" ajax="true"
+					update=":employe:imputation"
+					action="#{contratGTABean.modifierGroupesImputations()}"
+					oncomplete="PF('dialogEditimputation').hide()"></p:commandButton>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Ajouter Imputation" widgetVar="dialogAddimputation"
+			resizable="false" width="350">
+			<h:form id="formDialogAddimputation">
+				<h:panelGrid>
+					<p:outputLabel value="Code Groupe Imputation" />
+					<p:inputText value="#{contratGTABean.newgroupeImputation.codegrp}" />
+					<p:outputLabel value="Date d'affectation" />
+					<p:calendar value="#{contratGTABean.newgroupeImputation.dateeffe}" />
+
+					<p:outputLabel value="Date de fin" />
+					<p:calendar value="#{contratGTABean.newgroupeImputation.datefin}" />
+				</h:panelGrid>
+				<p:commandButton value="Sauvegarder" ajax="true"
+					update=":employe:imputation"
+					action="#{contratGTABean.ajouterGroupesImputations()}"
+					oncomplete="PF('dialogAddimputation').hide()"></p:commandButton>
+			</h:form>
+		</p:dialog>
+
+		<!-- ********************************************* recherche avancée *********************************************************** -->
+
+
+
+
+		<p:dialog header="Recherche Avancée"
+			widgetVar="DialogAdvancedSearchIdentite" resizable="false"
+			width="400">
+			<h:form id="formDialogAdvancedSearchIdentite">
+
+				<p:accordionPanel>
+					<p:tab title="Identite">
+
+						<h:panelGrid columns="2">
+
+
+						</h:panelGrid>
+					</p:tab>
+					<p:tab title="Affectation">
+						<h:panelGrid column="2">
+
+						</h:panelGrid>
+					</p:tab>
+				</p:accordionPanel>
+				<p:commandButton value="Reset"
+					action="#{contratGTABean.resetSearch()}" ajax="true"
+					update="formDialogAdvancedSearchIdentite" />
+			</h:form>
+		</p:dialog>
+		<!--  ##################################################################  -->
+	</ui:define>
+</ui:composition>
+
+</html>

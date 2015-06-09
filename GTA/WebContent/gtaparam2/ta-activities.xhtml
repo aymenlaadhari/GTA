@@ -1,0 +1,1785 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:html5="http://java.sun.com/jsf/passthrough"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/MainContent.xhtml">
+
+	<ui:define name="Content">
+		<h:form id="form1">
+			<!-- WIDGET TABBED CONTENT -->
+
+			<div class="col-md-8" style="width: 85%">
+				<div class="widget">
+					<div class="widget-header-in">
+
+						<ul class="nav nav-tabs pull-right">
+							<li><button class="btn btn-default  btn-primary ">
+									<i class="fa fa-file-pdf-o"></i> Export to pdf
+								</button></li>
+							<li><button class="btn btn-default btn-primary ">
+									<i class="fa fa-print"></i> Print
+								</button></li>
+						</ul>
+
+						<ul class="nav nav-tabs">
+
+							<li class="active"><a href="#tab1" data-toggle="tab"><i
+									class="fa fa-cubes"></i><span>Activités</span></a></li>
+							<li><a href="#tab2" data-toggle="tab"><i
+									class="fa fa-folder"></i><span>Groupe Activités</span></a></li>
+							<li><a href="#tab3" data-toggle="tab"><i
+									class="fa fa-credit-card"></i><span>Imputations</span></a></li>
+							<li><a href="#tab4" data-toggle="tab"><i
+									class="fa fa-credit-card"></i><span>Groupe Imputations</span></a></li>
+							<li><a href="#tab5" data-toggle="tab"><i
+									class="fa fa-credit-card"></i><span>Type Pointage</span></a></li>
+							<li><a href="#tab6" data-toggle="tab"><i
+									class="fa fa-credit-card"></i><span>Terminaux Pointage</span></a></li>
+
+						</ul>
+
+					</div>
+
+					<div class="widget-content">
+						<div class="tab-content no-padding">
+							<p:messages showDetail="true" autoUpdate="true" closable="true"
+								id="msg1" style="position: fixed; align: center; width: 65%" />
+							<div class="tab-pane fade in active" id="tab1">
+
+								<!-- ////////// Debut  Gestion des activités de type presence  ////////// -->
+
+								<p:panel header="Activités en presence" style="border:0px">
+
+									<p:dataTable id="activpretable"
+										value="#{activitePresenceBean.activitePresences}"
+										var="activpres"
+										selection="#{activitePresenceBean.selectedActivitePresence}"
+										rowKey="#{activpres.idap}" selectionMode="single"
+										paginator="true"
+										paginatorTemplate="{PreviousPageLink} {NextPageLink} {RowsPerPageDropdown}"
+										rowsPerPageTemplate="3,5,10" paginatorPosition="top" rows="5">
+
+										<p:ajax event="rowSelect"
+											listener="#{activitePresenceBean.onRowSelectDataTable()}"
+											update="activpretable" />
+
+										<f:facet name="header" id="headerButtonActPre">
+
+											<p:commandButton icon="ui-icon-zoomin"
+												onclick="PF('DialogViewActPre').show()"
+												update=":formDialogViewActPre"
+												disabled="#{activitePresenceBean.headerButtonsDisabled}" />
+
+											<p:commandButton icon="ui-icon-plus"
+												onclick="PF('DialogAddActPre').show();"
+												update=":formDialogAddActPre" />
+
+											<p:commandButton icon="ui-icon-pencil"
+												onclick="PF('DialogEditActPre').show();"
+												update=":formDialogEditActPre"
+												disabled="#{activitePresenceBean.headerButtonsDisabled}" />
+
+											<p:commandButton icon="ui-icon-trash" ajax="true"
+												action="#{activitePresenceBean.supprimerActivitePresence()}"
+												update="activpretable"
+												disabled="#{activitePresenceBean.headerButtonsDisabled}" />
+
+										</f:facet>
+
+										<p:column headerText="Code" style="text-align: center;">
+											<h:outputText value="#{activpres.codeap}" />
+										</p:column>
+										<p:column headerText="Libellé" style="text-align: center;">
+											<h:outputText value="#{activpres.libelles.get(0).lib}" />
+										</p:column>
+										<p:column headerText="Poids" style="text-align: center;">
+											<h:outputText value="#{activpres.poids}" />
+										</p:column>
+
+									</p:dataTable>
+								</p:panel>
+
+								<!-- //////////  Fin  Gestion des activités en presence ////////// -->
+
+								<!-- ************************************************************************************ -->
+
+								<!-- ////////// Debut Gestion des activités de type Absence  ////////// -->
+
+								<p:panel header="Activités en Absence" id="panelActiviteAbs"
+									style="border:0px">
+									<p:dataTable id="activabstable"
+										value="#{activiteAbsenceBean.activiteAbsences}" var="activabs"
+										selection="#{activiteAbsenceBean.selectedActiviteAbsence}"
+										rowKey="#{activabs.idaabs}" selectionMode="single"
+										paginator="true"
+										paginatorTemplate="{PreviousPageLink} {NextPageLink} {RowsPerPageDropdown}"
+										rowsPerPageTemplate="3,5,10" paginatorPosition="top" rows="5">
+
+										<p:ajax event="rowSelect"
+											listener="#{activiteAbsenceBean.onRowSelectDataTable()}"
+											update="activabstable" />
+
+										<f:facet name="header">
+
+											<p:commandButton icon="ui-icon-zoomin"
+												onclick="PF('DialogViewActAbs').show()"
+												update=":formDialogViewActAbs"
+												disabled="#{activiteAbsenceBean.headerButtonsDisabled}" />
+
+											<p:commandButton icon="ui-icon-plus"
+												onclick="PF('DialogAddActAbs').show();"
+												update=":formDialogAddActAbs" />
+
+											<p:commandButton icon="ui-icon-pencil"
+												onclick="PF('DialogEditActAbs').show();"
+												update=":formDialogEditActAbs"
+												disabled="#{activiteAbsenceBean.headerButtonsDisabled}" />
+
+											<p:commandButton icon="ui-icon-trash" ajax="true"
+												action="#{activiteAbsenceBean.supprimerActiviteAbsence()}"
+												update="activabstable"
+												disabled="#{activiteAbsenceBean.headerButtonsDisabled}" />
+
+										</f:facet>
+
+										<p:column headerText="Code" style="text-align: center;">
+											<h:outputText value="#{activabs.codeaabs}" />
+										</p:column>
+										<p:column headerText="Libellé" style="text-align: center;">
+											<h:outputText value="#{activabs.libelles.get(0).lib}" />
+										</p:column>
+										<p:column headerText="Poids" style="text-align: center;">
+											<h:outputText value="#{activabs.poids}" />
+										</p:column>
+
+									</p:dataTable>
+								</p:panel>
+
+								<!-- //////////  Fin  Gestion des activités en Absence ////////// -->
+							</div>
+
+							<div class="tab-pane fade" id="tab2">
+
+								<!-- //////////  Debut Gestion groupes d'activités ////////// -->
+
+								<p:panel header="Groupes activités" style="border:0px;">
+									<p:dataTable id="groupeActiviteDataTable"
+										value="#{groupeActiviteBean.groupeActivites}" var="grpAct"
+										selection="#{groupeActiviteBean.selectedGroupeActivite}"
+										rowKey="#{grpAct.idgrpa}" selectionMode="single"
+										paginator="true"
+										paginatorTemplate="{PreviousPageLink} {NextPageLink} {RowsPerPageDropdown}"
+										rowsPerPageTemplate="3,5,10" paginatorPosition="top" rows="5">
+
+										<p:ajax event="rowSelect"
+											listener="#{groupeActiviteBean.onRowSelectDataTable()}"
+											update="groupeActiviteDataTable" />
+
+										<f:facet name="header">
+
+											<p:commandButton icon="ui-icon-zoomin"
+												onclick="PF('DialogViewGroupeActivite').show()"
+												update=":formDialogViewGroupeActivite"
+												actionListener="#{groupeActiviteBean.detailsGroupeActivite()}"
+												disabled="#{groupeActiviteBean.headerButtonsDisabled}" />
+
+											<p:commandButton icon="ui-icon-plus"
+												onclick="PF('DialogAddGroupeActivite').show();"
+												update=":formDialogAddGroupeActivite"
+												actionListener="#{groupeActiviteBean.commandAddGroupe()}" />
+
+											<p:commandButton icon="ui-icon-pencil"
+												onclick="PF('DialogEditGroupeActivite').show();"
+												update=":formDialogEditGroupeActivite"
+												actionListener="#{groupeActiviteBean.commandEditGroupe()}"
+												disabled="#{groupeActiviteBean.headerButtonsDisabled}" />
+
+											<p:commandButton icon="ui-icon-trash" ajax="true"
+												action="#{groupeActiviteBean.supprimerGroupeAct()}"
+												update="groupeActiviteDataTable"
+												disabled="#{groupeActiviteBean.headerButtonsDisabled}" />
+
+										</f:facet>
+
+										<p:column headerText="Code" style="text-align: center;">
+											<h:outputText value="#{grpAct.codegrpa}" />
+										</p:column>
+
+										<p:column headerText="Libellé" style="text-align: center;">
+											<h:outputText value="#{grpAct.libelles.get(0).lib}" />
+										</p:column>
+
+										<p:column headerText="Date effet" style="text-align: center;">
+											<h:outputText value="#{grpAct.dateff}" />
+										</p:column>
+
+										<p:column headerText="Date fin" style="text-align: center;">
+											<h:outputText value="#{grpAct.datefin}" />
+										</p:column>
+									</p:dataTable>
+								</p:panel>
+
+								<!-- //////////  Fin Gestion groupes activités ////////// -->
+
+							</div>
+
+							<div class="tab-pane fade" id="tab3">
+
+								<!-- //////////  Debut Gestion des Imputations ////////// -->
+
+								<p:panel header="Imputations" style="border:0px">
+									<p:dataTable id="imputaDataTable"
+										value="#{imputationBean.imputations}" var="imputa"
+										selection="#{imputationBean.selectedImputation}"
+										rowKey="#{imputa.idi}" selectionMode="single" paginator="true"
+										paginatorTemplate="{PreviousPageLink} {NextPageLink} {RowsPerPageDropdown}"
+										rowsPerPageTemplate="3,5,10" paginatorPosition="top" rows="5">
+
+										<p:ajax event="rowSelect"
+											listener="#{imputationBean.onRowSelectDataTable()}"
+											update="imputaDataTable" />
+
+										<f:facet name="header">
+
+											<p:commandButton icon="ui-icon-zoomin"
+												onclick="PF('DialogViewImputa').show()"
+												update=":formDialogViewImputa"
+												disabled="#{imputationBean.headerButtonsDisabled}" />
+
+											<p:commandButton icon="ui-icon-plus"
+												onclick="PF('DialogAddImputa').show();"
+												update=":formDialogAddImputa" />
+
+											<p:commandButton icon="ui-icon-pencil"
+												onclick="PF('DialogEditImputa').show();"
+												update=":formDialogEditImputa"
+												disabled="#{imputationBean.headerButtonsDisabled}" />
+
+											<p:commandButton icon="ui-icon-trash" ajax="true"
+												action="#{imputationBean.supprimerImputation()}"
+												update="imputaDataTable"
+												disabled="#{imputationBean.headerButtonsDisabled}" />
+
+										</f:facet>
+
+										<p:column headerText="Code" style="text-align: center;">
+											<h:outputText value="#{imputa.codei}" />
+										</p:column>
+										<p:column headerText="Libellé" style="text-align: center;">
+											<h:outputText value="#{imputa.libelles.get(0).lib}" />
+										</p:column>
+										<p:column headerText="Compte" style="text-align: center;">
+											<h:outputText value="#{imputa.imputaCompte.code}" />
+										</p:column>
+										<p:column headerText="Sous Compte" style="text-align: center;">
+											<h:outputText value="#{imputa.imputaSousCompte.code}" />
+										</p:column>
+										<p:column headerText="Code Facturation"
+											style="text-align: center;">
+											<h:outputText value="#{imputa.imputaCodeFact.code}" />
+										</p:column>
+										<p:column headerText="Centre Coût" style="text-align: center;">
+											<h:outputText value="#{imputa.imputaCentreCout.code}" />
+										</p:column>
+
+									</p:dataTable>
+								</p:panel>
+
+								<!-- //////////  Fin Gestion des Imputations ////////// -->
+
+								<!-- ************************************************************************************ -->
+
+								<!-- //////////  Debut Gestion des Imputa Compte ////////// -->
+
+								<p:panel header="Comptes" style="border:0px">
+									<p:dataTable id="imputaCompteDataTable"
+										value="#{imputaCompteBean.imputaComptes}" var="imputaCompte"
+										selection="#{imputaCompteBean.selectedImputaCompte}"
+										rowKey="#{imputaCompte.id}" selectionMode="single"
+										paginator="true"
+										paginatorTemplate="{PreviousPageLink} {NextPageLink} {RowsPerPageDropdown}"
+										rowsPerPageTemplate="3,5,10" paginatorPosition="top" rows="5">
+
+										<p:ajax event="rowSelect"
+											listener="#{imputaCompteBean.onRowSelectDataTable()}"
+											update="imputaCompteDataTable" />
+
+										<f:facet name="header">
+
+											<p:commandButton icon="ui-icon-zoomin"
+												onclick="PF('DialogViewImputaCompte').show()"
+												update=":formDialogViewImputaCompte"
+												disabled="#{imputaCompteBean.headerButtonsDisabled}" />
+
+											<p:commandButton icon="ui-icon-plus"
+												onclick="PF('DialogAddImputaCompte').show();"
+												update=":formDialogAddImputaCompte" />
+
+											<p:commandButton icon="ui-icon-pencil"
+												onclick="PF('DialogEditImputaCompte').show();"
+												update=":formDialogEditImputaCompte"
+												disabled="#{imputaCompteBean.headerButtonsDisabled}" />
+
+											<p:commandButton icon="ui-icon-trash" ajax="true"
+												action="#{imputaCompteBean.supprimerImputaCompte()}"
+												update="imputaCompteDataTable"
+												disabled="#{imputaCompteBean.headerButtonsDisabled}" />
+
+										</f:facet>
+
+										<p:column headerText="Code" style="text-align: center;">
+											<h:outputText value="#{imputaCompte.code}" />
+										</p:column>
+										<p:column headerText="Libellé" style="text-align: center;">
+											<h:outputText value="#{imputaCompte.libelles.get(0).lib}" />
+										</p:column>
+									</p:dataTable>
+								</p:panel>
+
+								<!-- //////////  Fin Gestion des Imputa Compte ////////// -->
+
+								<!-- ************************************************************************************ -->
+
+								<!-- //////////  Debut Gestion des Imputa Sous Compte ////////// -->
+
+								<p:panel header="Sous Comptes" style="border:0px">
+									<p:dataTable id="imputaSousCompteDataTable"
+										value="#{imputaSousCompteBean.imputaSousComptes}"
+										var="imputaSousCompte"
+										selection="#{imputaSousCompteBean.selectedImputaSousCompte}"
+										rowKey="#{imputaSousCompte.id}" selectionMode="single"
+										paginator="true"
+										paginatorTemplate="{PreviousPageLink} {NextPageLink} {RowsPerPageDropdown}"
+										rowsPerPageTemplate="3,5,10" paginatorPosition="top" rows="5">
+
+										<p:ajax event="rowSelect"
+											listener="#{imputaSousCompteBean.onRowSelectDataTable()}"
+											update="imputaSousCompteDataTable" />
+
+
+										<f:facet name="header">
+
+											<p:commandButton icon="ui-icon-zoomin"
+												onclick="PF('DialogViewImputaSousCompte').show()"
+												update=":formDialogViewImputaSousCompte"
+												disabled="#{imputaSousCompteBean.headerButtonsDisabled}" />
+
+											<p:commandButton icon="ui-icon-plus"
+												onclick="PF('DialogAddImputaSousCompte').show();"
+												update=":formDialogAddImputaSousCompte" />
+
+											<p:commandButton icon="ui-icon-pencil"
+												onclick="PF('DialogEditImputaSousCompte').show();"
+												update=":formDialogEditImputaSousCompte"
+												disabled="#{imputaSousCompteBean.headerButtonsDisabled}" />
+
+											<p:commandButton icon="ui-icon-trash" ajax="true"
+												action="#{imputaSousCompteBean.supprimerImputaSousCompte()}"
+												update="imputaSousCompteDataTable"
+												disabled="#{imputaSousCompteBean.headerButtonsDisabled}" />
+
+										</f:facet>
+
+										<p:column headerText="Code" style="text-align: center;">
+											<h:outputText value="#{imputaSousCompte.code}" />
+										</p:column>
+										<p:column headerText="Libellé" style="text-align: center;">
+											<h:outputText value="#{imputaSousCompte.libelles.get(0).lib}" />
+										</p:column>
+									</p:dataTable>
+								</p:panel>
+
+								<!-- //////////  Fin
+													   Gestion des Imputa Sous Compte ////////// -->
+
+								<!-- ************************************************************************************ -->
+
+								<!-- //////////  Debut Gestion des Imputa Code Facturation ////////// -->
+
+								<p:panel header="Codes Facturation" style="border:0px">
+									<p:dataTable id="imputaCodeFactDataTable"
+										value="#{imputaCodeFactBean.imputaCodeFacts}"
+										var="imputaCodeFact"
+										selection="#{imputaCodeFactBean.selectedImputaCodeFact}"
+										rowKey="#{imputaCodeFact.id}" selectionMode="single"
+										paginator="true"
+										paginatorTemplate="{PreviousPageLink} {NextPageLink} {RowsPerPageDropdown}"
+										rowsPerPageTemplate="3,5,10" paginatorPosition="top" rows="5">
+
+										<p:ajax event="rowSelect"
+											listener="#{imputaCodeFactBean.onRowSelectDataTable()}"
+											update="imputaCodeFactDataTable" />
+
+										<f:facet name="header">
+
+											<p:commandButton icon="ui-icon-zoomin"
+												onclick="PF('DialogViewImputaCodeFact').show()"
+												update=":formDialogViewImputaCodeFact"
+												disabled="#{imputaCodeFactBean.headerButtonsDisabled}" />
+
+											<p:commandButton icon="ui-icon-plus"
+												onclick="PF('DialogAddImputaCodeFact').show();"
+												update=":formDialogAddImputaCodeFact" />
+
+											<p:commandButton icon="ui-icon-pencil"
+												onclick="PF('DialogEditImputaCodeFact').show();"
+												update=":formDialogEditImputaCodeFact"
+												disabled="#{imputaCodeFactBean.headerButtonsDisabled}" />
+
+											<p:commandButton icon="ui-icon-trash" ajax="true"
+												action="#{imputaCodeFactBean.supprimerImputaCodeFact()}"
+												update="imputaCodeFactDataTable"
+												disabled="#{imputaCodeFactBean.headerButtonsDisabled}" />
+
+										</f:facet>
+
+										<p:column headerText="Code" style="text-align: center;">
+											<h:outputText value="#{imputaCodeFact.code}" />
+										</p:column>
+										<p:column headerText="Libellé" style="text-align: center;">
+											<h:outputText value="#{imputaCodeFact.libelles.get(0).lib}" />
+										</p:column>
+									</p:dataTable>
+								</p:panel>
+
+
+								<!-- //////////  Fin  Gestion des Imputa Code Facturation ////////// -->
+
+								<!-- ************************************************************************************ -->
+
+								<!-- //////////  Debut Gestion des Imputa Centre Cout ////////// -->
+
+								<p:panel header="Centres de Coût" style="border:0px">
+									<p:dataTable id="imputaCentreCoutDataTable"
+										value="#{imputaCentreCoutBean.imputaCentreCouts}"
+										var="imputaCentreCout"
+										selection="#{imputaCentreCoutBean.selectedImputaCentreCout}"
+										rowKey="#{imputaCentreCout.id}" selectionMode="single"
+										paginator="true"
+										paginatorTemplate="{PreviousPageLink} {NextPageLink} {RowsPerPageDropdown}"
+										rowsPerPageTemplate="3,5,10" paginatorPosition="top" rows="5">
+
+										<p:ajax event="rowSelect"
+											listener="#{imputaCentreCoutBean.onRowSelectDataTable()}"
+											update="imputaCentreCoutDataTable" />
+
+
+										<f:facet name="header">
+
+											<p:commandButton icon="ui-icon-zoomin"
+												onclick="PF('DialogViewImputaCentreCout').show()"
+												update=":formDialogViewImputaCentreCout"
+												disabled="#{imputaCentreCoutBean.headerButtonsDisabled}" />
+
+											<p:commandButton icon="ui-icon-plus"
+												onclick="PF('DialogAddImputaCentreCout').show();"
+												update=":formDialogAddImputaCentreCout" />
+
+											<p:commandButton icon="ui-icon-pencil"
+												onclick="PF('DialogEditImputaCentreCout').show();"
+												update=":formDialogEditImputaCentreCout"
+												disabled="#{imputaCentreCoutBean.headerButtonsDisabled}" />
+
+											<p:commandButton icon="ui-icon-trash" ajax="true"
+												action="#{imputaCentreCoutBean.supprimerImputaCentreCout()}"
+												update="imputaCentreCoutDataTable"
+												disabled="#{imputaCentreCoutBean.headerButtonsDisabled}" />
+
+										</f:facet>
+
+										<p:column headerText="Code" style="text-align: center;">
+											<h:outputText value="#{imputaCentreCout.code}" />
+										</p:column>
+										<p:column headerText="Libellé" style="text-align: center;">
+											<h:outputText value="#{imputaCentreCout.libelles.get(0).lib}" />
+										</p:column>
+									</p:dataTable>
+								</p:panel>
+
+								<!-- //////////  Fin Gestion des Imputa Centre cout ////////// -->
+							</div>
+
+							<div class="tab-pane fade" id="tab4">
+
+								<!-- //////////  Debut Gestion groupes d'imputations ////////// -->
+
+								<p:panel header="Groupes d'imputations" id="panelAct"
+									style="border:0px;">
+									<p:dataTable id="groupeImputaDataTable"
+										value="#{groupeImputationBean.groupeImputations}" var="grpImp"
+										selection="#{groupeImputationBean.selectedGroupeImputation}"
+										rowKey="#{grpImp.idgrp}" selectionMode="single"
+										paginator="true"
+										paginatorTemplate="{PreviousPageLink} {NextPageLink} {RowsPerPageDropdown}"
+										rowsPerPageTemplate="3,5,10" paginatorPosition="top" rows="5">
+
+										<p:ajax event="rowSelect"
+											listener="#{groupeImputationBean.onRowSelectDataTable()}"
+											update="groupeImputaDataTable" />
+
+										<f:facet name="header">
+
+											<p:commandButton icon="ui-icon-zoomin"
+												onclick="PF('DialogViewGroupeImputa').show()"
+												update=":formDialogViewGroupeImputa"
+												actionListener="#{groupeImputationBean.detailsGroupeImputation()}"
+												disabled="#{groupeImputationBean.headerButtonsDisabled}" />
+
+											<p:commandButton icon="ui-icon-plus"
+												onclick="PF('DialogAddGroupeImputa').show();"
+												update=":formDialogAddGroupeImputa"
+												actionListener="#{groupeImputationBean.commandAddGroupe()}" />
+
+											<p:commandButton icon="ui-icon-pencil"
+												onclick="PF('DialogEditGroupeImputa').show();"
+												update=":formDialogEditGroupeImputa"
+												actionListener="#{groupeImputationBean.commandEditGroupe()}"
+												disabled="#{groupeImputationBean.headerButtonsDisabled}" />
+
+											<p:commandButton icon="ui-icon-trash" ajax="true"
+												action="#{groupeImputationBean.supprimerGroupeImputation()}"
+												update="groupeImputaDataTable"
+												disabled="#{groupeImputationBean.headerButtonsDisabled}" />
+
+										</f:facet>
+
+										<p:column headerText="Code" style="text-align: center;">
+											<h:outputText value="#{grpImp.codegrp}" />
+										</p:column>
+
+										<p:column headerText="Libellé" style="text-align: center;">
+											<h:outputText value="#{grpImp.libelles.get(0).lib}" />
+										</p:column>
+
+										<p:column headerText="Date effet" style="text-align: center;">
+											<h:outputText value="#{grpImp.dateeffe}" />
+										</p:column>
+
+										<p:column headerText="Date fin" style="text-align: center;">
+											<h:outputText value="#{grpImp.datefin}" />
+										</p:column>
+									</p:dataTable>
+								</p:panel>
+
+								<!-- //////////  Fin Gestion groupes imputations ////////// -->
+							</div>
+
+
+							<div class="tab-pane fade" id="tab5">
+
+								<!-- ////////// Debut Gestion des Types pointage  ////////// -->
+
+								<p:panel header="Types pointage" style="border:0px">
+									<p:dataTable id="typePointageDataTable"
+										value="#{typePointageBean.typePointages}" var="tp"
+										selection="#{typePointageBean.selectedTypePointage}"
+										rowKey="#{tp.id}" selectionMode="single" paginator="true"
+										paginatorTemplate="{PreviousPageLink} {NextPageLink} {RowsPerPageDropdown}"
+										rowsPerPageTemplate="3,5,10" paginatorPosition="top" rows="5">
+
+										<p:ajax event="rowSelect"
+											listener="#{typePointageBean.onRowSelectDataTable()}"
+											update="typePointageDataTable" />
+
+
+										<f:facet name="header">
+
+											<p:commandButton icon="ui-icon-zoomin"
+												onclick="PF('DialogViewTypePointage').show()"
+												update=":formDialogViewTypePointage"
+												disabled="#{typePointageBean.headerButtonsDisabled}" />
+
+											<p:commandButton icon="ui-icon-plus"
+												onclick="PF('DialogAddTypePointage').show();"
+												update=":formDialogAddTypePointage" />
+
+											<p:commandButton icon="ui-icon-pencil"
+												onclick="PF('DialogEditTypePointage').show();"
+												update=":formDialogEditTypePointage"
+												disabled="#{typePointageBean.headerButtonsDisabled}" />
+
+											<p:commandButton icon="ui-icon-trash" ajax="true"
+												action="#{typePointageBean.supprimerTypePointage()}"
+												update="typePointageDataTable"
+												disabled="#{typePointageBean.headerButtonsDisabled}" />
+
+										</f:facet>
+
+										<p:column headerText="Code" style="text-align: center;">
+											<h:outputText value="#{tp.code}" />
+										</p:column>
+										<p:column headerText="Libellé" style="text-align: center;">
+											<h:outputText value="#{tp.libelle}" />
+										</p:column>
+										<p:column headerText="Sens" style="text-align: center;">
+											<h:outputText value="#{tp.sens}" />
+										</p:column>
+										<p:column headerText="Type" style="text-align: center;">
+											<h:outputText value="#{tp.type}" />
+										</p:column>
+
+									</p:dataTable>
+								</p:panel>
+
+								<!-- //////////  Fin Gestion des types pointage  ////////// -->
+							</div>
+
+							<div class="tab-pane fade" id="tab6">
+
+								<!-- ////////// Debut Gestion des termineaux de pointage  ////////// -->
+
+								<p:panel header="Terminaux de pointage" style="border:0px">
+									<p:dataTable id="terminauxPointageDataTable"
+										value="#{terminalPointageBean.terminals}" var="tp"
+										selection="#{terminalPointageBean.selectedTerminal}"
+										rowKey="#{tp.id}" selectionMode="single" paginator="true"
+										paginatorTemplate="{PreviousPageLink} {NextPageLink} {RowsPerPageDropdown}"
+										rowsPerPageTemplate="3,5,10" paginatorPosition="top" rows="5">
+
+										<p:ajax event="rowSelect"
+											listener="#{terminalPointageBean.onRowSelectDataTable()}"
+											update="terminauxPointageDataTable" />
+
+										<f:facet name="header">
+
+											<p:commandButton icon="ui-icon-zoomin"
+												onclick="PF('DialogViewTerminauxPointage').show()"
+												update=":formDialogViewTerminauxPointage"
+												disabled="#{terminalPointageBean.headerButtonsDisabled}" />
+
+											<p:commandButton icon="ui-icon-plus"
+												onclick="PF('DialogAddTerminauxPointage').show();"
+												update=":formDialogAddTerminauxPointage" />
+
+											<p:commandButton icon="ui-icon-pencil"
+												onclick="PF('DialogEditTerminauxPointage').show();"
+												update=":formDialogEditTerminauxPointage"
+												disabled="#{terminalPointageBean.headerButtonsDisabled}" />
+
+											<p:commandButton icon="ui-icon-trash" ajax="true"
+												action="#{terminalPointageBean.supprimerTypePointage()}"
+												update="terminauxPointageDataTable"
+												disabled="#{terminalPointageBean.headerButtonsDisabled}" />
+
+										</f:facet>
+
+										<p:column headerText="Code" style="text-align: center;">
+											<h:outputText value="#{tp.code}" />
+										</p:column>
+										<p:column headerText="Libellé" style="text-align: center;">
+											<h:outputText value="#{tp.libelle}" />
+										</p:column>
+
+									</p:dataTable>
+								</p:panel>
+
+								<!-- //////////  Fin  Gestion des termineaux de pointage  ////////// -->
+
+
+							</div>
+						</div>
+					</div>
+					<!-- END WIDGET TABBED CONTENT -->
+				</div>
+			</div>
+		</h:form>
+
+
+		<!-- ***************************   POPUPS OF ACTIVITES EN PRESENCE   ********************************** -->
+
+		<!-- //////////   
+							Popup détails d'une activité en présence  ////////// -->
+
+		<p:dialog header="Détail de l'activité en présence"
+			widgetVar="DialogViewActPre" modal="true" height="250px">
+			<h:form id="formDialogViewActPre">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+					<p:inputText
+						value="#{activitePresenceBean.selectedActivitePresence.codeap}"
+						readonly="true" />
+					<p:outputLabel value="Libelle" />
+					<p:inputText
+						value="#{activitePresenceBean.selectedActivitePresence.libelles.get(0).lib}"
+						readonly="true" />
+					<p:outputLabel value="Poids" />
+					<p:inputText
+						value="#{activitePresenceBean.selectedActivitePresence.poids}"
+						readonly="true" />
+
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+
+		<!-- //////////   
+							Popup d'ajout d'une activité en présence  ////////// -->
+
+		<p:dialog header="Nouvelle activité en presence"
+			widgetVar="DialogAddActPre" modal="true">
+			<h:form id="formDialogAddActPre">
+				<h:panelGrid columns="3" cellpadding="10" id="gridAddActPre">
+					<p:outputLabel for="codeActPre" value="Code" />
+					<p:inputText id="codeActPre"
+						value="#{activitePresenceBean.activitePresence.codeap}"
+						required="true" placeholder="required" />
+					<p:message for="codeActPre" display="tooltip" />
+
+					<p:outputLabel for="libActPre" value="Libelle" />
+					<p:inputText id="libActPre"
+						value="#{activitePresenceBean.libelle.lib}" required="true"
+						placeholder="required" />
+					<p:message for="libActPre" display="tooltip" />
+
+					<p:outputLabel for="poidsActPre" value="Poids" />
+					<p:inputText id="poidsActPre"
+						value="#{activitePresenceBean.activitePresence.poids}" />
+					<p:message for="poidsActPre" display="tooltip" />
+				</h:panelGrid>
+				<br />
+				<p:commandButton value="Sauvegarder" update=":form1:activpretable"
+					validateClient="true"
+					action="#{activitePresenceBean.ajouterActivitePresence()}"
+					oncomplete="PF('DialogAddActPre').hide()" />
+			</h:form>
+		</p:dialog>
+
+		<!-- ////////// 
+							Popup de modification d'une activité en présence ////////// -->
+
+		<p:dialog header="Modification de l'activité en presence"
+			widgetVar="DialogEditActPre" modal="true" height="200px">
+			<h:form id="formDialogEditActPre">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+					<p:inputText
+						value="#{activitePresenceBean.selectedActivitePresence.codeap}"
+						required="true" placeholder="required" />
+					<p:outputLabel value="Libelle" />
+					<p:inputText
+						value="#{activitePresenceBean.selectedActivitePresence.libelles.get(0).lib}" />
+					<p:outputLabel value="Poids" />
+					<p:inputText
+						value="#{activitePresenceBean.selectedActivitePresence.poids}" />
+				</h:panelGrid>
+				<br />
+				<p:commandButton value="Sauvegarder" update=":form1:activpretable"
+					action="#{activitePresenceBean.modifierActivitePresence()}"
+					oncomplete="PF('DialogEditActPre').hide()" />
+			</h:form>
+		</p:dialog>
+
+		<!-- ***************************   POPUPS OF ACTIVITIES ABSENCE   ********************************** -->
+
+		<!-- //////////   
+							Popup détails d'une activité en absence  ////////// -->
+
+		<p:dialog header="Détail de l'activité en absence"
+			widgetVar="DialogViewActAbs" modal="true" height="250px">
+			<h:form id="formDialogViewActAbs">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+					<p:inputText
+						value="#{activiteAbsenceBean.selectedActiviteAbsence.codeaabs}"
+						readonly="true" />
+					<p:outputLabel value="Libelle" />
+					<p:inputText
+						value="#{activiteAbsenceBean.selectedActiviteAbsence.libelles.get(0).lib}"
+						readonly="true" />
+					<p:outputLabel value="Poids" />
+					<p:inputText
+						value="#{activiteAbsenceBean.selectedActiviteAbsence.poids}"
+						readonly="true" />
+
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+
+		<!-- //////////   
+							Popup d'ajout d'une activité en absence  ////////// -->
+
+		<p:dialog header="Nouvelle activité en absence"
+			widgetVar="DialogAddActAbs" modal="true" height="200px">
+			<h:form id="formDialogAddActAbs">
+				<h:panelGrid columns="2" cellpadding="10" id="gridAddActAbs">
+					<p:outputLabel value="Code" />
+					<p:inputText id="codeActAbs"
+						value="#{activiteAbsenceBean.activiteAbsence.codeaabs}"
+						required="true" placeholder="required" />
+					<p:outputLabel value="Libelle" />
+					<p:inputText id="libActPre"
+						value="#{activiteAbsenceBean.libelle.lib}" required="true"
+						placeholder="required" />
+					<p:outputLabel id="poidsActAbs" value="Poids" />
+					<p:inputText value="#{activiteAbsenceBean.activiteAbsence.poids}" />
+				</h:panelGrid>
+				<br />
+				<p:commandButton value="Sauvegarder" update=":form1:activabstable"
+					validateClient="true"
+					action="#{activiteAbsenceBean.ajouterActiviteAbsence()}"
+					oncomplete="PF('DialogAddActAbs').hide()" />
+			</h:form>
+		</p:dialog>
+
+		<!-- ////////// 
+							Popup de modification d'une activité en absence ////////// -->
+
+		<p:dialog header="Modification de l'activité en Présence"
+			widgetVar="DialogEditActAbs" modal="true" height="200px">
+			<h:form id="formDialogEditActAbs">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+					<p:inputText
+						value="#{activiteAbsenceBean.selectedActiviteAbsence.codeaabs}"
+						required="true" placeholder="required" />
+					<p:outputLabel value="Libelle" />
+					<p:inputText
+						value="#{activiteAbsenceBean.selectedActiviteAbsence.libelles.get(0).lib}" />
+					<p:outputLabel value="Poids" />
+					<p:inputText
+						value="#{activiteAbsenceBean.selectedActiviteAbsence.poids}" />
+				</h:panelGrid>
+				<br />
+				<p:commandButton value="Sauvegarder" update=":form1:activabstable"
+					action="#{activiteAbsenceBean.modifierActiviteAbsence()}"
+					oncomplete="PF('DialogEditActAbs').hide()" />
+			</h:form>
+		</p:dialog>
+
+		<!-- ***************************   POPUPS OF IMPUTATIONS   ********************************** -->
+
+		<!-- //////////   
+							Popup détails imputation  ////////// -->
+
+		<p:dialog header="Détails imputation" widgetVar="DialogViewImputa"
+			modal="true" height="350px">
+			<h:form id="formDialogViewImputa">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+					<p:inputText value="#{imputationBean.selectedImputation.codei}"
+						readonly="true" />
+					<p:outputLabel value="Libelle" />
+					<p:inputText
+						value="#{imputationBean.selectedImputation.libelles.get(0).lib}"
+						readonly="true" />
+					<p:outputLabel value="Compte" />
+					<p:inputText
+						value="#{imputationBean.selectedImputation.imputaCompte.code}"
+						readonly="true" />
+					<p:outputLabel value="Sous compte" />
+					<p:inputText
+						value="#{imputationBean.selectedImputation.imputaSousCompte.code}"
+						readonly="true" />
+					<p:outputLabel value="Code facturation" />
+					<p:inputText
+						value="#{imputationBean.selectedImputation.imputaCodeFact.code}"
+						readonly="true" />
+					<p:outputLabel value="Centre coût" />
+					<p:inputText
+						value="#{imputationBean.selectedImputation.imputaCentreCout.code}"
+						readonly="true" />
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+
+		<!-- //////////   
+							Popup d'ajout d'une imputation  ////////// -->
+
+		<p:dialog header="Nouvelle imputation" widgetVar="DialogAddImputa"
+			modal="true" height="350px">
+			<h:form id="formDialogAddImputa">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+
+					<p:inputText value="#{imputationBean.imputation.codei}"
+						required="true" placeholder="required" />
+
+					<p:outputLabel value="Libelle" />
+
+					<p:inputText value="#{imputationBean.libelle.lib}" required="true"
+						placeholder="required" />
+
+					<p:outputLabel value="Compte" />
+
+					<p:selectOneMenu value="#{imputationBean.imputaCompte}"
+						filter="true" effect="fade" filterMatchMode="startsWith" var="t"
+						panelStyle="width:180px" converter="#{imputaCompteConverter}">
+						<f:selectItem itemLabel="Selectionner" itemValue="" />
+						<f:selectItems value="#{imputaCompteBean.imputaComptes}"
+							var="impcpt" itemLabel="#{impcpt.code}" itemValue="#{impcpt}" />
+						<p:column>
+							<h:outputText value="#{t.code}" />
+						</p:column>
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Sous compte" />
+
+					<p:selectOneMenu value="#{imputationBean.imputaSousCompte}"
+						filter="true" effect="fade" filterMatchMode="startsWith" var="t"
+						panelStyle="width:180px" converter="#{imputaSousCompteConverter}">
+						<f:selectItem itemLabel="Selectionner" itemValue="" />
+						<f:selectItems value="#{imputaSousCompteBean.imputaSousComptes}"
+							var="iscpt" itemLabel="#{iscpt.code}" itemValue="#{iscpt}" />
+						<p:column>
+							<h:outputText value="#{t.code}" />
+						</p:column>
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Code facturation" />
+
+					<p:selectOneMenu value="#{imputationBean.imputaCodeFact}"
+						filter="true" effect="fade" filterMatchMode="startsWith" var="t"
+						panelStyle="width:180px"
+						converter="#{imputaCodeFacturationConverter}">
+						<f:selectItem itemLabel="Selectionner" itemValue="" />
+						<f:selectItems value="#{imputaCodeFactBean.imputaCodeFacts}"
+							var="icf" itemLabel="#{icf.code}" itemValue="#{icf}" />
+						<p:column>
+							<h:outputText value="#{t.code}" />
+						</p:column>
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Cente coût" />
+
+					<p:selectOneMenu value="#{imputationBean.imputaCentreCout}"
+						filter="true" effect="fade" filterMatchMode="startsWith" var="t"
+						panelStyle="width:180px" converter="#{imputaCentreCoutConverter}">
+						<f:selectItem itemLabel="Selectionner" itemValue="" />
+						<f:selectItems value="#{imputaCentreCoutBean.imputaCentreCouts}"
+							var="icc" itemLabel="#{icc.code}" itemValue="#{icc}" />
+						<p:column>
+							<h:outputText value="#{t.code}" />
+						</p:column>
+					</p:selectOneMenu>
+				</h:panelGrid>
+				<br />
+				<p:commandButton value="Sauvegarder" update=":form1:imputaDataTable"
+					action="#{imputationBean.ajouterImputation()}"
+					oncomplete="PF('DialogAddImputa').hide()" />
+			</h:form>
+		</p:dialog>
+
+		<!-- ////////// 
+							Popup de modification d'une imputation   ////////// -->
+
+		<p:dialog header="Modification d'imputation"
+			widgetVar="DialogEditImputa" modal="true" height="350px">
+			<h:form id="formDialogEditImputa">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+					<p:inputText value="#{imputationBean.selectedImputation.codei}"
+						required="true" placeholder="required" />
+
+					<p:outputLabel value="Libelle" />
+					<p:inputText
+						value="#{imputationBean.selectedImputation.libelles.get(0).lib}" />
+
+					<p:outputLabel value="Compte" />
+					<p:selectOneMenu
+						value="#{imputationBean.selectedImputation.imputaCompte}"
+						filter="true" effect="fade" filterMatchMode="startsWith" var="t"
+						panelStyle="width:180px" converter="#{imputaCompteConverter}">
+						<f:selectItems value="#{imputaCompteBean.imputaComptes}"
+							var="impcpt" itemLabel="#{impcpt.code}" itemValue="#{impcpt}" />
+						<p:column>
+							<h:outputText value="#{t.code}" />
+						</p:column>
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Sous compte" />
+					<p:selectOneMenu
+						value="#{imputationBean.selectedImputation.imputaSousCompte}"
+						filter="true" effect="fade" filterMatchMode="startsWith" var="t"
+						panelStyle="width:180px" converter="#{imputaSousCompteConverter}">
+						<f:selectItems value="#{imputaSousCompteBean.imputaSousComptes}"
+							var="iscpt" itemLabel="#{iscpt.code}" itemValue="#{iscpt}" />
+						<p:column>
+							<h:outputText value="#{t.code}" />
+						</p:column>
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Code facturation" />
+					<p:selectOneMenu
+						value="#{imputationBean.selectedImputation.imputaCodeFact}"
+						filter="true" effect="fade" filterMatchMode="startsWith" var="t"
+						panelStyle="width:180px"
+						converter="#{imputaCodeFacturationConverter}">
+						<f:selectItems value="#{imputaCodeFactBean.imputaCodeFacts}"
+							var="icf" itemLabel="#{icf.code}" itemValue="#{icf}" />
+						<p:column>
+							<h:outputText value="#{t.code}" />
+						</p:column>
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Cente coût" />
+					<p:selectOneMenu
+						value="#{imputationBean.selectedImputation.imputaCentreCout}"
+						filter="true" effect="fade" filterMatchMode="startsWith" var="t"
+						panelStyle="width:180px" converter="#{imputaCentreCoutConverter}">
+						<f:selectItems value="#{imputaCentreCoutBean.imputaCentreCouts}"
+							var="icc" itemLabel="#{icc.code}" itemValue="#{icc}" />
+						<p:column>
+							<h:outputText value="#{t.code}" />
+						</p:column>
+					</p:selectOneMenu>
+				</h:panelGrid>
+				<br />
+				<p:commandButton value="Sauvegarder" update=":form1:imputaDataTable"
+					action="#{imputationBean.modifierImputation()}"
+					oncomplete="PF('DialogEditImputa').hide()" />
+			</h:form>
+		</p:dialog>
+
+		<!-- ***************************   POPUPS OF IMPUTATIONS COMPTE   ********************************** -->
+
+		<!-- //////////   
+							Popup détail d'une imputa compte  ////////// -->
+
+		<p:dialog header="Détail de compte" widgetVar="DialogViewImputaCompte"
+			modal="true" height="200px">
+			<h:form id="formDialogViewImputaCompte">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+					<p:inputText value="#{imputaCompteBean.selectedImputaCompte.code}"
+						required="true" readonly="true" />
+					<p:outputLabel value="Libelle" />
+					<p:inputText
+						value="#{imputaCompteBean.selectedImputaCompte.libelles.get(0).lib}"
+						required="true" readonly="true" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+		<!-- //////////   
+							Popup d'ajout d'une imputa compte  ////////// -->
+
+		<p:dialog header="Nouveau compte" widgetVar="DialogAddImputaCompte"
+			modal="true" height="200px">
+			<h:form id="formDialogAddImputaCompte">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+					<p:inputText value="#{imputaCompteBean.imputaCompte.code}"
+						required="true" placeholder="required" />
+					<p:outputLabel value="Libelle" />
+					<p:inputText value="#{imputaCompteBean.libelle.lib}"
+						required="true" placeholder="required" />
+				</h:panelGrid>
+				<br />
+				<p:commandButton value="Sauvegarder"
+					update=":form1:imputaCompteDataTable" validateClient="true"
+					action="#{imputaCompteBean.ajouterImputaCompte()}"
+					oncomplete="PF('DialogAddImputaCompte').hide()" />
+			</h:form>
+		</p:dialog>
+
+		<!-- ////////// 
+							Popup de modification d'une imputa compte ////////// -->
+
+		<p:dialog header="Modification de compte"
+			widgetVar="DialogEditImputaCompte" modal="true" height="200px">
+			<h:form id="formDialogEditImputaCompte">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+					<p:inputText value="#{imputaCompteBean.selectedImputaCompte.code}"
+						required="true" placeholder="required" />
+					<p:outputLabel value="Libelle" />
+					<p:inputText
+						value="#{imputaCompteBean.selectedImputaCompte.libelles.get(0).lib}" />
+				</h:panelGrid>
+				<br />
+				<p:commandButton value="Sauvegarder"
+					update=":form1:imputaCompteDataTable"
+					action="#{imputaCompteBean.modifierImputaCompte()}"
+					oncomplete="PF('DialogEditImputaCompte').hide()" />
+			</h:form>
+		</p:dialog>
+
+		<!-- ***************************   POPUPS OF IMPUTATIONS SOUS COMPTE   ********************************** -->
+
+		<!-- //////////   
+							Popup détail d'une imputa sous compte  ////////// -->
+
+		<p:dialog header="Détail de sous compte"
+			widgetVar="DialogViewImputaSousCompte" modal="true" height="200px">
+			<h:form id="formDialogViewImputaSousCompte">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+					<p:inputText
+						value="#{imputaSousCompteBean.selectedImputaSousCompte.code}"
+						required="true" readonly="true" />
+					<p:outputLabel value="Libelle" />
+					<p:inputText
+						value="#{imputaSousCompteBean.selectedImputaSousCompte.libelles.get(0).lib}"
+						required="true" readonly="true" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+		<!-- //////////   
+							Popup d'ajout d'une imputa sous compte  ////////// -->
+
+		<p:dialog header="Nouveau sous compte"
+			widgetVar="DialogAddImputaSousCompte" modal="true" height="200px">
+			<h:form id="formDialogAddImputaSousCompte">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+					<p:inputText value="#{imputaSousCompteBean.imputaSousCompte.code}"
+						required="true" placeholder="required" />
+					<p:outputLabel value="Libelle" />
+					<p:inputText value="#{imputaSousCompteBean.libelle.lib}"
+						required="true" placeholder="required" />
+				</h:panelGrid>
+				<br />
+				<p:commandButton value="Sauvegarder"
+					update=":form1:imputaSousCompteDataTable" validateClient="true"
+					action="#{imputaSousCompteBean.ajouterImputaSousCompte()}"
+					oncomplete="PF('DialogAddImputaSousCompte').hide()" />
+			</h:form>
+		</p:dialog>
+
+		<!-- ////////// 
+							Popup de modification d'une imputa sous compte ////////// -->
+
+		<p:dialog header="Modification de sous compte"
+			widgetVar="DialogEditImputaSousCompte" modal="true" height="200px">
+			<h:form id="formDialogEditImputaSousCompte">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+					<p:inputText
+						value="#{imputaSousCompteBean.selectedImputaSousCompte.code}"
+						required="true" placeholder="required" />
+					<p:outputLabel value="Libelle" />
+					<p:inputText
+						value="#{imputaSousCompteBean.selectedImputaSousCompte.libelles.get(0).lib}" />
+				</h:panelGrid>
+				<br />
+				<p:commandButton value="Sauvegarder"
+					update=":form1:imputaSousCompteDataTable"
+					action="#{imputaSousCompteBean.modifierImputaSousCompte()}"
+					oncomplete="PF('DialogEditImputaSousCompte').hide()" />
+			</h:form>
+		</p:dialog>
+
+		<!-- ***************************   POPUPS OF IMPUTATIONS CODE FACTURATION   ********************************** -->
+
+		<!-- //////////   
+							Popup détail d'une imputa code facturation  ////////// -->
+
+		<p:dialog header="Détail de code facturation"
+			widgetVar="DialogViewImputaCodeFact" modal="true" height="200px">
+			<h:form id="formDialogViewImputaCodeFact">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+					<p:inputText
+						value="#{imputaCodeFactBean.selectedImputaCodeFact.code}"
+						required="true" readonly="true" />
+					<p:outputLabel value="Libelle" />
+					<p:inputText
+						value="#{imputaCodeFactBean.selectedImputaCodeFact.libelles.get(0).lib}"
+						required="true" readonly="true" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+		<!-- //////////   
+							Popup d'ajout d'une imputa code facturation  ////////// -->
+
+		<p:dialog header="Nouveau code facturation"
+			widgetVar="DialogAddImputaCodeFact" modal="true" height="200px">
+			<h:form id="formDialogAddImputaCodeFact">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+					<p:inputText value="#{imputaCodeFactBean.imputaCodeFact.code}"
+						required="true" placeholder="required" />
+					<p:outputLabel value="Libelle" />
+					<p:inputText value="#{imputaCodeFactBean.libelle.lib}"
+						required="true" placeholder="required" />
+				</h:panelGrid>
+				<br />
+				<p:commandButton value="Sauvegarder"
+					update=":form1:imputaCodeFactDataTable" validateClient="true"
+					action="#{imputaCodeFactBean.ajouterImputaCodeFact()}"
+					oncomplete="PF('DialogAddImputaCodeFact').hide()" />
+			</h:form>
+		</p:dialog>
+
+		<!-- ////////// 
+							Popup de modification d'une imputation code facturation ////////// -->
+
+		<p:dialog header="Modification de code facturation"
+			widgetVar="DialogEditImputaCodeFact" modal="true" height="200px">
+			<h:form id="formDialogEditImputaCodeFact">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+					<p:inputText
+						value="#{imputaCodeFactBean.selectedImputaCodeFact.code}"
+						required="true" placeholder="required" />
+					<p:outputLabel value="Libelle" />
+					<p:inputText
+						value="#{imputaCodeFactBean.selectedImputaCodeFact.libelles.get(0).lib}" />
+				</h:panelGrid>
+				<br />
+				<p:commandButton value="Sauvegarder"
+					update=":form1:imputaCodeFactDataTable"
+					action="#{imputaCodeFactBean.modifierImputaCodeFact()}"
+					oncomplete="PF('DialogEditImputaCodeFact').hide()" />
+			</h:form>
+		</p:dialog>
+
+		<!-- ***************************   POPUPS OF IMPUTATIONS CENTRE COUT   ********************************** -->
+
+		<!-- //////////   
+							Popup détail d'une imputa centre cout  ////////// -->
+
+		<p:dialog header="Détail centre de coût"
+			widgetVar="DialogViewImputaCentreCout" modal="true" height="200px">
+			<h:form id="formDialogViewImputaCentreCout">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+					<p:inputText
+						value="#{imputaCentreCoutBean.selectedImputaCentreCout.code}"
+						required="true" readonly="true" />
+					<p:outputLabel value="Libelle" />
+					<p:inputText
+						value="#{imputaCentreCoutBean.selectedImputaCentreCout.libelles.get(0).lib}"
+						required="true" readonly="true" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+		<!-- //////////   
+							Popup d'ajout d'une imputation centre cout  ////////// -->
+
+		<p:dialog header="Nouveau centre de coût"
+			widgetVar="DialogAddImputaCentreCout" modal="true" height="200px">
+			<h:form id="formDialogAddImputaCentreCout">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+					<p:inputText value="#{imputaCentreCoutBean.imputaCentreCout.code}"
+						required="true" placeholder="required" />
+					<p:outputLabel value="Libelle" />
+					<p:inputText value="#{imputaCentreCoutBean.libelle.lib}"
+						required="true" placeholder="required" />
+				</h:panelGrid>
+				<br />
+				<p:commandButton value="Sauvegarder"
+					update=":form1:imputaCentreCoutDataTable" validateClient="true"
+					action="#{imputaCentreCoutBean.ajouterImputaCentreCout()}"
+					oncomplete="PF('DialogAddImputaCentreCout').hide()" />
+			</h:form>
+		</p:dialog>
+
+		<!-- ////////// 
+							Popup de modification d'une imputation centre coût ////////// -->
+
+		<p:dialog header="Modification centre de coût"
+			widgetVar="DialogEditImputaCentreCout" modal="true" height="200px">
+			<h:form id="formDialogEditImputaCentreCout">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+					<p:inputText
+						value="#{imputaCentreCoutBean.selectedImputaCentreCout.code}"
+						required="true" placeholder="required" />
+					<p:outputLabel value="Libelle" />
+					<p:inputText
+						value="#{imputaCentreCoutBean.selectedImputaCentreCout.libelles.get(0).lib}" />
+				</h:panelGrid>
+				<br />
+				<p:commandButton value="Sauvegarder"
+					update=":form1:imputaCentreCoutDataTable"
+					action="#{imputaCentreCoutBean.modifierImputaCentreCout()}"
+					oncomplete="PF('DialogEditImputaCentreCout').hide()" />
+			</h:form>
+		</p:dialog>
+
+		<!-- ***************************   POPUPS OF GROUPE IMPUTATIONS   ********************************** -->
+
+
+		<!-- //////////   
+							Popup détail d'un groupe d'imputations  ////////// -->
+
+		<p:dialog header="Détails du groupe imputations"
+			widgetVar="DialogViewGroupeImputa" modal="true">
+			<h:form id="formDialogViewGroupeImputa">
+				<h:panelGrid columns="2" cellpadding="10">
+
+					<p:outputLabel value="Code" />
+					<p:inputText
+						value="#{groupeImputationBean.selectedGroupeImputation.codegrp}"
+						readonly="true" />
+
+					<p:outputLabel value="Libellé" />
+					<p:inputText
+						value="#{groupeImputationBean.selectedGroupeImputation.libelles.get(0).lib}"
+						readonly="true" />
+
+					<p:outputLabel value="Date d'effet" />
+					<p:inputText
+						value="#{groupeImputationBean.selectedGroupeImputation.dateeffe}"
+						readonly="true" />
+
+					<p:outputLabel value="Date de fin" />
+					<p:inputText
+						value="#{groupeImputationBean.selectedGroupeImputation.datefin}"
+						readonly="true" />
+				</h:panelGrid>
+				<p:panel header="Imputaions">
+					<p:dataTable value="#{groupeImputationBean.detailsGrpImputations}"
+						var="gi" style="width:500px;" scrollHeight="150" scrollable="true">
+						<p:column headerText="Code" style="text-align: center">
+							<h:outputText value="#{gi.codei}" />
+						</p:column>
+						<p:column headerText="Libellé" style="text-align: center">
+							<h:outputText value="#{gi.libelles.get(0).lib}" />
+						</p:column>
+						<p:column headerText="Compte" style="text-align: center">
+							<h:outputText value="#{gi.imputaCompte.code}" />
+						</p:column>
+						<p:column headerText="Sous Compte" style="text-align: center">
+							<h:outputText value="#{gi.imputaSousCompte.code}" />
+						</p:column>
+						<p:column headerText="Code Facturation" style="text-align: center">
+							<h:outputText value="#{gi.imputaCodeFact.code}" />
+						</p:column>
+						<p:column headerText="Centre Coût" style="text-align: center">
+							<h:outputText value="#{gi.imputaCentreCout.code}" />
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+
+			</h:form>
+		</p:dialog>
+
+		<!-- //////////   
+							Popup d'ajout d'un groupe d'imputations  ////////// -->
+
+		<p:dialog header="Ajout d'un groupe d'imputations"
+			widgetVar="DialogAddGroupeImputa" modal="true">
+			<h:form id="formDialogAddGroupeImputa">
+				<h:panelGrid columns="2" cellpadding="10">
+
+					<p:outputLabel value="Code" />
+					<p:inputText
+						value="#{groupeImputationBean.groupeImputation.codegrp}"
+						required="true" placeholder="required" />
+
+					<p:outputLabel value="Libelle"></p:outputLabel>
+					<p:inputText value="#{groupeImputationBean.libelle.lib}"
+						required="true" placeholder="required" />
+
+					<p:outputLabel value="Date d'effet"></p:outputLabel>
+					<p:calendar
+						value="#{groupeImputationBean.groupeImputation.dateeffe}" />
+
+					<p:outputLabel value="Date d'effet"></p:outputLabel>
+					<p:calendar
+						value="#{groupeImputationBean.groupeImputation.datefin}" />
+
+				</h:panelGrid>
+				<p:panel header="Imputations">
+					<p:pickList value="#{groupeImputationBean.listModel}" var="imp"
+						itemValue="#{imp}" itemLabel="#{imp}" showSourceFilter="true"
+						converter="#{imputationConvertor}" />
+				</p:panel>
+
+				<p:commandButton value="Sauvegarder"
+					action="#{groupeImputationBean.ajouterGroupeImputation()}"
+					oncomplete="PF('DialogAddGroupeImputa').hide()"
+					update=":form1:groupeImputaDataTable" />
+
+			</h:form>
+		</p:dialog>
+
+		<!-- //////////   
+							Popup modification d'un groupe d'imputations  ////////// -->
+
+		<p:dialog header="Modification de groupe d'imputations"
+			widgetVar="DialogEditGroupeImputa" modal="true">
+			<h:form id="formDialogEditGroupeImputa">
+				<h:panelGrid columns="2" cellpadding="10">
+
+					<p:outputLabel value="Code" />
+					<p:inputText
+						value="#{groupeImputationBean.selectedGroupeImputation.codegrp}"
+						required="true" placeholder="required" />
+
+					<p:outputLabel value="Libelle"></p:outputLabel>
+					<p:inputText
+						value="#{groupeImputationBean.selectedGroupeImputation.libelles.get(0).lib}"
+						required="true" placeholder="required" />
+
+					<p:outputLabel value="Date d'effet"></p:outputLabel>
+					<p:calendar
+						value="#{groupeImputationBean.selectedGroupeImputation.dateeffe}" />
+
+					<p:outputLabel value="Date de fin"></p:outputLabel>
+					<p:calendar
+						value="#{groupeImputationBean.selectedGroupeImputation.datefin}" />
+
+				</h:panelGrid>
+				<p:panel header="Imputations">
+					<p:pickList value="#{groupeImputationBean.listModel}" var="imp"
+						itemValue="#{imp}" itemLabel="#{imp}" showSourceFilter="true"
+						showTargetFilter="true" converter="#{imputationConvertor}">
+
+					</p:pickList>
+				</p:panel>
+				<p:commandButton value="Sauvegarder"
+					action="#{groupeImputationBean.modifierGroupeImputation()}"
+					oncomplete="PF('DialogEditGroupeImputa').hide()"
+					update=":form1:groupeImputaDataTable" />
+
+			</h:form>
+		</p:dialog>
+
+		<!-- ***************************   POPUPS OF GROUPE ACTIVITES  ********************************** -->
+
+
+		<!-- //////////   
+							Popup détail d'un groupe d'activités ////////// -->
+
+		<p:dialog header="Détails du groupe activités"
+			widgetVar="DialogViewGroupeActivite" modal="true" height="520px">
+			<h:form id="formDialogViewGroupeActivite">
+				<h:panelGrid columns="2" cellpadding="10">
+
+					<p:outputLabel value="Code" />
+					<p:inputText
+						value="#{groupeActiviteBean.selectedGroupeActivite.codegrpa}"
+						readonly="true" />
+
+					<p:outputLabel value="Libellé" />
+					<p:inputText
+						value="#{groupeActiviteBean.selectedGroupeActivite.libelles.get(0).lib}"
+						readonly="true" />
+
+					<p:outputLabel value="Date d'effet" />
+					<p:inputText
+						value="#{groupeActiviteBean.selectedGroupeActivite.dateff}"
+						readonly="true" />
+
+					<p:outputLabel value="Date de fin" />
+					<p:inputText
+						value="#{groupeActiviteBean.selectedGroupeActivite.datefin}"
+						readonly="true" />
+				</h:panelGrid>
+				<p:panel header="Activités en présence">
+					<p:dataTable value="#{groupeActiviteBean.detailsActivitePresence}"
+						var="ap" style="width:500px;" scrollHeight="150" scrollable="true">
+						<p:column headerText="Code" style="text-align: center">
+							<h:outputText value="#{ap.codeap}" />
+						</p:column>
+						<p:column headerText="Libellé" style="text-align: center">
+							<h:outputText value="#{ap.libelles.get(0).lib}" />
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+				<p:panel header="Activités en absence">
+					<p:dataTable value="#{groupeActiviteBean.detailsActiviteAbsence}"
+						var="abs" style="width:500px;" scrollHeight="150"
+						scrollable="true">
+						<p:column headerText="Code" style="text-align: center">
+							<h:outputText value="#{abs.codeaabs}" />
+						</p:column>
+						<p:column headerText="Libellé" style="text-align: center">
+							<h:outputText value="#{abs.libelles.get(0).lib}" />
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+
+			</h:form>
+		</p:dialog>
+
+		<!-- //////////   
+							Popup d'ajout d'un groupe d'activités  ////////// -->
+
+		<p:dialog header="Ajout d'un groupe d'activités"
+			widgetVar="DialogAddGroupeActivite" modal="true" height="520px">
+			<h:form id="formDialogAddGroupeActivite">
+				<h:panelGrid columns="2" cellpadding="10">
+
+					<p:outputLabel value="Code" />
+					<p:inputText value="#{groupeActiviteBean.groupeActivite.codegrpa}"
+						required="true" placeholder="required" />
+
+					<p:outputLabel value="Libelle"></p:outputLabel>
+					<p:inputText value="#{groupeActiviteBean.libelle.lib}"
+						required="true" placeholder="required" />
+
+					<p:outputLabel value="Date d'effet"></p:outputLabel>
+					<p:calendar value="#{groupeActiviteBean.groupeActivite.dateff}" />
+
+					<p:outputLabel value="Date de fin"></p:outputLabel>
+					<p:calendar value="#{groupeActiviteBean.groupeActivite.datefin}" />
+
+				</h:panelGrid>
+				<p:panel header="Activités en présence">
+					<p:pickList value="#{groupeActiviteBean.activitePresencePickList}"
+						var="ap" itemValue="#{ap}" itemLabel="#{ap}"
+						showSourceFilter="true" converter="#{activitePresenceConvertor}" />
+				</p:panel>
+
+				<p:panel header="Activités en absence">
+					<p:pickList value="#{groupeActiviteBean.activiteAbsencePickList}"
+						var="abs" itemValue="#{abs}" itemLabel="#{abs}"
+						showSourceFilter="true" converter="#{activiteAbsenceConvertor}" />
+				</p:panel>
+
+				<p:commandButton value="Sauvegarder"
+					action="#{groupeActiviteBean.ajouterGroupeActivite()}"
+					oncomplete="PF('DialogAddGroupeActivite').hide()"
+					update=":form1:groupeActiviteDataTable" />
+
+			</h:form>
+		</p:dialog>
+
+		<!-- //////////   
+							Popup modification d'un groupe d'imputations  ////////// -->
+
+		<p:dialog header="Modification de groupe d'activités"
+			widgetVar="DialogEditGroupeActivite" modal="true" height="520px">
+			<h:form id="formDialogEditGroupeActivite">
+				<h:panelGrid columns="2" cellpadding="10">
+
+					<p:outputLabel value="Code" />
+					<p:inputText
+						value="#{groupeActiviteBean.selectedGroupeActivite.codegrpa}"
+						required="true" placeholder="required" />
+
+					<p:outputLabel value="Libelle"></p:outputLabel>
+					<p:inputText
+						value="#{groupeActiviteBean.selectedGroupeActivite.libelles.get(0).lib}"
+						required="true" placeholder="required" />
+
+					<p:outputLabel value="Date d'effet"></p:outputLabel>
+					<p:calendar
+						value="#{groupeActiviteBean.selectedGroupeActivite.dateff}" />
+
+					<p:outputLabel value="Date de fin"></p:outputLabel>
+					<p:calendar
+						value="#{groupeActiviteBean.selectedGroupeActivite.datefin}" />
+
+				</h:panelGrid>
+				<p:panel header="Activités en présence">
+					<p:pickList value="#{groupeActiviteBean.activitePresencePickList}"
+						var="ap" itemValue="#{ap}" itemLabel="#{ap}"
+						showSourceFilter="true" showTargetFilter="true"
+						converter="#{activitePresenceConvertor}">
+
+					</p:pickList>
+				</p:panel>
+				<p:panel header="Activités en absence">
+					<p:pickList value="#{groupeActiviteBean.activiteAbsencePickList}"
+						var="abs" itemValue="#{abs}" itemLabel="#{abs}"
+						showSourceFilter="true" showTargetFilter="true"
+						converter="#{activiteAbsenceConvertor}">
+
+					</p:pickList>
+				</p:panel>
+				<p:commandButton value="Sauvegarder"
+					action="#{groupeActiviteBean.modifierGroupeActivite()}"
+					oncomplete="PF('DialogEditGroupeActivite').hide()"
+					update=":form1:groupeActiviteDataTable" />
+
+			</h:form>
+		</p:dialog>
+
+
+		<!-- ***************************   POPUPS OF TYPE POINTAGE   ********************************** -->
+
+		<!-- //////////   
+							Popup détails type pointage  ////////// -->
+
+		<p:dialog header="Détails Type pointage"
+			widgetVar="DialogViewTypePointage" modal="true">
+			<h:form id="formDialogViewTypePointage">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+					<p:inputText value="#{typePointageBean.selectedTypePointage.code}"
+						readonly="true" />
+					<p:outputLabel value="Libelle" />
+					<p:inputText
+						value="#{typePointageBean.selectedTypePointage.libelle}"
+						readonly="true" />
+					<p:outputLabel value="Sens" />
+					<p:inputText value="#{typePointageBean.selectedTypePointage.sens}"
+						readonly="true" />
+					<p:outputLabel value="Type" />
+					<p:inputText value="#{typePointageBean.selectedTypePointage.type}"
+						readonly="true" />
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+
+		<!-- //////////   
+							Popup d'ajout type pointage  ////////// -->
+
+		<p:dialog header="Nouveau type de pointage"
+			widgetVar="DialogAddTypePointage" modal="true">
+			<h:form id="formDialogAddTypePointage">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+
+					<p:inputText value="#{typePointageBean.typePointage.code}"
+						required="true" placeholder="required" />
+
+					<p:outputLabel value="Libelle" />
+
+					<p:inputText value="#{typePointageBean.typePointage.libelle}"
+						required="true" placeholder="required" />
+
+					<p:outputLabel value="Sens" />
+
+					<p:selectOneMenu value="#{typePointageBean.typePointage.sens}"
+						filter="true" effect="fade" filterMatchMode="startsWith"
+						panelStyle="width:180px" var="t">
+						<f:selectItem itemLabel="Selectionner" itemValue="" />
+						<f:selectItem itemLabel="Input" itemValue="Input" />
+						<f:selectItem itemLabel="Output" itemValue="Output" />
+						<f:selectItem itemLabel="Input/Output" itemValue="Input/Output" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Type" />
+
+					<p:selectOneMenu value="#{typePointageBean.typePointage.type}"
+						filter="true" effect="fade" filterMatchMode="startsWith"
+						panelStyle="width:180px">
+						<f:selectItem itemLabel="Selectionner" itemValue="" />
+						<f:selectItem itemLabel="Automatique" itemValue="Automatique" />
+						<f:selectItem itemLabel="Manuel" itemValue="Manuel" />
+					</p:selectOneMenu>
+
+				</h:panelGrid>
+				<br />
+				<p:commandButton value="Sauvegarder"
+					update=":form1:typePointageDataTable"
+					action="#{typePointageBean.ajouterTypePointage()}"
+					oncomplete="PF('DialogAddTypePointage').hide()" />
+			</h:form>
+		</p:dialog>
+
+		<!-- ////////// 
+							Popup de modification de type pointage   ////////// -->
+
+		<p:dialog header="Modification de type pointage"
+			widgetVar="DialogEditTypePointage" modal="true">
+			<h:form id="formDialogEditTypePointage">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+					<p:inputText value="#{typePointageBean.selectedTypePointage.code}"
+						required="true" />
+
+					<p:outputLabel value="Libelle" />
+					<p:inputText
+						value="#{typePointageBean.selectedTypePointage.libelle}"
+						required="true" />
+
+					<p:outputLabel value="Sens" />
+					<p:selectOneMenu
+						value="#{typePointageBean.selectedTypePointage.sens}"
+						filter="true" effect="fade" filterMatchMode="startsWith"
+						panelStyle="width:180px">
+						<f:selectItem itemLabel="Input" itemValue="Input" />
+						<f:selectItem itemLabel="Output" itemValue="Output" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Type" />
+					<p:selectOneMenu
+						value="#{typePointageBean.selectedTypePointage.type}"
+						filter="true" effect="fade" filterMatchMode="startsWith"
+						panelStyle="width:180px">
+						<f:selectItem itemLabel="Automatique" itemValue="Automatique" />
+						<f:selectItem itemLabel="Manuel" itemValue="Manuel" />
+					</p:selectOneMenu>
+				</h:panelGrid>
+				<br />
+				<p:commandButton value="Sauvegarder"
+					update=":form1:typePointageDataTable"
+					action="#{typePointageBean.modifierTypePointage()}"
+					oncomplete="PF('DialogEditTypePointage').hide()" />
+			</h:form>
+		</p:dialog>
+
+		<!-- ***************************   POPUPS OF TERMINAUX POINTAGE   ********************************** -->
+
+		<!-- //////////   
+							Popup détails terminal pointage  ////////// -->
+
+		<p:dialog header="Détails de terminal pointage"
+			widgetVar="DialogViewTerminauxPointage" modal="true">
+			<h:form id="formDialogViewTerminauxPointage">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+					<p:inputText value="#{terminalPointageBean.selectedTerminal.code}"
+						readonly="true" />
+					<p:outputLabel value="Libelle" />
+					<p:inputText
+						value="#{terminalPointageBean.selectedTerminal.libelle}"
+						readonly="true" />
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+
+		<!-- //////////   
+							Popup d'ajout d'un terminal de pointage  ////////// -->
+
+		<p:dialog header="Nouveau terminal de pointage"
+			widgetVar="DialogAddTerminauxPointage" modal="true">
+			<h:form id="formDialogAddTerminauxPointage">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+
+					<p:inputText value="#{terminalPointageBean.terminal.code}"
+						required="true" placeholder="required" />
+
+					<p:outputLabel value="Libelle" />
+
+					<p:inputText value="#{terminalPointageBean.terminal.libelle}"
+						required="true" placeholder="required" />
+
+				</h:panelGrid>
+				<br />
+				<p:commandButton value="Sauvegarder"
+					update=":form1:terminauxPointageDataTable"
+					action="#{terminalPointageBean.ajouterTerminal()}"
+					oncomplete="PF('DialogAddTerminauxPointage').hide()" />
+			</h:form>
+		</p:dialog>
+
+		<!-- ////////// 
+							Popup de modification de terminal de pointage  ////////// -->
+
+		<p:dialog header="Modification du terminal de pointage"
+			widgetVar="DialogEditTerminauxPointage" modal="true">
+			<h:form id="formDialogEditTerminauxPointage">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Code" />
+					<p:inputText value="#{terminalPointageBean.selectedTerminal.code}"
+						required="true" />
+
+					<p:outputLabel value="Libelle" />
+					<p:inputText
+						value="#{terminalPointageBean.selectedTerminal.libelle}"
+						required="true" />
+
+				</h:panelGrid>
+				<br />
+				<p:commandButton value="Sauvegarder"
+					update=":form1:terminauxPointageDataTable"
+					action="#{terminalPointageBean.modifierTypePointage()}"
+					oncomplete="PF('DialogEditTerminauxPointage').hide()" />
+			</h:form>
+		</p:dialog>
+
+
+	</ui:define>
+</ui:composition>
+</html>

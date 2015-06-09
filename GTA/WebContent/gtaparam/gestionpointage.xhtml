@@ -1,0 +1,126 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/template/MainContent.xhtml">
+
+	<ui:define name=""></ui:define>
+	<ui:define name="Content">
+
+		<p:panel header="Ajout de Pointage">
+
+			<h:form id="ajoutpoint">
+
+				<table>
+					<tr>
+						<td><p:outputLabel for="date" value="Date" /></td>
+						<td><p:calendar id="date"
+								value="#{pointageBean.pointage.date}" pattern="dd-MM-yyyy"
+								mask="true" /></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel for="heure" value="Heure:" /></td>
+						<td><p:calendar id="heure"
+								value="#{pointageBean.pointage.heure}" pattern="HH:mm:ss a"
+								timeOnly="true" /></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel value="Nature" /></td>
+						<td><p:inputText value="#{pointageBean.pointage.nature}" /></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel value="Sense" /></td>
+						<td><p:inputText value="#{pointageBean.pointage.sens}" /></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel value="Terminal" /></td>
+						<td><p:inputText value="#{pointageBean.pointage.terminal}" /></td>
+					</tr>
+					<h:panelGrid columns="3">
+						<p:commandButton
+								actionListener="#{pointageBean.addPointage()}" value="Save"
+								update=":ajoutpoint :master"></p:commandButton>
+						<p:commandButton
+								actionListener="#{pointageBean.deletePointage()}" value="Delete"
+								update=":ajoutpoint :master"></p:commandButton>
+						<p:commandButton
+								actionListener="#{pointageBean.cancel()}" value="Cancel"
+								update=":ajoutpoint"></p:commandButton>
+					</h:panelGrid>
+				</table>
+			</h:form>
+		</p:panel>
+
+		<p:layoutUnit position="center">
+			<p:panel header="List des Pointages">
+				<h:form id="master">
+					<p:dataTable rendered="#{not empty pointageBean.pointages}"
+						value="#{pointageBean.pointages}" var="point" border="1" rows="5"
+						rowKey="#{point.id_pointage}" paginator="true"
+						paginatorPosition="bottom"
+						filteredValue="#{pointageBean.filtredPointages}"
+						selectionMode="single" selection="#{pointageBean.pointage}"
+						widgetVar="pTabW">
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="Search all fields:" />
+								<p:inputText id="globalFilter" onkeyup="PF('pTabW').filter()"
+									style="width:150px" placeholder="Enter keyword" />
+							</p:outputPanel>
+						</f:facet>
+
+
+						<p:ajax event="rowSelect" update=":ajoutpoint" />
+						<p:ajax event="filter" update=":ajoutpoint" />
+
+
+						<p:column headerText="#" filterBy="#{point.id_pointage}"
+							filterMatchMode="startsWith">
+
+							<h:outputText value="#{point.id_pointage}" />
+
+						</p:column>
+
+						<p:column headerText="Date" filterBy="#{point.date}"
+							filterMatchMode="contains">
+
+							<h:outputText value="#{point.date}">
+								<f:convertDateTime pattern="MM/dd/yyyy" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="Heure" filterBy="#{point.heure}"
+							filterMatchMode="contains">
+
+							<h:outputText value="#{point.heure}">
+								<f:convertDateTime pattern="HH:mm:ss a" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="Nature" filterBy="#{point.nature}"
+							filterMatchMode="contains">
+
+							<h:outputText value="#{point.nature}" />
+						</p:column>
+
+						<p:column headerText="Sense" filterBy="#{point.sens}"
+							filterMatchMode="contains">
+
+							<h:outputText value="#{point.sens}" />
+						</p:column>
+
+						<p:column headerText="Terminal" filterBy="#{point.terminal}"
+							filterMatchMode="contains">
+
+							<h:outputText value="#{point.terminal}" />
+						</p:column>
+					</p:dataTable>
+
+				</h:form>
+			</p:panel>
+		</p:layoutUnit>
+
+
+	</ui:define>
+</ui:composition>

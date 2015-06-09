@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/MainContent.xhtml">
+	<ui:define name="Content">
+
+			<p:panel header="Paramétrage d'un filtre">
+<h:form>
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Code" />
+					<p:inputText value="#{filtreBean.filtre.codef}" />
+					<p:outputLabel value="Libelle" />
+					<p:inputText value="#{filtreBean.libelle.lib}" />
+				</h:panelGrid>
+				<p:panel header="Filtration sur les Horaires">
+
+					<h:panelGrid columns="2">
+								<p:outputLabel value="heure Deb" />
+								<p:inputText value="#{filtreBean.tmp}" />
+								<p:outputLabel value="heure Fin" />
+								<p:inputText value="#{filtreBean.tmpF}" />
+				
+					</h:panelGrid>
+				
+				</p:panel>
+
+				<p:panel header="Filtration sur les jours">
+			
+				
+					<p:selectManyCheckbox id="grid"
+						value="#{filtreBean.selectedCodeJour}" layout="grid" columns="1"
+						converter="#{codeJourConvertor}">
+						<f:selectItems value="#{filtreBean.codeJours}" var="codej"
+							itemLabel="#{codej.codecj}" itemValue="#{codej}" />
+					</p:selectManyCheckbox>
+
+
+				</p:panel>
+				<p:panel header="Filtration sur les Natures de journées">
+					<p:selectManyCheckbox id="gridnj"
+						value="#{filtreBean.selectedNatureJournees}" layout="grid"
+						columns="1" converter="#{natureJourneeConvertor}">
+						<f:selectItems value="#{filtreBean.natureJournees}" var="nj"
+							itemLabel="#{nj.codenj}" itemValue="#{nj}" />
+					</p:selectManyCheckbox>
+
+
+				</p:panel>
+				
+
+
+
+
+<p:panel header="Filtration sur les groupes d'imputations">
+					<h:panelGrid columns="2">
+
+							<p:selectOneMenu value="#{filtreBean.groupeImputation}"
+								filter="true" effect="fade" filterMatchMode="startsWith" var="a"
+								panelStyle="width:180px" converter="#{groupeImputationConvertor}">
+								<f:selectItem itemLabel="Selectionner" itemValue="" />
+								<f:selectItems value="#{filtreBean.groupeImputations}" var="gimp"
+									itemLabel="#{gimp.idgrp}" itemValue="#{gimp}" />
+								<p:column>
+									<h:outputText value="#{a.codegrp}" />
+								</p:column>
+							</p:selectOneMenu>
+
+							<p:commandButton value="Calculer"
+								action="#{filtreBean.selectImputation()}" update="f115" />
+					</h:panelGrid>
+					<p:panel id="f115">
+						<h2>Imputation</h2>
+						<p:pickList value="#{filtreBean.imputationPickList}"
+							var="imputation" itemLabel="#{imputation}"
+							itemValue="#{imputation}" />
+</p:panel>
+				</p:panel>
+				<p:panel header="Filtration sur les groupes d'activités">
+					<h:panelGrid columns="2">
+							<p:selectOneMenu value="#{filtreBean.groupeActivite}"
+								filter="true" effect="fade" filterMatchMode="startsWith" var="t"
+								panelStyle="width:180px" converter="#{groupeActiviteConvertor}">
+								<f:selectItem itemLabel="Selectionner" itemValue="" />
+								<f:selectItems value="#{filtreBean.groupeActivites}" var="gimp"
+									itemLabel="#{gimp.codegrpa}" itemValue="#{gimp}" />
+								<p:column>
+									<h:outputText value="#{t.codegrpa}" />
+								</p:column>
+							</p:selectOneMenu>
+							<p:commandButton value="Calculer"
+								action="#{filtreBean.rowselect()}" update="f5" />
+					</h:panelGrid>
+					<p:panel id="f5">
+
+						<h2>activite Absence</h2>
+						<p:pickList value="#{filtreBean.activiteAbsencePickList}"
+							var="activiteAbsence" itemLabel="#{activiteAbsence}"
+							itemValue="#{activiteAbsence}" />
+
+
+						<h2>activite Présence</h2>
+
+						<p:pickList value="#{filtreBean.activitePresencePickList}"
+							var="activitePresence" itemLabel="#{activitePresence}"
+							itemValue="#{activitePresence}" />
+</p:panel>
+					
+				</p:panel>
+
+
+
+
+		<p:commandButton value="submit" action="#{filtreBean.ajouter()}"
+				icon="ui-icon-check" style="margin-left: 40%"  />
+
+
+		</h:form>	
+			</p:panel>
+
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/template/MainContent.xhtml">
+	<ui:define name="Content">
+		<h:form id="form">
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+			<h:panelGrid columns="5" style="margin-left: 200px;">
+				<p:outputLabel value="Filtre" />
+				<p:calendar placeholder="De"
+					value="#{activiteCalculerBean.dateDebutFiltre}" />
+				<p:calendar placeholder="À"
+					value="#{activiteCalculerBean.dateFinFiltre}" />
+				<p:commandButton value="Filtrer"
+					action="#{activiteCalculerBean.filtreDate()}" update=":form:tabv" />
+				<p:commandButton value="Calculer" onclick="PF('datecalc').show();"
+					type="button" update=":calcule" />
+			</h:panelGrid>
+
+
+
+			<h:panelGrid columns="2">
+				<p:dataTable id="eventsDT" var="identite"
+					style="width:200px;margin-top: -450px"
+					value="#{activiteCalculerBean.identites}" selectionMode="single"
+					selection="#{activiteCalculerBean.selectedIdentite}"
+					rowKey="#{identite.numedoss}">
+					
+					<f:facet name="header"> List of Employers
+        </f:facet>
+					<p:ajax event="rowSelect"
+						listener="#{activiteCalculerBean.onRowSelect}" update=":form:tabv" />
+
+
+					<p:column headerText="Matricule">
+						<h:outputText value="#{identite.matricul}" />
+					</p:column>
+					<p:column headerText="Nom et Prénom">
+						<h:outputText value="#{identite.nom} #{identite.prenom}" />
+					</p:column>
+				</p:dataTable>
+
+
+				<p:tabView id="tabv" style="height: 900px;width: 830px">
+					<p:tab title="Activités saisies">
+
+						<p:dataTable var="jt"
+							value="#{activiteCalculerBean.activiteReelSaisies}">
+							<p:column headerText="Date">
+								<h:outputText value="#{jt.date}" />
+							</p:column>
+							<p:column headerText="Motif">
+								<h:outputText value="#{jt.activitePresence.codeap}" />
+							</p:column>
+							<p:column headerText="Heure debut">
+								<h:outputText value="#{jt.heuredeb}" />
+							</p:column>
+							<p:column headerText="Heure fin">
+								<h:outputText value="#{jt.heurefin}" />
+							</p:column>
+							<p:column headerText="Durée">
+								<h:outputText
+									value="#{activiteCalculerBean.getDuree(jt.heurefin,jt.heuredeb)}" />
+							</p:column>
+							<p:column headerText="Poids">
+								<h:outputText value="#{jt.activitePresence.poids}" />
+							</p:column>
+						</p:dataTable>
+
+					</p:tab>
+
+					<p:tab title="Activités d'absences">
+
+						<p:dataTable var="abs" value="#{activiteCalculerBean.absences}">
+							<p:column headerText="Date debut">
+								<h:outputText value="#{abs.dateDebut}">
+									<!--  <f:convertDateTime type="date" dateStyle="short" /> -->
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Date Fin">
+								<h:outputText value="#{abs.dateFin}">
+									<!--  <f:convertDateTime type="date" dateStyle="short" /> -->
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Motif">
+								<h:outputText value="#{abs.activiteAbsence.codeaabs}" />
+							</p:column>
+							<p:column headerText="Transition tranche">
+								<h:outputText value="#{abs.tansitionTranche}" />
+							</p:column>
+
+						</p:dataTable>
+
+					</p:tab>
+
+					<p:tab title="Activités Calculées" id="actscalc">
+						<p:accordionPanel>
+							<p:tab title="Saisir une activitée">
+							
+							
+								<h:panelGrid columns="5" cellpadding="30">
+									<p:calendar
+										value="#{activiteCalculerBean.activiteReelSaisie.date}"
+										placeholder="Date" />
+
+									<p:calendar
+										value="#{activiteCalculerBean.activiteReelSaisie.heuredeb}"
+										pattern="HH:mm:ss" timeOnly="true" placeholder="Heure debut" />
+
+									<p:calendar
+										value="#{activiteCalculerBean.activiteReelSaisie.heurefin}"
+										pattern="HH:mm:ss" timeOnly="true" placeholder="Heure fin" />
+
+
+									<p:selectOneMenu
+										value="#{activiteCalculerBean.activitePresence}" filter="true"
+										effect="fade" filterMatchMode="startsWith" var="t"
+										panelStyle="width:180px"
+										converter="#{activitePresenceConvertor}">
+										<f:selectItem itemLabel="Selectionner" itemValue="" />
+										<f:selectItems
+											value="#{activiteCalculerBean.activitePresences}" var="act"
+											itemLabel="#{act.codeap}" itemValue="#{act}" />
+										<p:column>
+											<h:outputText value="#{t.codeap}" />
+										</p:column>
+									</p:selectOneMenu>
+									<p:commandButton value="Valider"
+										action="#{activiteCalculerBean.ajoutActiviteSaisie()}" />
+								</h:panelGrid>
+							</p:tab>
+						</p:accordionPanel>
+						<p:dataTable var="jt"
+							value="#{activiteCalculerBean.activiteReelCalculers}"
+							scrollable="true" scrollHeight="700">
+							<p:column headerText="Date">
+								<h:outputText value="#{jt.date}">
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Motif">
+								<h:outputText value="#{activiteCalculerBean.getActivity(jt)}" />
+							</p:column>
+							<p:column headerText="Heure debut">
+								<h:outputText value="#{jt.heuredeb}" />
+							</p:column>
+							<p:column headerText="Heure fin">
+								<h:outputText value="#{jt.heurefin}" />
+							</p:column>
+							<p:column headerText="Durée">
+								<h:outputText
+									value="#{activiteCalculerBean.getDuree(jt.heurefin,jt.heuredeb)}" />
+							</p:column>
+							<p:column headerText="Poids">
+								<h:outputText
+									value="#{activiteCalculerBean.getWeightOfActivity(jt)}" />
+							</p:column>
+						</p:dataTable>
+					</p:tab>
+
+
+				</p:tabView>
+			</h:panelGrid>
+
+		</h:form>
+		<p:dialog header="Intervalle calcule" widgetVar="datecalc"
+			height="200" modal="true" id="popup">
+			<h:form id="calcule">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Date début de calcule" />
+					<p:calendar value="#{activiteCalculerBean.dateDebutCalcule}" />
+					<p:outputLabel value="Date Fin de calcule" />
+					<p:calendar value="#{activiteCalculerBean.dateFinCalcule}" />
+					<p:outputLabel value="Seulement les plages obligatoires" />
+					<p:selectBooleanCheckbox
+						value="#{activiteCalculerBean.horairesObligatoire}" />
+					<p:outputLabel value="Forcer les horaires de références" />
+					<p:selectBooleanCheckbox
+						value="#{activiteCalculerBean.horairesRef}" />
+					<p:commandButton value="Calculer"
+						action="#{activiteCalculerBean.calculeActiviteReel()}"
+						update=":form:tabv" onclick="PF('datecalc').hide();"
+						actionListener="#{activiteCalculerBean.info()}" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+</html>

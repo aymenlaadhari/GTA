@@ -1,0 +1,139 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/MainContent.xhtml">
+	<ui:define name="Content">
+
+	<h:outputStylesheet library="css" name="main.css" />
+
+<p:accordionPanel multiple="true">
+        <p:tab title="Gestion congé">
+        <h:form>
+            <h:panelGrid columns="2">
+					<p:outputLabel value="CP" />
+					<p:selectBooleanCheckbox value="#{gestionCongeBean.gestionconge.cp}" />
+		        
+					<p:outputLabel value="Unité de décompte" />
+					<h:panelGrid columns="3">
+					<h:selectOneMenu id="unite" value="#{GestionCongeBean.gestionconge.unitedecompte}">
+						<f:selectItems value="#{gestionCongeBean.unites}" var="cpt" itemLabel="#{cpt.libelle}" itemValue="#{cpt.libelle}"  required="true"/>
+					</h:selectOneMenu>
+					
+				    </h:panelGrid>
+					<p:outputLabel value="Compteur d'aquisition" />
+					<p:selectOneMenu value="#{GestionCongeBean.gestionconge.compteuracquisition}" required="true" >
+						<f:selectItems value="#{gestionCongeBean.compteurs}" var="cpt" itemLabel="#{cpt.codec}" />
+					</p:selectOneMenu>
+					
+					<p:outputLabel value="Rubrique de paiement N-1" />
+					<p:selectOneMenu value="#{gestionCongeBean.gestionconge.rubriqueN_1}" required="true" >
+						<f:selectItems value="#{gestionCongeBean.compteurs}" var="cpt" itemLabel="#{cpt.codec}" />
+					</p:selectOneMenu>
+					
+					<p:outputLabel value="Rubrique de paiement" />
+					<p:selectOneMenu value="#{gestionCongeBean.gestionconge.rubriqueN}" required="true">
+						<f:selectItems value="#{gestionCongeBean.compteurs}" var="cpt" itemLabel="#{cpt.codec}" />
+					</p:selectOneMenu>
+				</h:panelGrid>
+				<p:commandButton value="submit" action="#{gestionCongeBean.ajouterGestionConge()}" icon="ui-icon-check"
+						style="margin-left: 40%" />
+				</h:form>
+        </p:tab>
+        <p:tab title="Gestion des périodes">
+            <h:form>
+            <h:panelGrid>
+            <p:row>
+             <p:column><p:outputLabel for="date" value="Date d'éffet :" /></p:column>
+        	 <p:column><p:calendar id="date" value="#{gestionPeriodeBean.dateeffet}" showOn="button" /></p:column>
+             </p:row>
+   		
+   		     <p:row>
+			 <h:panelGrid columns="9">
+             <p:outputLabel value="Période d'acquisition :" />
+        	 <p:outputLabel value="De: " />
+        	 <p:spinner value="#{gestionCongeBean.gestionperiodeconge.jourdebutA}" min="1" max="31" size='1'/>
+   			 <p>/</p>
+   			 <p:spinner value="#{gestionCongeBean.gestionperiodeconge.moisdebutA}" min="1" max="12" size='1' />
+   			 
+   			 <p:outputLabel  value="A: " />
+        	 <p:spinner  value="#{gestionCongeBean.gestionperiodeconge.jourfinA}" min="1" max="31" size='1'>
+        	 </p:spinner>
+   			 <p>/</p>
+   			 <p:spinner value="#{gestionCongeBean.gestionperiodeconge.moisfinA}" min="1" max="12" size='1' />
+           	 </h:panelGrid>
+             </p:row>
+             
+             <p:row>
+			 <h:panelGrid columns="9">
+             <p:outputLabel value="Période de consommation :" />
+        	 <p:outputLabel value="De: " />
+        	 <p:spinner value="#{gestionCongeBean.gestionperiodeconge.jourdebutC}" min="1" max="31" size='1'/>
+   			 <p>/</p>
+   			 <p:spinner value="#{gestionCongeBean.gestionperiodeconge.moisdebutC}" min="1" max="12" size='1' />
+   			 
+   			 <p:outputLabel  value="A: " />
+        	 <p:spinner  value="#{gestionCongeBean.gestionperiodeconge.jourfinC}" min="1" max="31" size='1'>
+        	 </p:spinner>
+   			 <p>/</p>
+   			 <p:spinner value="#{gestionCongeBean.gestionperiodeconge.moisfinC}" min="1" max="12" size='1' />
+           	 </h:panelGrid>
+             </p:row>
+             
+             </h:panelGrid>
+				<p:commandButton value="submit" action="#{gestionCongeBean.ajouterGestionPeriodeConge()}" icon="ui-icon-check"
+						style="margin-left: 40%" />
+		</h:form>
+            
+        </p:tab>
+        <p:tab title="Ancienneté">
+        <h:form>
+			<h:dataTable id="tblFields" value="#{ancienneteBean.oneMenus}"
+				var="field">
+				<h:column>
+				<p:outputLabel value="De: " />
+				<h:inputText value="#{ancienneteBean.anciennete.andebut}" required="true" />	
+				</h:column>
+
+				<h:column>
+				<p:outputLabel value="A: " />
+				<h:inputText value="#{ancienneteBean.anciennete.anfin}" required="true" />
+				</h:column>
+				
+				<h:column>
+				<p:outputLabel value="Taux: " />
+				<h:panelGrid columns="1" style="margin-bottom: 10px">
+				 <h:outputText id="output" value="%#{ancienneteBean.anciennete.taux}" />
+		        <h:inputHidden id="txt2" value="#{ancienneteBean.anciennete.taux}" />
+		        <p:slider for="txt2" display="output" style="width: 200px" />
+		        </h:panelGrid>
+				</h:column>
+
+				<h:column>
+					<h:commandButton value="Remove">
+						<f:ajax
+							listener="#{ancienneteBean.onButtonRemoveFieldClick(field)}"
+							immediate="true" render="@form" />
+					</h:commandButton>
+				</h:column>
+			</h:dataTable>
+
+			<h:commandButton value="Add">
+				<f:ajax listener="#{ancienneteBean.onButtonAddFieldClick}"
+					execute="@form" render="tblFields" />
+			</h:commandButton>
+			<br />
+			
+
+		</h:form>
+            
+        </p:tab>
+    </p:accordionPanel>
+ 
+	</ui:define>
+</ui:composition>
+</html>

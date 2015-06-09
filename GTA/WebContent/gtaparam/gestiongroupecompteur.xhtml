@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/MainContent.xhtml">
+	<ui:define name="Content">
+		<h:form>
+			<p:panel header="Paramétrage de groupe compteurs">
+				<h:panelGrid columns="2">
+				<table>
+					<p:outputLabel value="Code" />
+					<p:inputText value="#{groupeCompteurBean.groupeCompteur.codegrpc}" />
+					
+					<p:outputLabel value="Libelle" />
+					<p:inputText value="#{groupeCompteurBean.libelle.lib}" />
+					
+					<p:outputLabel value="Liste compteurs:" />
+					
+					<p:outputLabel value="Date d'effet" />
+					<p:calendar value="#{groupeCompteurBean.dateEffet}" />
+					<p:selectManyCheckbox
+						value="#{groupeCompteurBean.selectedCompteurs}" layout="grid"
+						columns="1" converter="#{compteurConvertor}">
+						<f:selectItems value="#{groupeCompteurBean.compteurs}" var="cpt"
+							itemLabel="#{cpt.codec}" />
+					</p:selectManyCheckbox>
+					</table>
+					
+					
+					<p:commandButton value="submit"
+						action="#{groupeCompteurBean.ajouter()}" icon="ui-icon-check"
+						style="margin-left: 40%" />
+				</h:panelGrid>
+
+
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

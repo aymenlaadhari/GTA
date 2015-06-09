@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/MainContent.xhtml">
+	<ui:define name="Content">
+		<h:form id="form">
+			<p:growl id="msgs" showDetail="true" />
+
+			<p:dataTable id="basicDT" var="compteur"
+				value="#{carService.compteurs}">
+
+				<p:column headerText="Code Compteur">
+					<h:outputText value="#{compteur.codec}" />
+				</p:column>
+				<p:column headerText="Formule">
+					<h:outputText value="#{compteur.formule}" />
+				</p:column>
+				<p:column headerText="Condition">
+					<h:outputText value="#{compteur.condition}" />
+				</p:column>
+				<p:column headerText="operation">
+					<h:outputText value="#{compteur.operation}" />
+				</p:column>
+				<p:column headerText="type operation">
+					<h:outputText value="#{compteur.typeop}" />
+				</p:column>
+				<p:column headerText="date effet">
+					<h:outputText value="#{compteur.dateff}" />
+				</p:column>
+				<p:column headerText="valeur min">
+					<h:outputText value="#{compteur.valmin}" />
+				</p:column>
+				<p:column headerText="valeur max">
+					<h:outputText value="#{compteur.typevaleur}" />
+				</p:column>
+
+				<p:column headerText="EDIT">
+					<p:commandButton oncomplete="PF('carDialog').show()"
+						icon="ui-icon-search" title="View">
+						<f:setPropertyActionListener value="#{compteur}"
+							target="#{compteurUserService.selectedCompteur}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

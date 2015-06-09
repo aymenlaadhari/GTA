@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/MainContent.xhtml">
+<ui:define name="Content">
+	<p:panel header="Définition d'un cycle de travail">
+		<h:form>
+
+			<table>
+				<tr>
+					<td><p:outputLabel value="Code" /></td>
+					<td><p:inputText
+							value="#{cycleBean.cycleTravail.codect}" required="true" /></td>
+				</tr>
+				<tr>
+					<td><p:outputLabel value="Libelle"></p:outputLabel></td>
+					<td><p:inputText
+							value="#{cycleBean.libelle.lib}" required="true" /></td>
+				</tr>
+				<tr>
+					<td><p:outputLabel value="Date d'effet"></p:outputLabel></td>
+					<td><p:calendar
+							value="#{cycleBean.cycleTravail.dateff}" required="true" /></td>
+				</tr>
+
+			</table>
+			<table>
+				
+			<p:outputLabel value="Journees Type"></p:outputLabel>
+
+		 <p:selectManyCheckbox value="#{cycleBean.listajout}"  
+            layout="pageDirection" converter="#{journeeTypeConvertor}">  
+            <f:selectItems value="#{cycleBean.journeeTypes}" var="jour" itemLabel="#{jour.codejt}" />
+            
+        </p:selectManyCheckbox>  
+
+
+				<tr>
+					<td><p:commandButton value="ajouter"
+							action="#{cycleBean.ajouter()}" /></td>
+				</tr>
+			</table>
+			<h:commandButton value="next" action="#{cycleBean.redirect()}" />
+		</h:form>
+	</p:panel>
+</ui:define>
+</ui:composition>
+</html>

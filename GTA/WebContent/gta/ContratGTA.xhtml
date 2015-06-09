@@ -1,0 +1,844 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/MainContent.xhtml">
+
+	<ui:define name="Content">
+		<h:form id="employe">
+
+			<p:panel style="border:0px">
+				<h:panelGrid>
+					<p:graphicImage id="photoview" cache="false"
+						value="#{donneesIndividuellesBean.photo}"
+						rendered="#{donneesIndividuellesBean.renderedimage}"
+						style="width:70px; height:90px;" />
+					<p:outputLabel
+						value="#{donneesIndividuellesBean.identite.qualite} #{donneesIndividuellesBean.identite.nom} #{donneesIndividuellesBean.identite.prenom}" />
+				</h:panelGrid>
+			</p:panel>
+			<!-- WIDGET TABBED CONTENT -->
+
+
+			<div class="col-md-8">
+				<div class="widget">
+					<div class="widget-header-in">
+
+
+						<ul class="nav nav-tabs pull-right">
+
+							<li><button class="btn btn-default  btn-primary ">
+									<i class="fa fa-file-pdf-o"></i> Export to pdf
+								</button></li>
+							<li><button class="btn btn-default btn-primary ">
+									<i class="fa fa-print"></i> Print
+								</button></li>
+						</ul>
+
+						<ul class="nav nav-tabs">
+
+							<li class="active"><a href="#tab1" data-toggle="tab"><i
+									class="fa fa-user"></i><span>Contrat GTA</span></a></li>
+
+
+
+						</ul>
+					</div>
+					<div class="widget-content">
+						<div class="tab-content no-padding">
+							<div class="tab-pane fade in active" id="tab1">
+								<p:tab id="contratgta" title="Contrat GTA ">
+
+									<p:panel style="border:0px" header="cycle" id="cycle">
+										<f:facet name="header"> Cycle de Travail
+					
+					<p:commandButton icon="ui-icon-seek-prev" ajax="true"
+												action="#{donneesIndividuellesBean.premierHistoriqueSC()}"
+												update="cycle"></p:commandButton>
+											<p:commandButton icon="ui-icon-carat-1-w" ajax="true"
+												action="#{donneesIndividuellesBean.precedentHistoriqueSC()}"
+												update="cycle"
+												disabled="#{donneesIndividuellesBean.precedentSc}"></p:commandButton>
+											<p:commandButton icon="ui-icon-carat-1-e" ajax="true"
+												action="#{donneesIndividuellesBean.suivantHistoriqueSC()}"
+												update="cycle"
+												disabled="#{donneesIndividuellesBean.suivantSc}"></p:commandButton>
+											<p:commandButton icon="ui-icon-seek-next" ajax="true"
+												action="#{donneesIndividuellesBean.dernierHistoriqueSC()}"
+												update="cycle"></p:commandButton>
+											<p:commandButton icon="ui-icon-zoomin"
+												onclick="PF('dialogViewcycle').show()"
+												update=":formDialogViewcycle"></p:commandButton>
+											<p:commandButton icon="ui-icon-pencil"
+												onclick="PF('dialogEditcycle').show()"
+												update=":formDialogEditcycle"></p:commandButton>
+											<p:commandButton icon="ui-icon-plus"
+												onclick="PF('dialogAddcycle').show()"
+												update=":formDialogAddcycle"></p:commandButton>
+											<p:commandButton icon="ui-icon-trash"
+												action="#{donneesIndividuellesBean.supprimerSc()}"
+												ajax="true" update="cycle"></p:commandButton>
+										</f:facet>
+										<h:panelGrid columns="2">
+											<p:outputLabel value="Code Cycle de Travail" />
+											<p:inputText value="#{occurenceBean.cycleTravail.codect}"
+												readonly="true" />
+											<p:outputLabel value="Code Calendrier" />
+											<p:inputText value="#{occurenceBean.codeCalendrier.code}"
+												readonly="true" />
+											<p:outputLabel value="Element Cycle" />
+											<p:inputText value="#{occurenceBean.occurence.index}"
+												readonly="true" />
+											<p:outputLabel value="Date d'effet" />
+											<p:inputText value="#{occurenceBean.cycleTravail.dateff}"
+												readonly="true" />
+
+										</h:panelGrid>
+									</p:panel>
+									<p:panel style="border:0px" id="gta">
+										<f:facet name="header"> Soumission GTA
+						
+ 							<p:commandButton icon="ui-icon-seek-prev" ajax="true"
+												action="#{donneesIndividuellesBean.premierHistoriqueSC()}"
+												update="gta"></p:commandButton>
+											<p:commandButton icon="ui-icon-carat-1-w" ajax="true"
+												action="#{donneesIndividuellesBean.precedentHistoriqueSC()}"
+												update="gta"
+												disabled="#{donneesIndividuellesBean.precedentSc}"></p:commandButton>
+											<p:commandButton icon="ui-icon-carat-1-e" ajax="true"
+												action="#{donneesIndividuellesBean.suivantHistoriqueSC()}"
+												update="gta"
+												disabled="#{donneesIndividuellesBean.suivantSc}"></p:commandButton>
+											<p:commandButton icon="ui-icon-seek-next" ajax="true"
+												action="#{donneesIndividuellesBean.dernierHistoriqueSC()}"
+												update="gta"></p:commandButton>
+											<p:commandButton icon="ui-icon-zoomin"
+												onclick="PF('dialogViewgta').show()"
+												update=":formDialogViewgta"></p:commandButton>
+											<p:commandButton icon="ui-icon-pencil"
+												onclick="PF('dialogEditgta').show()"
+												update=":formDialogEditgta"></p:commandButton>
+											<p:commandButton icon="ui-icon-plus"
+												onclick="PF('dialogAddgta').show()"
+												update=":formDialogAddgta"></p:commandButton>
+											<p:commandButton icon="ui-icon-trash"
+												action="#{donneesIndividuellesBean.supprimerSc()}"
+												ajax="true" update="gta"></p:commandButton>
+										</f:facet>
+										<h:panelGrid columns="2">
+											<p:outputLabel value="soumis GTA ?" />
+											<p:inputText value="#{occurenceBean.occurence.gta}"
+												readonly="true" />
+
+											<p:outputLabel value="Type de Gestion" />
+											<p:inputText
+												value="#{occurenceBean.occurence.classeEmps.get()}"
+												readonly="true" />
+
+											<p:outputLabel value="Classe Employe" />
+											<p:inputText
+												value="#{occurenceBean.occurence.classeEmps.get()}"
+												readonly="true" />
+
+										</h:panelGrid>
+									</p:panel>
+									<p:panel style="border:0px" id="pointage">
+										<f:facet name="header"> Soumission Pointage
+						
+ 							<p:commandButton icon="ui-icon-seek-prev" ajax="true"
+												action="#{donneesIndividuellesBean.premierHistoriqueSt()}"
+												update="pointage"></p:commandButton>
+											<p:commandButton icon="ui-icon-carat-1-w" ajax="true"
+												action="#{donneesIndividuellesBean.precedentHistoriqueSt()}"
+												update="pointage"
+												disabled="#{donneesIndividuellesBean.precedentSt}"></p:commandButton>
+											<p:commandButton icon="ui-icon-carat-1-e" ajax="true"
+												action="#{donneesIndividuellesBean.suivantHistoriqueSt()}"
+												update="pointage"
+												disabled="#{donneesIndividuellesBean.suivantSt}"></p:commandButton>
+											<p:commandButton icon="ui-icon-seek-next" ajax="true"
+												action="#{donneesIndividuellesBean.dernierHistoriqueSt()}"
+												update="pointage"></p:commandButton>
+											<p:commandButton icon="ui-icon-zoomin"
+												onclick="PF('dialogViewpointage').show()"
+												update=":formDialogViewpointage"></p:commandButton>
+											<p:commandButton icon="ui-icon-pencil"
+												onclick="PF('dialogEditpointage').show()"
+												update=":formDialogEditpointage"></p:commandButton>
+											<p:commandButton icon="ui-icon-plus"
+												onclick="PF('dialogAddpointage').show()"
+												update=":formDialogAddpointage"></p:commandButton>
+											<p:commandButton icon="ui-icon-trash"
+												action="#{donneesIndividuellesBean.supprimerSt()}"
+												ajax="true" update="pointage"></p:commandButton>
+										</f:facet>
+										<h:panelGrid columns="2">
+											<p:outputLabel value="soumis Pointage ?" />
+											<p:inputText value="#{occurenceBean.occurence.gta}"
+												readonly="true" />
+											<p:outputLabel value="Terminaux Mobiles :" />
+											<p:inputText
+												value="#{occurenceBean.occurence.terminalMobiles}"
+												readonly="true" />
+
+										</h:panelGrid>
+									</p:panel>
+
+
+									<p:panel style="border:0px" id="compteur">
+										<f:facet name="header"> Groupes Compteurs
+						
+ 							<p:commandButton icon="ui-icon-seek-prev" ajax="true"
+												action="#{donneesIndividuellesBean.premierHistoriqueSC()}"
+												update="compteur"></p:commandButton>
+											<p:commandButton icon="ui-icon-carat-1-w" ajax="true"
+												action="#{donneesIndividuellesBean.precedentHistoriqueSC()}"
+												update="compteur"
+												disabled="#{donneesIndividuellesBean.precedentSc}"></p:commandButton>
+											<p:commandButton icon="ui-icon-carat-1-e" ajax="true"
+												action="#{donneesIndividuellesBean.suivantHistoriqueSC()}"
+												update="compteur"
+												disabled="#{donneesIndividuellesBean.suivantSc}"></p:commandButton>
+											<p:commandButton icon="ui-icon-seek-next" ajax="true"
+												action="#{donneesIndividuellesBean.dernierHistoriqueSC()}"
+												update="compteur"></p:commandButton>
+											<p:commandButton icon="ui-icon-zoomin"
+												onclick="PF('dialogViewcompteur').show()"
+												update=":formDialogViewcompteur"></p:commandButton>
+											<p:commandButton icon="ui-icon-pencil"
+												onclick="PF('dialogEditcompteur').show()"
+												update=":formDialogEditcompteur"></p:commandButton>
+											<p:commandButton icon="ui-icon-plus"
+												onclick="PF('dialogAddcompteur').show()"
+												update=":formDialogAddcompteur"></p:commandButton>
+											<p:commandButton icon="ui-icon-trash"
+												action="#{donneesIndividuellesBean.supprimerSc()}"
+												ajax="true" update="compteur"></p:commandButton>
+										</f:facet>
+										<h:panelGrid columns="2">
+											<p:outputLabel value="Code Compteur" />
+											<p:inputText value="#{occurenceBean.cycleTravail.dateff}"
+												readonly="true" />
+											<p:outputLabel value="Date d'effet" />
+											<p:inputText value="#{occurenceBean.cycleTravail.dateff}"
+												readonly="true" />
+										</h:panelGrid>
+									</p:panel>
+
+									<p:panel style="border:0px" id="autre" header="Nationalités">
+
+
+										<f:facet name="header"> Autres Groupes
+
+								<p:commandButton icon="ui-icon-seek-prev" ajax="true"
+												action="#{donneesIndividuellesBean.premierHistoriqueSt()}"
+												update="autre"></p:commandButton>
+											<p:commandButton icon="ui-icon-carat-1-w" ajax="true"
+												action="#{donneesIndividuellesBean.precedentHistoriqueSt()}"
+												update="autre"
+												disabled="#{donneesIndividuellesBean.precedentSt}"></p:commandButton>
+											<p:commandButton icon="ui-icon-carat-1-e" ajax="true"
+												action="#{donneesIndividuellesBean.suivantHistoriqueSt()}"
+												update="autre"
+												disabled="#{donneesIndividuellesBean.suivantSt}"></p:commandButton>
+											<p:commandButton icon="ui-icon-seek-next" ajax="true"
+												action="#{donneesIndividuellesBean.dernierHistoriqueSt()}"
+												update="autre"></p:commandButton>
+											<p:commandButton icon="ui-icon-zoomin"
+												onclick="PF('dialogViewautre').show()"
+												update=":formDialogViewautre"></p:commandButton>
+											<p:commandButton icon="ui-icon-pencil"
+												onclick="PF('dialogEditautre').show()"
+												update=":formDialogEditautre"></p:commandButton>
+											<p:commandButton icon="ui-icon-plus"
+												onclick="PF('dialogAddautre').show()"
+												update=":formDialogAddautre"></p:commandButton>
+											<p:commandButton icon="ui-icon-trash"
+												action="#{donneesIndividuellesBean.supprimerSt()}"
+												ajax="true" update="autre"></p:commandButton>
+										</f:facet>
+
+										<h:panelGrid columns="2">
+
+										</h:panelGrid>
+									</p:panel>
+
+
+								</p:tab>
+							</div>
+
+							<!-- ##################################### Fin Table##################################################"  -->
+
+						</div>
+					</div>
+				</div>
+				<!-- END WIDGET TABBED CONTENT -->
+			</div>
+		</h:form>
+		<h:form id="form2">
+			<div class="col-md-3">
+
+				<div class="widget widget-table">
+					<div class="widget-header">
+						<h3>
+							<i class="fa fa-users"></i>Liste des collaborteurs
+						</h3>
+					</div>
+					<div class="widget-content">
+
+						<div class="input-group input-group-sm">
+							<h:form id="formSearch">
+								<h:outputLabel value="Matricule:" />
+								<p:inputText value="#{donneesIndividuellesBean.matricul}"
+									onkeypress="if (event.keyCode == 13) {onchange(); return false; }">
+									<p:ajax event="change"
+										listener="#{donneesIndividuellesBean.chargerCollaborateurs()}"
+										update=":form2:collaborateurs" />
+								</p:inputText>
+
+								<p:commandButton icon="ui-icon-plus"
+									onclick="PF('DialogAdvancedSearchIdentite').show()"
+									update=":formDialogAdvancedSearchIdentite">
+								</p:commandButton>
+							</h:form>
+						</div>
+						<p:dataTable id="collaborateurs"
+							value="#{donneesIndividuellesBean.collaborateurs}" var="coll"
+							selection="#{donneesIndividuellesBean.identite}"
+							rowKey="#{coll.numedoss}" selectionMode="single">
+							<f:facet name="header">
+
+
+							</f:facet>
+							<p:ajax event="rowSelect"
+								listener="#{donneesIndividuellesBean.rechercher()}"
+								update=":employe" />
+
+							<p:column headerText="nom">
+								<h:outputText value="#{coll.nom}" />
+							</p:column>
+							<p:column headerText="prenom">
+								<h:outputText value="#{coll.prenom}" />
+							</p:column>
+							<p:column headerText="matricule">
+								<h:outputText value="#{coll.matricul}" />
+							</p:column>
+
+						</p:dataTable>
+					</div>
+
+				</div>
+			</div>
+
+
+		</h:form>
+
+		<!-- ********************************************* dialog identite  *********************************************************** -->
+
+		<!-- ********************************************* dialog cycle de travail  *********************************************************** -->
+
+
+		<p:dialog header="Détails Cycle de travail"
+			widgetVar="dialogViewcycle" resizable="false" width="350">
+			<h:form id="formDialogViewcycle">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Code Cycle de Travail" />
+					<p:inputText value="#{occurenceBean.cycleTravail.codect}"
+						readonly="true" />
+					<p:outputLabel value="Code Calendrier" />
+					<p:inputText value="#{occurenceBean.codeCalendrier.code}"
+						readonly="true" />
+					<p:outputLabel value="Element Cycle" />
+					<p:inputText value="#{occurenceBean.occurence.index}"
+						readonly="true" />
+					<p:outputLabel value="Date d'effet" />
+					<p:inputText value="#{occurenceBean.cycleTravail.dateff}"
+						readonly="true" />
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+
+
+		<p:dialog header="Modifier Cycle de travail"
+			widgetVar="dialogEditcycle" resizable="false" width="350">
+			<h:form id="formDialogEditcycle">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Code Cycle de travail"></p:outputLabel>
+					<p:selectOneMenu value="#{occurenceBean.cycleTravail}"
+						converter="#{cycleTravailConvertor}">
+						<f:selectItem itemLabel="Selectionner" itemValue="" />
+						<f:selectItems value="#{occurenceBean.cycleTravails}" var="cycle"
+							itemLabel="#{cycle.codect}" itemValue="#{cycle}" />
+					</p:selectOneMenu>
+
+
+					<p:outputLabel value="Code Calendrier"></p:outputLabel>
+					<p:selectOneMenu value="#{occurenceBean.codeCalendrier}"
+						converter="#{codeCalendrierConvertor}">
+						<f:selectItem itemLabel="Selectionner" itemValue="" />
+						<f:selectItems value="#{occurenceBean.codeCalendriers}"
+							var="cycle" itemLabel="#{cycle.code}" itemValue="#{cycle}" />
+					</p:selectOneMenu>
+
+
+					<p:outputLabel value="Element du Cycle"></p:outputLabel>
+					<p:inputText value="#{occurenceBean.occurence.index}"></p:inputText>
+
+					<p:outputLabel value="Date d'effet"></p:outputLabel>
+					<p:calendar value="#{occurenceBean.cycleTravail.dateff}" />
+
+				</h:panelGrid>
+				<p:commandButton value="Sauvegarder" ajax="true"
+					update=":employe:cycle"
+					action="#{donneesIndividuellesBean.modifierSc()}"
+					oncomplete="PF('dialogEditcycle').hide()"></p:commandButton>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Ajouter un Cycle de travail"
+			widgetVar="dialogAddcycle" resizable="false" width="350">
+			<h:form id="formDialogAddcycle">
+				<h:panelGrid columns="2">
+
+					<p:outputLabel value="Code Cycle de travail"></p:outputLabel>
+					<p:selectOneMenu value="#{occurenceBean.cycleTravail}"
+						converter="#{cycleTravailConvertor}">
+						<f:selectItem itemLabel="Selectionner" itemValue="" />
+						<f:selectItems value="#{occurenceBean.cycleTravails}" var="cycle"
+							itemLabel="#{cycle.codect}" itemValue="#{cycle}" />
+					</p:selectOneMenu>
+
+
+					<p:outputLabel value="Code Calendrier"></p:outputLabel>
+					<p:selectOneMenu value="#{occurenceBean.codeCalendrier}"
+						converter="#{codeCalendrierConvertor}">
+						<f:selectItem itemLabel="Selectionner" itemValue="" />
+						<f:selectItems value="#{occurenceBean.codeCalendriers}"
+							var="cycle" itemLabel="#{cycle.code}" itemValue="#{cycle}" />
+					</p:selectOneMenu>
+
+
+					<p:outputLabel value="Element du Cycle"></p:outputLabel>
+					<p:inputText value="#{occurenceBean.occurence.index}"></p:inputText>
+
+					<p:outputLabel value="Date d'effet"></p:outputLabel>
+					<p:calendar value="#{occurenceBean.cycleTravail.dateff}" />
+
+
+				</h:panelGrid>
+				<p:commandButton value="Sauvegarder" ajax="true"
+					update=":employe:cycle" action="#{occurenceBean.ajoutOccurence()}"
+					oncomplete="PF('dialogAddcycle').hide()"></p:commandButton>
+			</h:form>
+		</p:dialog>
+
+		<!-- ********************************************* dialog soumission GTA  *********************************************************** -->
+
+
+		<p:dialog header="Détails Soumission GTA" widgetVar="dialogViewgta"
+			resizable="false" width="350">
+			<h:form id="formDialogViewgta">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="soumis GTA ?" />
+					<p:inputText value="#{occurenceBean.occurence.gta}" readonly="true" />
+
+					<p:outputLabel value="Type de Gestion" />
+					<p:inputText value="#{occurenceBean.occurence.classeEmps.get()}"
+						readonly="true" />
+					<p:outputLabel value="Classe Employe" />
+					<p:inputText value="#{occurenceBean.occurence.classeEmps.get()}"
+						readonly="true" />
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+
+
+		<p:dialog header="Modifier Soumission GTA" widgetVar="dialogEditgta"
+			resizable="false" width="350">
+			<h:form id="formDialogEditgta">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Soumis GTA ?"></p:outputLabel>
+					<p:selectOneMenu value="#{occurenceBean.gta}">
+						<f:selectItem itemLabel="oui" itemValue="oui" />
+						<f:selectItem itemLabel="non" itemValue="non" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Date d'effet"></p:outputLabel>
+					<p:calendar value="#{occurenceBean.cycleTravail.dateff}" />
+
+					<p:outputLabel value="Type De Gestion"></p:outputLabel>
+					<h:selectOneRadio value="#{occurenceBean.occurence.natureHeure}">
+						<f:selectItem id="item1" itemLabel="Heure" itemValue="h" />
+						<f:selectItem id="item2" itemLabel="Durée" itemValue="d" />
+					</h:selectOneRadio>
+
+
+				</h:panelGrid>
+				<p:commandButton value="Sauvegarder" ajax="true"
+					update=":employe:gta"
+					action="#{donneesIndividuellesBean.modifierSc()}"
+					oncomplete="PF('dialogEditgta').hide()"></p:commandButton>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Ajouter Soumission GTA" widgetVar="dialogAddgta"
+			resizable="false" width="350">
+			<h:form id="formDialogAddgta">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Soumis GTA ?"></p:outputLabel>
+					<p:selectOneMenu value="#{occurenceBean.gta}">
+						<f:selectItem itemLabel="oui" itemValue="oui" />
+						<f:selectItem itemLabel="non" itemValue="non" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Date d'effet"></p:outputLabel>
+					<p:calendar value="#{occurenceBean.cycleTravail.dateff}" />
+
+					<p:outputLabel value="Type De Gestion"></p:outputLabel>
+					<h:selectOneRadio value="#{occurenceBean.occurence.natureHeure}">
+						<f:selectItem id="item1" itemLabel="Heure" itemValue="h" />
+						<f:selectItem id="item2" itemLabel="Durée" itemValue="d" />
+					</h:selectOneRadio>
+
+
+				</h:panelGrid>
+				<p:commandButton value="Sauvegarder" ajax="true"
+					update=":employe:gta"
+					action="#{donneesIndividuellesBean.ajouterSc()}"
+					oncomplete="PF('dialogAddgta').hide()"></p:commandButton>
+			</h:form>
+		</p:dialog>
+		<!-- ********************************************* dialog soumission Pointage  *********************************************************** -->
+
+
+		<p:dialog header="Détails Soumission Pointage"
+			widgetVar="dialogViewpointage" resizable="false" width="350">
+			<h:form id="formDialogViewpointage">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="soumis Pointage ?" />
+					<p:inputText value="#{occurenceBean.occurence.gta}" readonly="true" />
+					<p:outputLabel value="Terminaux Mobiles :" />
+					<p:inputText value="#{occurenceBean.occurence.terminalMobiles}"
+						readonly="true" />
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+
+
+		<p:dialog header="Modifier Soumission Pointage"
+			widgetVar="dialogEditpointage" resizable="false" width="350">
+			<h:form id="formDialogEditpointage">
+				<h:panelGrid>
+					<p:outputLabel value="Soumis au pointeuse ?"></p:outputLabel>
+					<p:selectOneMenu value="#{occurenceBean.pointage}">
+						<f:selectItem itemLabel="oui" itemValue="oui" />
+						<f:selectItem itemLabel="non" itemValue="non" />
+					</p:selectOneMenu>
+					<!-- ############################################ -->
+
+					<h:form>
+						<p:outputLabel value="Terminaux Mobiles"></p:outputLabel>
+						<h:dataTable id="tblFields" value="#{bean.fields}" var="field">
+
+
+							<h:column>
+								<p:inputText size="10" value="#{bean.heure}" />
+							</h:column>
+
+							<h:column>
+								<p:commandButton icon="ui-icon-trash">
+									<f:ajax listener="#{bean.onButtonRemoveFieldClick(field)}"
+										immediate="true" render="@form" />
+								</p:commandButton>
+							</h:column>
+						</h:dataTable>
+						<p:commandButton icon="ui-icon-plus">
+							<f:ajax listener="#{bean.onButtonAddFieldClick}" execute="@form"
+								render="tblFields" />
+						</p:commandButton>
+					</h:form>
+					<!-- ###############################################" -->
+
+				</h:panelGrid>
+				<p:commandButton value="Sauvegarder" ajax="true"
+					update=":employe:pointage"
+					action="#{donneesIndividuellesBean.modifierSc()}"
+					oncomplete="PF('dialogEditpointage').hide()"></p:commandButton>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Ajouter Soumission Pointage"
+			widgetVar="dialogAddpointage" resizable="false" width="350">
+			<h:form id="formDialogAddpointage">
+				<h:panelGrid>
+					<p:outputLabel value="Soumis au pointeuse ?"></p:outputLabel>
+					<p:selectOneMenu value="#{occurenceBean.pointage}">
+						<f:selectItem itemLabel="oui" itemValue="oui" />
+						<f:selectItem itemLabel="non" itemValue="non" />
+					</p:selectOneMenu>
+					<!-- ############################################ -->
+
+					<h:form>
+						<p:outputLabel value="Terminaux Mobiles"></p:outputLabel>
+						<h:dataTable id="tblFields" value="#{bean.fields}" var="field">
+
+
+							<h:column>
+								<p:inputText size="10" value="#{bean.heure}" />
+							</h:column>
+
+							<h:column>
+								<p:commandButton icon="ui-icon-trash">
+									<f:ajax listener="#{bean.onButtonRemoveFieldClick(field)}"
+										immediate="true" render="@form" />
+								</p:commandButton>
+							</h:column>
+						</h:dataTable>
+						<p:commandButton icon="ui-icon-plus">
+							<f:ajax listener="#{bean.onButtonAddFieldClick}" execute="@form"
+								render="tblFields" />
+						</p:commandButton>
+					</h:form>
+					<!-- ###############################################" -->
+
+				</h:panelGrid>
+				<p:commandButton value="Sauvegarder" ajax="true"
+					update=":employe:pointage"
+					action="#{donneesIndividuellesBean.ajouterSc()}"
+					oncomplete="PF('dialogAddpointage').hide()"></p:commandButton>
+			</h:form>
+		</p:dialog>
+
+		<!-- ********************************************* dialog Groupe Compteur  *********************************************************** -->
+
+
+		<p:dialog header="Détails Groupes Compteur"
+			widgetVar="dialogViewcompteur" resizable="false" width="350">
+			<h:form id="formDialogViewcompteur">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Code Compteur" />
+					<p:inputText value="#{occurenceBean.cycleTravail.dateff}"
+						readonly="true" />
+					<p:outputLabel value="Date d'effet" />
+					<p:inputText value="#{occurenceBean.cycleTravail.dateff}"
+						readonly="true" />
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+
+
+		<p:dialog header="Modifier Groupe Compteur"
+			widgetVar="dialogEditcompteur" resizable="false" width="350">
+			<h:form id="formDialogEditcompteur">
+				<h:panelGrid>
+					<p:outputLabel value="Groupe Compteur" />
+					<p:inputText
+						value="#{donneesIndividuellesBean.situationCivile.etat}">
+					</p:inputText>
+					<p:outputLabel value="Date Effet" />
+					<p:calendar
+						value="#{donneesIndividuellesBean.situationCivile.dateffet}" />
+					<p:outputLabel value="Date Fin" />
+					<p:calendar
+						value="#{donneesIndividuellesBean.situationCivile.datefin}" />
+
+				</h:panelGrid>
+				<p:commandButton value="Sauvegarder" ajax="true"
+					update=":employe:compteur"
+					action="#{donneesIndividuellesBean.modifierSc()}"
+					oncomplete="PF('dialogEditcompteur').hide()"></p:commandButton>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Ajouter Groupe Compteur"
+			widgetVar="dialogAddcompteur" resizable="false" width="350">
+			<h:form id="formDialogAddcompteur">
+				<h:panelGrid>
+					<p:outputLabel value="Groupe Compteur" />
+					<p:inputText value="#{donneesIndividuellesBean.nouvelleSc.etat}">
+					</p:inputText>
+					<p:outputLabel value="Date Effet" />
+					<p:calendar value="#{donneesIndividuellesBean.nouvelleSc.dateffet}" />
+					<p:outputLabel value="Date Fin" />
+					<p:calendar value="#{donneesIndividuellesBean.nouvelleSc.datefin}" />
+
+				</h:panelGrid>
+				<p:commandButton value="Sauvegarder" ajax="true"
+					update=":employe:compteur"
+					action="#{donneesIndividuellesBean.ajouterSc()}"
+					oncomplete="PF('dialogAddcompteur').hide()"></p:commandButton>
+			</h:form>
+		</p:dialog>
+
+		<!-- ********************************************* dialog Autres Groupes  *********************************************************** -->
+
+
+		<p:dialog header="Détails Des autres Groupes"
+			widgetVar="dialogViewautre" resizable="false" width="350">
+			<h:form id="formDialogViewautre">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Date d'effet" />
+					<p:inputText value="#{occurenceBean.cycleTravail.dateff}"
+						readonly="true" />
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+
+
+		<p:dialog header="Modifier Autres Groupes" widgetVar="dialogEditautre"
+			resizable="false" width="350">
+			<h:form id="formDialogEditautre">
+				<h:panelGrid>
+			
+
+				</h:panelGrid>
+				<p:commandButton value="Sauvegarder" ajax="true"
+					update=":employe:autre"
+					action="#{donneesIndividuellesBean.modifierSc()}"
+					oncomplete="PF('dialogEditautre').hide()"></p:commandButton>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Ajouter Autres Groupes " widgetVar="dialogAddautre"
+			resizable="false" width="350">
+			<h:form id="formDialogAddautre">
+				<h:panelGrid>
+					
+					<h:form>
+						<p:outputLabel value="Groupes Activité"></p:outputLabel>
+						<h:dataTable id="tblFields" value="#{bean.fields}" var="field">
+
+
+							<h:column>
+								<p:inputText size="10" value="#{bean.heure}" />
+							</h:column>
+
+							<h:column>
+								<p:commandButton icon="ui-icon-trash">
+									<f:ajax listener="#{bean.onButtonRemoveFieldClick(field)}"
+										immediate="true" render="@form" />
+								</p:commandButton>
+							</h:column>
+						</h:dataTable>
+						<p:commandButton icon="ui-icon-plus">
+							<f:ajax listener="#{bean.onButtonAddFieldClick}" execute="@form"
+								render="tblFields" />
+						</p:commandButton>
+					</h:form>
+
+					<h:form>
+						<p:outputLabel value="Groupes Imputation"></p:outputLabel>
+						<h:dataTable id="tblFields" value="#{bean.fields}" var="field">
+
+
+							<h:column>
+								<p:inputText size="10" value="#{bean.heure}" />
+							</h:column>
+
+							<h:column>
+								<p:commandButton icon="ui-icon-trash">
+									<f:ajax listener="#{bean.onButtonRemoveFieldClick(field)}"
+										immediate="true" render="@form" />
+								</p:commandButton>
+							</h:column>
+						</h:dataTable>
+						<p:commandButton icon="ui-icon-plus">
+							<f:ajax listener="#{bean.onButtonAddFieldClick}" execute="@form"
+								render="tblFields" />
+						</p:commandButton>
+					</h:form>
+					<!-- ###############################################" -->
+					
+
+				</h:panelGrid>
+				<p:commandButton value="Sauvegarder" ajax="true"
+					update=":employe:autre"
+					action="#{donneesIndividuellesBean.ajouterSc()}"
+					oncomplete="PF('dialogAddautre').hide()"></p:commandButton>
+			</h:form>
+		</p:dialog>
+
+
+		<!-- ********************************************* recherche avancée *********************************************************** -->
+
+
+
+
+		<p:dialog header="Recherche Avancée"
+			widgetVar="DialogAdvancedSearchIdentite" resizable="false"
+			width="400">
+			<h:form id="formDialogAdvancedSearchIdentite">
+
+				<p:accordionPanel>
+					<p:tab title="Identite">
+
+						<h:panelGrid columns="2">
+							<h:outputLabel value="Nom:" />
+							<p:inputText value="#{donneesIndividuellesBean.nom}"
+								onkeypress="if (event.keyCode == 13) {onchange(); return false; }">
+								<p:ajax event="change"
+									listener="#{donneesIndividuellesBean.chargerCollaborateurs()}"
+									update=":form2:collaborateurs" />
+							</p:inputText>
+							<h:outputLabel value="Prenom:" />
+							<p:inputText value="#{donneesIndividuellesBean.prenom}"
+								onkeypress="if (event.keyCode == 13) {onchange(); return false; }">
+								<p:ajax event="change"
+									listener="#{donneesIndividuellesBean.chargerCollaborateurs()}"
+									update=":form2:collaborateurs" />
+							</p:inputText>
+							<h:outputLabel value="Sexe" />
+							<p:inputText value="#{donneesIndividuellesBean.sexe}"
+								onkeypress="if (event.keyCode == 13) {onchange(); return false; }">
+								<p:ajax event="change"
+									listener="#{donneesIndividuellesBean.chargerCollaborateurs()}"
+									update=":form2:collaborateurs" />
+							</p:inputText>
+							<h:outputLabel value="Situation Civile:" />
+							<p:inputText value="#{donneesIndividuellesBean.stCivile}"
+								onkeypress="if (event.keyCode == 13) {onchange(); return false; }">
+								<p:ajax event="change"
+									listener="#{donneesIndividuellesBean.chargerCollaborateurs()}"
+									update=":form2:collaborateurs" />
+							</p:inputText>
+
+						</h:panelGrid>
+					</p:tab>
+					<p:tab title="Affectation">
+						<h:panelGrid column="2">
+							<p:outputLabel value="Poste:" />
+							<p:inputText value="#{donneesIndividuellesBean.poste}"
+								onkeypress="if (event.keyCode == 13) {onchange(); return false; }">
+								<p:ajax event="change"
+									listener="#{donneesIndividuellesBean.chargerCollaborateurs()}"
+									update=":form2:collaborateurs" />
+							</p:inputText>
+							<p:outputLabel value="Unite Organisationnelle:" />
+							<p:inputText
+								value="#{donneesIndividuellesBean.uniteOrganisationnelle}"
+								onkeypress="if (event.keyCode == 13) {onchange(); return false; }">
+								<p:ajax event="change"
+									listener="#{donneesIndividuellesBean.chargerCollaborateurs()}"
+									update=":form2:collaborateurs" />
+							</p:inputText>
+						</h:panelGrid>
+					</p:tab>
+				</p:accordionPanel>
+				<p:commandButton value="Reset"
+					action="#{donneesIndividuellesBean.resetSearch()}" ajax="true"
+					update="formDialogAdvancedSearchIdentite" />
+			</h:form>
+		</p:dialog>
+		<!--  ##################################################################  -->
+	</ui:define>
+</ui:composition>
+
+</html>

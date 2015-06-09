@@ -1,0 +1,190 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+					<!-- left sidebar -->
+					<div class="col-md-2 left-sidebar">
+
+					<!-- main-nav -->
+						<nav class="main-nav">
+							
+							<ul class="main-menu">
+								<li class="active"><a href="index.html"><i class="fa fa-dashboard fa-fw"></i><span class="text">Dashboard</span></a></li>
+								<li ><a href="#" class="js-sub-menu-toggle"><i class="fa fa-clipboard fa-fw"></i><span class="text">Gestion administrative</span>
+									<i class="toggle-icon fa fa-angle-left"></i></a>
+									<ul class="sub-menu ">
+										<li ><a href=""><span class="text">Recrutement</span></a></li>
+										<li ><a href=""><span class="text">Embauche</span></a></li>
+										<li ><a href=""><span class="text">Sortie</span></a></li>
+										<li ><a href=""><span class="text">Données individuelle</span></a></li>
+										<li ><a href=""><span class="text">Gestion des Frais</span></a></li>
+										<li ><a href=""><span class="text">Rapports</span></a></li>
+									</ul>
+								</li>
+								<li ><a href="#" class="js-sub-menu-toggle"><i class="fa fa-parametrage"></i><span class="text">Paramétrage GTA</span>
+									<i class="toggle-icon fa fa-angle-left"></i></a>
+									<ul class="sub-menu ">
+										<li ><a href="#{request.contextPath}/gtaparam2/ta-activities.jsf"><span class="text">Activité et Absences</span></a></li>
+										<li ><a href="#{request.contextPath}/gtaparam/gestionplagehoraire.jsf"><span class="text">Cycle de travail</span></a></li>
+										<li ><a href="#{request.contextPath}/gtaparam/gestionfiltre.jsf"><span class="text">Compteurs</span></a></li>
+										
+							</ul>
+								</li>
+								<li ><a href="#" class="js-sub-menu-toggle"><i class="fa fa-calendar"></i><span class="text">Gestion Temps et Activités</span>
+									<i class="toggle-icon fa fa-angle-left"></i></a>
+									<ul class="sub-menu ">
+										<li ><a href="#{request.contextPath}/gta2/TAContract.jsf"><span class="text">Contrat GTA</span></a></li>
+										<li ><a href="#{request.contextPath}/gta2/TAPlanning.jsf"><span class="text">Planning</span></a></li>
+										<li ><a href="#{request.contextPath}/gta2/TAPlanificationIndividuelles.jsf"><span class="text">Planification Individuelles</span></a></li>
+										<li ><a href="#{request.contextPath}/gta2/TAPlanification.jsf"><span class="text">Planification équipe</span></a></li>
+										<li ><a href="#{request.contextPath}/gta2/TAAbsence.jsf"><span class="text">Gestion des absences</span></a></li>
+										<li ><a href="#{request.contextPath}/gta2/TAPointage.jsf"><span class="text">Gestion des pointages</span></a></li>
+										<li ><a href="#{request.contextPath}/gta2/TAActivity.jsf"><span class="text">Gestion des activités</span></a></li>
+										<li ><a href="#{request.contextPath}/gta2/TAImputation.jsf"><span class="text">Gestion des imputations</span></a></li>
+										<li ><a href="#{request.contextPath}/gta2/TALoan.jsf"><span class="text">Prêt empreint du personnel</span></a></li>
+										<li ><a href="#{request.contextPath}/gta2/TACounters.jsf"><span class="text">Gestion des compteurs</span></a></li>
+										<li ><a href="#{request.contextPath}/gta2/TACollectiveManagement.jsf"><span class="text">Gestion collective</span></a></li>
+										<li ><a href="#{request.contextPath}/gta2/TAReports.jsf"><span class="text">Rapports</span></a></li>			
+									</ul>
+								</li>
+								<li ><a href="#" class="js-sub-menu-toggle"><i class="fa fa-lightbulb-o"></i><span class="text">Gestion des compétences</span>
+									<i class="toggle-icon fa fa-angle-left"></i></a>
+									<ul class="sub-menu ">
+										<li ><a href=""><span class="text">Compétences</span></a></li>
+										<li ><a href=""><span class="text">Formation</span></a></li>
+										<li ><a href=""><span class="text">Développement personnel</span></a></li>
+										<li ><a href=""><span class="text">Performance</span></a></li>
+									</ul>
+								</li>
+								<li ><a href="#" class="js-sub-menu-toggle"><i class="fa fa-credit-card"></i><span class="text">Paie</span>
+									<i class="toggle-icon fa fa-angle-left"></i></a>
+									<ul class="sub-menu ">
+									</ul>
+								</li>
+								<li><a href="#" class="js-sub-menu-toggle"><i class="fa fa-puzzle-piece fa-fw"></i><span class="text">CRM</span>
+								<i class="toggle-icon fa fa-angle-left"></i></a>
+								<ul class="sub-menu ">
+									<li ><a href=""><span class="text">Gestion des comptes et contacts</span></a></li>
+									<li ><a href=""><span class="text">Gestions commerciale</span></a></li>
+									<li ><a href=""><span class="text">Gestions des services</span></a></li>
+									<li ><a href=""><span class="text">Gestion marketing</span></a></li>
+									<li ><a href=""><span class="text">Rapports</span></a></li>
+									<li ><a href=""><span class="text">Paramétrage CRM</span></a></li>
+								</ul>
+								</li>
+								<li ><a href="#" class="js-sub-menu-toggle"><i class="fa fa-cube"></i><span class="text">Stock Production</span>
+									<i class="toggle-icon fa fa-angle-left"></i></a>
+									<ul class="sub-menu ">
+										<li ><a href=""><span class="text">Produits</span></a></li>
+										<li ><a href=""><span class="text">Production</span></a></li>
+										<li ><a href=""><span class="text">Stock</span></a></li>
+									</ul>
+								</li>
+								<li><a href="#" class="js-sub-menu-toggle"><i class="fa fa-table fw"></i><span class="text">Comptabilité</span>
+									<i class="toggle-icon fa fa-angle-left"></i></a>
+									<ul class="sub-menu ">
+										<li ><a href="tables-static-table.html"><span class="text">Facturation - Vente</span></a></li>
+										<li ><a href=""><span class="text">Facturation - Achat</span></a></li>
+										<li ><a href=""><span class="text">Stock</span></a></li>
+										<li ><a href=""><span class="text">Ecriture Comptable</span></a></li>
+										<li ><a href=""><span class="text">Journal</span></a></li>
+										<li ><a href=""><span class="text">Grand livres</span></a></li>
+										<li ><a href=""><span class="text">Blance</span></a></li>
+										<li ><a href=""><span class="text">Bilan</span></a></li>
+										<li ><a href=""><span class="text">Etats comptables</span></a></li>
+										<li ><a href=""><span class="text">Notes</span></a></li>
+										<li ><a href=""><span class="text">Paramétrages comptable</span></a></li>
+									</ul>
+								</li>
+								<li><a href="#" class="js-sub-menu-toggle"><i class="fa fa-mobile"></i><span class="text">Mobile</span>
+									<i class="toggle-icon fa fa-angle-left"></i></a>
+									<ul class="sub-menu ">
+										<li ><a href="tables-static-table.html"><span class="text">Téléchargement application</span></a></li>
+										<li ><a href=""><span class="text">Paramétrages</span></a></li>
+										<li ><a href=""><span class="text">GTA</span></a></li>
+										<li ><a href=""><span class="text">Paies</span></a></li>
+										<li ><a href=""><span class="text">CRM</span></a></li>
+										<li ><a href=""><span class="text">GA</span></a></li>
+									</ul>
+								</li>
+								<li ><a href="#" class="js-sub-menu-toggle"><i class="fa fa-laptop"></i><span class="text">Administration générale</span>
+									<i class="toggle-icon fa fa-angle-left"></i></a>
+									<ul class="sub-menu ">
+										<li ><a href=""><span class="text">Gestion des accès</span></a></li>
+										<li ><a href=""><span class="text">Paramètres sociétés</span></a></li>
+										<li ><a href=""><span class="text">Alertes - Workflow</span></a></li>
+									</ul>
+								</li>
+							</ul>
+						</nav><!-- /main-nav -->
+
+						<div class="sidebar-minified js-toggle-minified">
+							<i class="fa fa-angle-left"></i>
+						</div>
+
+						<!-- sidebar content -->
+<!-- 						<div class="sidebar-content"> -->
+<!-- 							<div class="panel panel-default"> -->
+<!-- 								<div class="panel-heading"><h5><i class="fa fa-lightbulb-o"></i> Tips</h5></div> -->
+<!-- 								<div class="panel-body"> -->
+<!-- 									<p>You can do live search to the widget at search box located at top bar. It's very useful if your dashboard is full of widget.</p> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+							
+<!-- 							<h5 class="label label-default"><i class="fa fa-info-circle"></i> Server Info</h5> -->
+<!-- 							<ul class="list-unstyled list-info-sidebar bottom-30px"> -->
+<!-- 								<li class="data-row"> -->
+<!-- 									<span class="data-name">Disk Space Usage</span> -->
+<!-- 									<span class="data-value"> -->
+<!-- 										274.43 / 2 GB -->
+<!-- 										<div class="progress progress-xs"> -->
+<!-- 											<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%"> -->
+<!-- 												<span class="sr-only">10%</span> -->
+<!-- 											</div> -->
+<!-- 										</div> -->
+<!-- 									</span> -->
+<!-- 								</li> -->
+<!-- 								<li class="data-row"> -->
+<!-- 									<span class="data-name">Monthly Bandwidth Transfer</span> -->
+<!-- 									<span class="data-value"> -->
+<!-- 										230 / 500 GB -->
+<!-- 										<div class="progress progress-xs"> -->
+<!-- 											<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="46" aria-valuemin="0" aria-valuemax="100" style="width: 46%"> -->
+<!-- 												<span class="sr-only">46%</span> -->
+<!-- 											</div> -->
+<!-- 										</div> -->
+<!-- 									</span> -->
+<!-- 								</li> -->
+<!-- 								<li class="data-row"> -->
+<!-- 									<span class="data-name">Database Disk Space</span> -->
+<!-- 									<span class="data-value">219.45 MB</span> -->
+<!-- 								</li> -->
+<!-- 								<li class="data-row"> -->
+<!-- 									<span class="data-name">Operating System</span> -->
+<!-- 									<span class="data-value">Linux</span> -->
+<!-- 								</li> -->
+<!-- 								<li class="data-row"> -->
+<!-- 									<span class="data-name">Apache Version</span> -->
+<!-- 									<span class="data-value">2.4.6</span> -->
+<!-- 								</li> -->
+<!-- 								<li class="data-row"> -->
+<!-- 									<span class="data-name">PHP Version</span> -->
+<!-- 									<span class="data-value">5.3.27</span> -->
+<!-- 								</li> -->
+<!-- 								<li class="data-row"> -->
+<!-- 									<span class="data-name">MySQL Version</span> -->
+<!-- 									<span class="data-value">5.5.34-cll</span> -->
+<!-- 								</li> -->
+<!-- 								<li class="data-row"> -->
+<!-- 									<span class="data-name">Architecture</span> -->
+<!-- 									<span class="data-value">x86_64</span> -->
+<!-- 								</li> -->
+<!-- 							</ul> -->
+<!-- 						</div> -->
+						<!-- end sidebar content -->
+					</div>
+
+
+</ui:composition>

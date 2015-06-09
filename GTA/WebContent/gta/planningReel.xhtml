@@ -1,0 +1,279 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:showcase="http://primefaces.org/ui/extensions/showcase"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<ui:composition template="/template/MainContent.xhtml">
+	<ui:define name="Content">
+
+		<h:form id="master">
+
+			<!-- WIDGET TABBED CONTENT -->
+
+			<div class="col-md-8">
+				<div class="widget">
+
+					<div class="widget-header-in">
+
+						<ul class="nav nav-tabs pull-right">
+							<li><button class="btn btn-default  btn-primary ">
+									<i class="fa fa-file-pdf-o"></i> Export to pdf
+								</button></li>
+							<li><button class="btn btn-default btn-primary ">
+									<i class="fa fa-print"></i> Print
+								</button></li>
+						</ul>
+
+						<ul class="nav nav-tabs">
+
+							<li class="active"><a href="#tab1" data-toggle="tab"><i
+									class="fa fa-user"></i><span>Exception</span></a></li>
+							<li><a href="#tab2" data-toggle="tab"><i
+									class="fa fa-folder"></i><span>Planning Réel</span></a></li>
+
+						</ul>
+					</div>
+
+					<div class="widget-content">
+						<div class="tab-content no-padding">
+
+
+							<div class="tab-pane fade in active" id="tab1">
+								<!-- 				/////////////// panel 1 //////////// -->
+
+								<h:form id="exception">
+									<h3>Exception</h3>
+									<p:tabView>
+										<p:tab title="Exception Journees">
+
+											<h:panelGrid columns="2" cellpadding="10">
+												<p:outputLabel value="Date De Journee a changé"></p:outputLabel>
+												<p:calendar
+													value="#{planningThBean.exceptionjournee.dateJournee}"></p:calendar>
+												<p:outputLabel value="Date D'effet"></p:outputLabel>
+												<p:calendar
+													value="#{planningThBean.exceptionjournee.dateChangement}"></p:calendar>
+												<p:outputLabel value="Choisir la nouveau Journee"></p:outputLabel>
+												<p:selectOneMenu
+													value="#{planningThBean.journeeTypeException}"
+													filter="true" effect="fade" filterMatchMode="startsWith"
+													var="t" panelStyle="width:180px"
+													converter="#{journeeTypeConvertor}">
+													<f:selectItem itemLabel="Selectionner" itemValue="" />
+													<f:selectItems
+														value="#{exceptionPlanningBean.journeeTypes}"
+														var="activite" itemLabel="#{activite.codejt}"
+														itemValue="#{activite}" />
+
+													<p:column>
+														<h:outputText value="#{t.codejt}" />
+													</p:column>
+												</p:selectOneMenu>
+												<p:commandButton value="valider"
+													action="#{planningThBean.ajouterEcveptionJournee()}"></p:commandButton>
+											</h:panelGrid>
+										</p:tab>
+										<p:tab title="Exception SemaineType">
+
+											<h:panelGrid columns="2" cellpadding="10">
+												<p:outputLabel value="Date De Journee a changé"></p:outputLabel>
+												<p:calendar
+													value="#{planningThBean.exceptionSemaineType.dateChangement}"></p:calendar>
+												<p:outputLabel value="semaine a changé"></p:outputLabel>
+												<p:selectOneMenu value="#{planningThBean.seaineexception}"
+													filter="true" effect="fade" filterMatchMode="startsWith"
+													var="t" panelStyle="width:180px"
+													converter="#{semaineTypeConvertor}">
+													<f:selectItem itemLabel="Selectionner" itemValue="" />
+													<f:selectItems
+														value="#{exceptionPlanningBean.semaineTypes}"
+														var="activite" itemLabel="#{activite.codest}"
+														itemValue="#{activite}" />
+
+													<p:column>
+														<h:outputText value="#{t.codest}" />
+													</p:column>
+												</p:selectOneMenu>
+												<p:commandButton value="valider"
+													action="#{planningThBean.ajouterExceptionSemaineType()}"
+													update="@form"></p:commandButton>
+											</h:panelGrid>
+
+										</p:tab>
+										<p:tab title="Exception Cycle">
+											<h:panelGrid columns="2" cellpadding="10">
+												<p:outputLabel value="Date De Changement Du Cycle"></p:outputLabel>
+												<p:calendar value="#{planningThBean.dateChangementCycle}"></p:calendar>
+												<p:outputLabel value="Cycle A Changé"></p:outputLabel>
+												<p:selectOneMenu value="#{planningThBean.cycleException}"
+													filter="true" effect="fade" filterMatchMode="startsWith"
+													var="t" panelStyle="width:180px"
+													converter="#{cycleTravailConvertor}">
+													<f:selectItem itemLabel="Selectionner" itemValue="" />
+													<f:selectItems
+														value="#{exceptionPlanningBean.cycleTravails}"
+														var="activite" itemLabel="#{activite.codect}"
+														itemValue="#{activite}" />
+
+													<p:column>
+														<h:outputText value="#{t.codect}" />
+													</p:column>
+												</p:selectOneMenu>
+												<p:commandButton value="valider"
+													action="#{planningThBean.ajouterExceptionCycle()}"></p:commandButton>
+											</h:panelGrid>
+										</p:tab>
+									</p:tabView>
+								</h:form>
+
+
+							</div>
+
+
+
+
+
+
+							<div class="tab-pane fade in active" id="tab2">
+								<!-- 				/////////////// panel 2 //////////// -->
+
+
+
+
+								<h:form id="plre">
+									<h3>Planning Réel</h3>
+									<p:accordionPanel >
+										<p:tab title="P R">
+											<p:commandButton value="Calculer Planning Reel"
+												action="#{planningThBean.calculerPlanningReelCycleJournee()}"
+												update=":master:plre"></p:commandButton>
+											<p:schedule id="schedule2" 
+												value="#{planningThBean.eventModel2}" rightHeaderTemplate=""
+												locale="fr" widgetVar="myschedule2" draggable="false">
+											</p:schedule>
+										</p:tab>
+									</p:accordionPanel>
+								</h:form>
+
+
+
+
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<!-- END WIDGET TABBED CONTENT -->
+			</div>
+			<!-- 			</p:tabView> -->
+
+
+
+		</h:form>
+
+
+
+
+
+
+
+
+		<!-- ////////////// employee       -->
+		<h:form id="form2">
+			<div class="col-md-4">
+				<div class="widget widget-table">
+					<div class="widget-header">
+						<h3>
+							<i class="fa fa-users"></i>Liste des collaborteurs
+						</h3>
+					</div>
+					<div class="widget-content">
+
+						<div class="input-group input-group-sm">
+							<h:form id="formSearch">
+								<h:outputLabel value="Matricule:" />
+								<p:inputText value="#{planningThBean.matricul}"
+									onkeypress="if (event.keyCode == 13) {onchange(); return false; }">
+									<p:ajax event="change"
+										listener="#{planningThBean.chargerCollaborateurs()}"
+										update=":form2:eventsDT" />
+								</p:inputText>
+
+							</h:form>
+						</div>
+						<br />
+
+
+
+
+
+						<p:dataTable id="eventsDT" value="#{planningThBean.identites}"
+							var="emp" selectionMode="single"
+							selection="#{planningThBean.identite}" rowKey="#{emp.numedoss}">
+
+							<f:facet name="header"> List of Employers </f:facet>
+							<p:ajax event="rowSelect" listener="#{planningThBean.rowselect}"
+								update=":master" />
+
+							<p:column headerText="Matricule">
+								<h:outputText value="#{emp.matricul}" />
+							</p:column>
+							<p:column headerText="Nom et Prénom">
+								<h:outputText value="#{emp.nom} #{emp.prenom}" />
+							</p:column>
+						</p:dataTable>
+					</div>
+
+				</div>
+			</div>
+
+		</h:form>
+
+
+
+
+		<script type="text/javascript">
+			
+PrimeFaces.locales ['fr'] = {
+        closeText: 'Fermer',
+        prevText: 'Précédent',
+        nextText: 'Suivant',
+        monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre' ],
+        monthNamesShort: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc' ],
+        dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+        dayNamesShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+        dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+        weekHeader: 'Semaine',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix:'',
+        timeOnlyTitle: 'Choisir l\'heure',
+        timeText: 'Heure',
+        hourText: 'Heures',
+        minuteText: 'Minutes',
+        secondText: 'Secondes',
+        currentText: 'Maintenant',
+        ampm: false,
+        month: 'Mois',
+        week: 'Semaine',
+        day: 'Jour',
+        allDayText: 'Toute la journée'
+        };
+</script>
+		<style type="text/css">
+.fc-event-time {
+	display: none;
+}
+</style>
+
+
+
+	</ui:define>
+</ui:composition>
+</html>

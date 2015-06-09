@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/template/MainContent.xhtml">
+	<ui:define name="Content">
+		<h:form id="form">
+
+			<h:panelGrid columns="5" style="margin-left: 200px;">
+				<p:outputLabel value="Filtre" />
+				<p:calendar placeholder="De"
+					value="#{activiteCalculerBean.dateDebutFiltre}" />
+				<p:calendar placeholder="À"
+					value="#{activiteCalculerBean.dateFinFiltre}" />
+				<p:commandButton value="Filtrer" action="#{activiteCalculerBean.filtreDate()}"
+					update=":form:tabv" />
+				<p:commandButton value="Calculer" onclick="PF('datecalc').show();"
+					type="button" update=":calcule" />
+			</h:panelGrid>
+
+
+
+			<h:panelGrid columns="2">
+				<p:dataTable id="eventsDT" var="identite"
+					style="width:200px;margin-top: -450px"
+					value="#{activiteCalculerBean.identites}" selectionMode="single"
+					selection="#{activiteCalculerBean.selectedIdentite}"
+					rowKey="#{identite.numedoss}">
+					<f:facet name="header">
+            List of Employers
+        </f:facet>
+					<p:ajax event="rowSelect"
+						listener="#{absenceBean.onRowSelect()}" update=":form:tabv" />
+
+
+					<p:column headerText="Matricule">
+						<h:outputText value="#{identite.matricul}" />
+					</p:column>
+					<p:column headerText="Nom et Prénom">
+						<h:outputText value="#{identite.nom} #{identite.prenom}" />
+					</p:column>
+				</p:dataTable>
+
+
+				<p:tabView id="tabv" style="height: 900px;width: 800px">
+					<p:tab title="Saisir Absences">
+					
+					
+					
+					
+		<!--########################################################################################-->
+				 
+				 
+				 <h:form id="master" >
+	             <p:dataTable rendered="#{not empty absenceBean.absences}"
+		            value="#{absenceBean.absences}" 
+		            var="absence" 
+		            border="1"
+		            rows="7"
+				    rowKey="#{absence.id}"
+		     		 paginator="true"
+							 paginatorPosition="bottom"
+							 filteredValue="#{absenceBean.filteredAbsences}"
+							 selectionMode="single"
+							 selection="#{absenceBean.absence}"
+							 widgetVar="herdTabW">
+		       <f:facet name="header">
+		          <h:outputText value="Les Absences" />
+		       </f:facet>
+		    
+		    <p:ajax event="rowSelect" listener="#{absenceBean.onRowSelect()}" update=":details"/>
+			<p:ajax event="filter" listener="#{absenceBean.onFilter()}" update=":details"/>		 
+		    
+		    
+		    <p:column headerText="Motif" >
+		    	
+		       
+		    </p:column>
+		    
+		    <p:column headerText="Breed" filterBy="#{herd.breed}" filterMatchMode="contains">
+		    
+		       <h:outputText value="#{herd.breed}" />
+		    </p:column>
+		    
+		    
+		    <p:column headerText="number of heard" filterBy="#{herd.num_herd}" filterMatchMode="contains">
+		    
+		       <h:outputText value="#{herd.num_herd}" />
+		    </p:column>
+		    
+		     
+		     <p:column headerText="Ranch Name" filterBy="#{herd.ranch.ranch_name}" filterMatchMode="contains">
+		    
+		       <h:outputText value="#{herd.ranch.ranch_name}" />
+		       	
+		    </p:column>
+		    
+		    
+		    
+		    
+		     </p:dataTable>
+		     
+		<p:commandButton icon="ui-icon-circle-plus" actionListener="#{herdBean.newHerd}" value="New Herd"   update=":details" />
+		<p:commandButton value="Refresh" action="#{ranchBean.refrech}" ajax="false"/>
+		   </h:form>
+		   
+				
+		<!-- ############################################################################################# -->				
+						
+
+					</p:tab>
+
+					<p:tab title="Découpage des congés">
+
+						<p:dataTable var="abs" value="#{activiteCalculerBean.absences}">
+							<p:column headerText="Date debut">
+								<h:outputText value="#{abs.dateDebut}" />
+							</p:column>
+							<p:column headerText="Date Fin">
+								<h:outputText value="#{abs.dateFin}" />
+							</p:column>
+							<p:column headerText="Date Fin">
+								<h:outputText value="#{abs.activiteAbsence.codeaabs}" />
+							</p:column>
+							<p:column headerText="Tranche 1">
+								<h:outputText value="#{abs.tranche1}" />
+							</p:column>
+							<p:column headerText="Tranche 2">
+								<h:outputText value="#{abs.tranche2}" />
+							</p:column>
+							<p:column headerText="Transition tranche">
+								<h:outputText value="#{abs.tansitionTranche}" />
+							</p:column>
+
+						</p:dataTable>
+
+					</p:tab>
+
+
+
+					<p:tab title="Tranche des droits  " id="actscalc">
+						<p:dataTable var="jt"
+							value="#{activiteCalculerBean.activiteReelCalculers}">
+							<p:column headerText="Date">
+								<h:outputText value="#{jt.date}">
+								<f:convertDateTime type="date" dateStyle="short" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Motif">
+								<h:outputText value="#{activiteCalculerBean.getActivite(jt)}" />
+							</p:column>
+							<p:column headerText="Heure debut">
+								<h:outputText value="#{jt.heuredeb}" />
+							</p:column>
+							<p:column headerText="Heure fin">
+								<h:outputText value="#{jt.heurefin}" />
+							</p:column>
+							<p:column headerText="Durée">
+								<h:outputText
+									value="#{activiteCalculerBean.getDuree(jt.heurefin,jt.heuredeb)}" />
+							</p:column>
+							<p:column headerText="Poids">
+								<h:outputText value="#{jt.activitePresence.poids}" />
+							</p:column>
+						</p:dataTable>
+					</p:tab>
+
+
+				</p:tabView>
+			</h:panelGrid>
+		</h:form>
+		<p:dialog header="Intervalle calcule" widgetVar="datecalc"
+			height="200" modal="true">
+			<h:form id="calcule">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Date début de calcule" />
+					<p:calendar value="#{activiteCalculerBean.dateDebutCalcule}" />
+					<p:outputLabel value="Date Fin de calcule" />
+					<p:calendar value="#{activiteCalculerBean.dateFinCalcule}" />
+					<p:commandButton value="Calculer"
+						action="#{activiteCalculerBean.calculeActiviteReel()}"
+						update=":form:tabv" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+</html>

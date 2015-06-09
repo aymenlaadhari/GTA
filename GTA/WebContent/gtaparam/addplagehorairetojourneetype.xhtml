@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/MainContent.xhtml">
+<ui:define name="Content">
+	<p:panel header="Définition d'une journée type">
+		<h:form>
+
+			<table>
+				<tr>
+					<td><h:outputLabel value="Journée Type" /></td>
+					<td><p:selectOneMenu value="#{bean.journeeType}"
+							filter="true" effect="fade" filterMatchMode="startsWith" var="t"
+							panelStyle="width:180px" converter="#{journeeTypeConvertor}">
+							<f:selectItem itemLabel="Selectionner" itemValue="" />
+							<f:selectItems value="#{jtPlBean.journeeTypes}" var="activite"
+								itemLabel="#{activite.codejt}" itemValue="#{activite}" />
+
+							<p:column>
+								<h:outputText value="#{t.codejt}" />
+							</p:column>
+						</p:selectOneMenu></td>
+				</tr>
+			</table>
+			<table>
+				
+				
+				<h:dataTable id="tblFields" value="#{bean.fields}" var="field">
+			<h:column>
+				<p:inputText size="10" value="#{bean.heure}" />
+			</h:column>
+			<h:column>
+			<p:selectOneMenu value="#{bean.plageHoraire}" filter="true"
+				effect="fade" filterMatchMode="startsWith" var="t"
+				panelStyle="width:180px" converter="#{plageHoraireConverter}">
+				<f:selectItem itemLabel="Selectionner" itemValue="" />
+				<f:selectItems value="#{bean.plageHoraires1}" var="activite"
+					itemLabel="#{activite.codeph}" itemValue="#{activite}" />
+
+				<p:column>
+					<h:outputText value="#{t.codeph}" />
+				</p:column>
+			</p:selectOneMenu>
+			</h:column>
+			<h:column>
+				<h:commandButton value="Remove">
+					<f:ajax listener="#{bean.onButtonRemoveFieldClick(field)}"
+						immediate="true" render="@form" />
+				</h:commandButton>
+			</h:column>
+		</h:dataTable>
+
+		<h:commandButton value="Add">
+			<f:ajax listener="#{bean.onButtonAddFieldClick}" execute="@form"
+				render="tblFields" />
+		</h:commandButton>
+		
+
+
+				<tr>
+					<td><p:commandButton value="ajouter"
+							action="#{bean.ajouter()}" /></td>
+				</tr>
+			</table>
+			<h:commandButton value="next" action="#{bean.redirect()}" />
+		</h:form>
+	</p:panel>
+</ui:define>
+</ui:composition>
+</html>
